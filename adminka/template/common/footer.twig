@@ -1,0 +1,179 @@
+&lt;/main&gt;
+
+&lt;style&gt;
+    /* 1. ГЛОБАЛЬНЫЕ СТИЛИ ФУТЕРА */
+    footer {
+        background-color: #0a0a0a !important;
+        border-top: 2px solid #ff0000 !important;
+        padding: 50px 0 30px !important;
+        margin-top: auto !important;
+        color: #888 !important;
+    }
+
+    footer h5 {
+        color: #ff0000 !important;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        font-weight: 800;
+        font-size: 15px;
+        margin-bottom: 25px;
+        letter-spacing: 1px;
+    }
+
+    footer ul li { margin-bottom: 10px; }
+
+    footer ul li a {
+        color: #ccc !important;
+        text-decoration: none !important;
+        transition: 0.3s all ease;
+        font-size: 14px;
+        display: inline-block;
+    }
+
+    footer ul li a:hover {
+        color: #ff0000 !important;
+        padding-left: 5px;
+    }
+
+    /* 2. КАРТА */
+    .footer-map-container {
+        border: 1px solid #222;
+        line-height: 0;
+        overflow: hidden;
+        filter: grayscale(1) invert(0.9) contrast(1.2);
+        transition: 0.5s filter ease;
+    }
+
+    .footer-map-container:hover { filter: grayscale(0) invert(0) contrast(1); }
+
+    .footer-bottom {
+        border-top: 1px solid #222;
+        margin-top: 30px;
+        padding-top: 20px;
+        font-size: 12px;
+        color: #444;
+    }
+
+    /* 3. МГНОВЕННЫЙ ПЕРЕВОД (CSS ТРИГГЕРЫ) */
+    /* Прячем все блоки перевода по умолчанию */
+    .lang-block { display: none !important; }
+
+    /* Показываем нужный язык на основе атрибута lang в теге html */
+    html[lang*=&quot;pl&quot;] .lang-pl { display: inline-block !important; }
+    html[lang*=&quot;pl&quot;] div.lang-pl { display: block !important; }
+
+    html[lang*=&quot;uk&quot;] .lang-ua, html[lang*=&quot;ua&quot;] .lang-ua { display: inline-block !important; }
+    html[lang*=&quot;uk&quot;] div.lang-ua, html[lang*=&quot;ua&quot;] div.lang-ua { display: block !important; }
+
+    html[lang*=&quot;en&quot;] .lang-en { display: inline-block !important; }
+    html[lang*=&quot;en&quot;] div.lang-en { display: block !important; }
+&lt;/style&gt;
+
+&lt;footer&gt;
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+
+      &lt;div class=&quot;col-md-3 col-sm-6 mb-4&quot;&gt;
+        &lt;h5&gt;
+            &lt;span class=&quot;lang-block lang-en&quot;&gt;Information&lt;/span&gt;
+            &lt;span class=&quot;lang-block lang-ua&quot;&gt;Інформація&lt;/span&gt;
+            &lt;span class=&quot;lang-block lang-pl&quot;&gt;Informacja&lt;/span&gt;
+        &lt;/h5&gt;
+        &lt;ul class=&quot;list-unstyled&quot;&gt;
+          &lt;li&gt;
+            &lt;a href=&quot;index.php?route=information/information&amp;information_id=1&quot;&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;About Us&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Про нас&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;O nas&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a href=&quot;{{ contact }}&quot;&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;Contact Us&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Контакти&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Kontakt z nami&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;{{ sitemap }}&quot;&gt;{{ text_sitemap }}&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;col-md-3 col-sm-6 mb-4&quot;&gt;
+        &lt;h5&gt;
+            &lt;span class=&quot;lang-block lang-en&quot;&gt;My Account&lt;/span&gt;
+            &lt;span class=&quot;lang-block lang-ua&quot;&gt;Мій кабінет&lt;/span&gt;
+            &lt;span class=&quot;lang-block lang-pl&quot;&gt;Moje konto&lt;/span&gt;
+        &lt;/h5&gt;
+        &lt;ul class=&quot;list-unstyled&quot;&gt;
+          &lt;li&gt;
+            &lt;a href=&quot;{{ account }}&quot;&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;Dashboard&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Особистий кабінет&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Moje konto&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a href=&quot;{{ order }}&quot;&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;Order History&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Історія замовлень&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Historia zamówień&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+          &lt;li&gt;
+            &lt;a href=&quot;{{ wishlist }}&quot;&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;Wish List&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Закладки&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Lista życzeń&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/div&gt;
+
+      &lt;div class=&quot;col-md-6 col-sm-12 mb-4&quot;&gt;
+        &lt;h5&gt;
+            &lt;span class=&quot;lang-block lang-en&quot;&gt;Our Location&lt;/span&gt;
+            &lt;span class=&quot;lang-block lang-ua&quot;&gt;Наша локація&lt;/span&gt;
+            &lt;span class=&quot;lang-block lang-pl&quot;&gt;Nasza lokalizacja&lt;/span&gt;
+        &lt;/h5&gt;
+        &lt;div class=&quot;footer-map-container&quot;&gt;
+            &lt;iframe src=&quot;https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2459.723653139886!2d16.591242315786193!3d51.84155107969145!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4705978939c4d9b7%3A0x7d0138939c4d9b7!2zSmFuYSBTdHlraSA4LCA2NC0xMDAgTGVzem5vLCBQb2xza2E!5e0!3m2!1spl!2spl!4v1645450000000!5m2!1spl!2spl&quot;
+                    width=&quot;100%&quot; height=&quot;150&quot; style=&quot;border:0;&quot; allowfullscreen=&quot;&quot; loading=&quot;lazy&quot;&gt;&lt;/iframe&gt;
+        &lt;/div&gt;
+        &lt;div style=&quot;margin-top: 15px; font-size: 13px; color: #fff;&quot;&gt;
+            &lt;p&gt;
+                &lt;i class=&quot;fa fa-map-marker&quot; style=&quot;color: #ff0000; width: 20px;&quot;&gt;&lt;/i&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;Jana Styki 8, 64-100 Leszno, Poland&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Jana Styki 8, 64-100 Leszno, Poland&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Jana Styki 8, 64-100 Leszno, Polska&lt;/span&gt;
+            &lt;/p&gt;
+            &lt;p&gt;
+                &lt;i class=&quot;fa fa-phone&quot; style=&quot;color: #ff0000; width: 20px;&quot;&gt;&lt;/i&gt; +48 570 833 162
+            &lt;/p&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+
+    &lt;/div&gt;
+
+    &lt;div class=&quot;footer-bottom&quot;&gt;
+      &lt;div class=&quot;row&quot;&gt;
+        &lt;div class=&quot;col-sm-6&quot;&gt;
+          CarServiceGarage © 2026.
+          &lt;span class=&quot;lang-block lang-en&quot;&gt;All rights reserved.&lt;/span&gt;
+          &lt;span class=&quot;lang-block lang-ua&quot;&gt;Всі права захищені.&lt;/span&gt;
+          &lt;span class=&quot;lang-block lang-pl&quot;&gt;Wszelkie prawa zastrzeżone.&lt;/span&gt;
+        &lt;/div&gt;
+        &lt;div class=&quot;col-sm-6 text-end&quot;&gt;
+          Powered By &lt;a href=&quot;http://www.opencart.com&quot; style=&quot;color: #444;&quot;&gt;OpenCart&lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;
+
+&lt;script&gt;
+(function() {
+    function garageFinalTranslate() {
+        // 1. ПРИОРИТЕТЫ: URL &gt; HTML LANG &gt; COOKIE
+        const url = window.location.href.toLowerCase();
+        const htmlLang = document.documentElement.lang.toLowerCase();
+        const cookie = (document.cookie.match('(^|;)\\\\s*language\\\\s*=\\\\s*([^;]+)\

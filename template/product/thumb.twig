@@ -1,0 +1,209 @@
+<style>
+    .product-thumb {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        padding: 15px;
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+        overflow: hidden;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    .product-thumb:hover {
+        border-color: #ff0000;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.15);
+        transform: translateY(-5px);
+    }
+
+    /* Ефект кутів сканера */
+    .product-thumb::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; width: 10px; height: 10px;
+        border-top: 2px solid #333; border-left: 2px solid #333;
+    }
+    .product-thumb:hover::before { border-color: #ff0000; }
+
+    /* ЗОБРАЖЕННЯ (UNIT_VIEW) */
+    .product-thumb .image {
+        background: #000;
+        padding: 10px;
+        border: 1px solid #111;
+        margin-bottom: 15px;
+        position: relative;
+        text-align: center;
+    }
+    .product-thumb .image img {
+        transition: 0.5s;
+        filter: grayscale(0.2);
+    }
+    .product-thumb:hover .image img {
+        filter: grayscale(0);
+        transform: scale(1.05);
+    }
+
+    /* КОНТЕНТ (DATA_STREAM) */
+    .product-thumb .content {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    .product-thumb h4 {
+        margin: 0 0 10px 0;
+    }
+    .product-thumb h4 a {
+        color: #fff;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 14px;
+        text-transform: uppercase;
+        text-decoration: none;
+        letter-spacing: 1px;
+        line-height: 1.4;
+        display: block;
+    }
+    .product-thumb h4 a:hover { color: #ff0000; }
+
+    .product-thumb .description {
+        font-family: 'Consolas', monospace;
+        font-size: 11px;
+        color: #444;
+        line-height: 1.3;
+        margin-bottom: 15px;
+        height: 42px; /* Обмеження висоти опису */
+        overflow: hidden;
+    }
+
+    /* ЦІНА (VOLTAGE_LEVEL) */
+    .product-thumb .price {
+        background: #000;
+        padding: 8px;
+        border: 1px solid #1a1a1a;
+        margin-bottom: 15px;
+    }
+    .product-thumb .price-new {
+        color: #00ff00;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: bold;
+        font-size: 18px;
+        text-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+    }
+    .product-thumb .price-old {
+        color: #444;
+        text-decoration: line-through;
+        font-size: 12px;
+        margin-left: 10px;
+    }
+    .product-thumb .price-tax {
+        display: block;
+        font-size: 9px;
+        color: #333;
+        text-transform: uppercase;
+    }
+
+    /* КНОПКИ (CMD_MATRIX) */
+    .product-thumb .button-group-pro {
+        display: flex;
+        gap: 2px;
+        margin-top: auto;
+    }
+    .btn-pro {
+        background: #111;
+        border: 1px solid #222;
+        color: #555;
+        border-radius: 0;
+        padding: 10px;
+        flex: 1;
+        transition: 0.2s;
+    }
+    .btn-pro:hover {
+        background: #222;
+        color: #fff;
+    }
+    .btn-pro-cart {
+        flex: 2;
+        background: #ff0000;
+        color: #000;
+        border: none;
+        font-family: 'Orbitron';
+        font-weight: 900;
+        font-size: 12px;
+        text-transform: uppercase;
+    }
+    .btn-pro-cart:hover {
+        background: #fff;
+        color: #000;
+    }
+
+    /* РЕЙТИНГ (SIGNAL_STRENGTH) */
+    .product-thumb .rating {
+        margin-bottom: 10px;
+        color: #ff0000;
+        font-size: 9px;
+    }
+</style>
+
+<div class="product-thumb">
+  <div class="image">
+    <a href="{{ href }}">
+        <img src="{{ thumb }}" alt="{{ name }}" title="{{ name }}" class="img-fluid"/>
+    </a>
+    {% if special %}
+        <div style="position: absolute; top: 5px; right: 5px; background: #ff0000; color: #000; font-family: 'Orbitron'; font-size: 9px; padding: 2px 8px; font-weight: 900;">
+            PROMO_DETECTED
+        </div>
+    {% endif %}
+  </div>
+
+  <div class="content">
+    <div class="info-wrap">
+      <h4><a href="{{ href }}">{{ name }}</a></h4>
+
+      {% if review_status and rating %}
+        <div class="rating">
+          {% for i in 1..5 %}
+            {% if rating < i %}
+              <i class="fa-regular fa-star"></i>
+            {% else %}
+              <i class="fa-solid fa-star"></i>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <p class="description">{{ description }}</p>
+
+      {% if price %}
+        <div class="price">
+          {% if not special %}
+            <span class="price-new">{{ price }}</span>
+          {% else %}
+            <span class="price-new">{{ special }}</span>
+            <span class="price-old">{{ price }}</span>
+          {% endif %}
+          {% if tax %}
+            <span class="price-tax">{{ text_tax }} {{ tax }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <form method="post" data-oc-toggle="ajax" data-oc-load="{{ cart }}" data-oc-target="#cart">
+      <div class="button-group-pro">
+        <button type="submit" formaction="{{ cart_add }}" class="btn-pro btn-pro-cart" title="{{ button_cart }}">
+            <i class="fa-solid fa-cart-arrow-down me-1"></i> CART
+        </button>
+
+        <button type="submit" formaction="{{ wishlist_add }}" class="btn-pro" title="{{ button_wishlist }}">
+            <i class="fa-solid fa-heart-pulse"></i>
+        </button>
+
+        <button type="submit" formaction="{{ compare_add }}" class="btn-pro" title="{{ button_compare }}">
+            <i class="fa-solid fa-bolt"></i>
+        </button>
+      </div>
+      <input type="hidden" name="product_id" value="{{ product_id }}"/>
+      <input type="hidden" name="quantity" value="{{ minimum }}"/>
+    </form>
+  </div>
+</div>

@@ -1,4 +1,62 @@
-<form action="{{ action }}" method="post" class="input-group mb-3">
-	<input type="text" name="search" value="{{ search }}" placeholder="{{ text_search }}" class="form-control form-control-lg"/>
-	<button type="submit" class="btn btn-light btn-lg"><i class="fa-solid fa-magnifying-glass"></i></button>
+<style>
+    /* 1. КОНТЕЙНЕР ПОШУКУ (SCAN_MODULE) */
+    .search-module-wrap {
+        position: relative;
+        background: #000;
+        border: 1px solid #1a1a1a;
+        transition: 0.3s ease-in-out;
+    }
+    .search-module-wrap:focus-within {
+        border-color: #ff0000;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+    }
+
+    /* 2. ПОЛЕ ВВОДУ (DATA_INPUT) */
+    .search-module-wrap .form-control {
+        background: transparent !important;
+        border: none !important;
+        color: #00ff00 !important; /* Термінальний зелений */
+        font-family: 'Consolas', monospace;
+        font-size: 14px;
+        letter-spacing: 1px;
+        box-shadow: none !important;
+        padding-left: 15px;
+    }
+    .search-module-wrap .form-control::placeholder {
+        color: #333;
+        text-transform: uppercase;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 10px;
+    }
+
+    /* 3. КНОПКА ЗАПУСКУ (SCAN_TRIGGER) */
+    .btn-scan-trigger {
+        background: #111 !important;
+        border: none !important;
+        border-left: 1px solid #1a1a1a !important;
+        color: #444 !important;
+        border-radius: 0 !important;
+        width: 60px;
+        transition: 0.3s;
+    }
+    .search-module-wrap:focus-within .btn-scan-trigger {
+        background: #ff0000 !important;
+        color: #000 !important;
+    }
+    .btn-scan-trigger:hover {
+        background: #fff !important;
+        color: #000 !important;
+    }
+</style>
+
+<form action="{{ action }}" method="post" class="input-group search-module-wrap">
+    <input type="text"
+           name="search"
+           value="{{ search }}"
+           placeholder="[ READY_TO_SCAN ]"
+           class="form-control form-control-lg"
+           autocomplete="off" />
+    <button type="submit" class="btn btn-scan-trigger">
+        <i class="fa-solid fa-radar fa-sm"></i>
+    </button>
 </form>

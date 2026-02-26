@@ -1,97 +1,164 @@
 {{ header }}
+<style>
+    /* 1. БАЗОВЫЙ СТИЛЬ CMS / BLOG */
+    #product-category {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВКИ */
+    h1 {
+        font-size: 28px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 30px;
+    }
+    h2 { font-size: 20px; margin-bottom: 10px; }
+    h2 a { color: #fff; text-decoration: none; transition: 0.3s; }
+    h2 a:hover { color: #ff0000; padding-left: 10px; }
+
+    /* 3. ПОИСКОВЫЙ ТЕРМИНАЛ (REFINE_SEARCH) */
+    .input-group { background: #000; border: 1px solid #1a1a1a; padding: 5px; }
+    .form-control, .form-select {
+        background: #050505 !important; border: 1px solid #222 !important;
+        color: #00ff00 !important; font-family: 'Consolas', monospace; border-radius: 0 !important;
+    }
+    .form-control:focus, .form-select:focus { border-color: #ff0000 !important; box-shadow: none; }
+    .input-group-text { background: #111; color: #666; border: 1px solid #222; border-radius: 0; font-size: 10px; text-transform: uppercase; }
+
+    /* 4. КАРТОЧКА СТАТЬИ (TECHNICAL_BULLETIN) */
+    .article-row {
+        background: #000; border-left: 3px solid #1a1a1a; padding: 25px;
+        margin-bottom: 40px; transition: 0.3s; position: relative;
+    }
+    .article-row:hover { border-left-color: #ff0000; background: #050505; }
+    .article-row::before {
+        content: "BULL_REF_v4.2"; position: absolute; top: 10px; right: 20px;
+        font-size: 8px; color: #222; letter-spacing: 2px;
+    }
+
+    .article-image {
+        border: 1px solid #222; padding: 4px; background: #0a0a0a;
+        transition: 0.3s; max-width: 100%;
+    }
+    .article-row:hover .article-image { border-color: #ff0000; }
+
+    /* Мета-данные */
+    .list-inline-item {
+        font-size: 10px; color: #555; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .list-inline-item a { color: #ff0000; text-decoration: none; }
+
+    .article-description {
+        color: #888; font-family: 'Consolas', monospace; font-size: 14px;
+        line-height: 1.6; margin-top: 15px;
+    }
+
+    /* 5. КНОПКИ */
+    .btn-garage-read {
+        background: transparent; border: 1px solid #333; color: #ff0000 !important;
+        padding: 10px 25px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        border-radius: 0; text-decoration: none; display: inline-block;
+    }
+    .btn-garage-read:hover {
+        background: #ff0000; color: #000 !important; box-shadow: 0 0 15px rgba(255,0,0,0.3);
+    }
+
+    /* ПАГИНАЦИЯ */
+    .pagination { --bs-pagination-bg: #111; --bs-pagination-border-color: #222; --bs-pagination-color: #666; }
+    .page-link:hover { background: #ff0000; color: #000; }
+    .active > .page-link { background-color: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+</style>
+
 <div id="product-category" class="container">
-  <ul class="breadcrumb">
-    {% for breadcrumb in breadcrumbs %}
-      <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
-    {% endfor %}
-  </ul>
-  <div class="row">
-    {{ column_left }}
-    <div id="content" class="col">
-      {{ content_top }}
-      <h1>{{ heading_title }}</h1>
-      {% if image %}
-        <img src="{{ image }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-thumbnail mb-3"/>
-      {% endif %}
-      {% if description %}
-        <div class="mb-3">{{ description }}</div>
-      {% endif %}
-      <hr/>
-      <h3>{{ text_refine }}</h3>
-      <div class="input-group dropdown mb-3">
-        <input type="text" name="search" value="{{ search }}" placeholder="{{ entry_search }}" id="input-search" class="form-control"/>
-        {% if topics %}
-          <select name="topic_id" id="input-topic" class="form-select" onchange="">
-            <option value="">{{ text_all }}</option>
-            {% for topic in topics %}
-              <option value="{{ topic.topic_id }}"{% if topic.topic_id == topic_id %} selected{% endif %}>{{ topic.name }}</option>
-            {% endfor %}
-          </select>
-        {% endif %}
-        <button id="button-search" class="btn btn-primary">{{ button_search }}</button>
-      </div>
-      <div class="row mb-3">
-        <div class="col-lg offset-lg-8">
-          <div class="input-group">
-            <label for="input-sort" class="input-group-text">{{ text_sort }}</label> <select id="input-sort" class="form-select" onchange="location = this.value;">
-              {% for sorts in sorts %}
-                <option value="{{ sorts.href }}"{% if sorts.value == '%s-%s'|format(sort, order) %} selected{% endif %}>{{ sorts.text }}</option>
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-      </div>
-      {% if articles %}
-        {% for article in articles %}
-          <div class="mb-3">
-            <h2><a href="{{ article.href }}">{{ article.name }}</a></h2>
-            {% if article.image %}
-              <div><a href="{{ article.href }}"><img src="{{ article.image }}" title="{{ article.name }}" alt="{{ article.name }}" class="img-thumbnail mb-1"/></a></div>
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-microchip" style="color:#ff0000; margin-right:15px;"></i> {{ heading_title }}</h1>
+
+            {% if description %}
+                <div class="mb-4" style="color: #666; font-size: 13px; line-height: 1.8;">{{ description }}</div>
             {% endif %}
-            <ul class="list-inline">
-              <li class="list-inline-item">{{ text_by }} <a href="{{ article.filter_author }}">{{ article.author }}</a></li>
-              <li class="list-inline-item">{{ article.date_added }}</li>
-              <li class="list-inline-item">{{ article.comment_total }} {{ text_comment }}</li>
-            </ul>
-            <p class="mb-3">{{ article.description }}</p>
-            <div class="text-end"><a href="{{ article.href }}" class="btn btn-primary">{{ button_continue }}</a></div>
-          </div>
-        {% endfor %}
-        <div class="row">
-          <div class="col-sm-6 text-start">{{ pagination }}</div>
-          <div class="col-sm-6 text-end">{{ results }}</div>
+
+            {# SEARCH_TERMINAL #}
+            <div class="input-group mb-4">
+                <input type="text" name="search" value="{{ search }}" placeholder="[ SEARCH_DATABASE_BY_KEYWORD ]" id="input-search" class="form-control"/>
+                {% if topics %}
+                    <select name="topic_id" id="input-topic" class="form-select" style="max-width: 250px;">
+                        <option value="">{{ text_all }}</option>
+                        {% for topic in topics %}
+                            <option value="{{ topic.topic_id }}"{% if topic.topic_id == topic_id %} selected{% endif %}>{{ topic.name }}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+                <button id="button-search" class="btn btn-garage-read" style="border-left:none;">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-lg offset-lg-8">
+                    <div class="input-group input-group-sm">
+                        <label for="input-sort" class="input-group-text">{{ text_sort }}</label>
+                        <select id="input-sort" class="form-select" onchange="location = this.value;">
+                            {% for sorts in sorts %}
+                                <option value="{{ sorts.href }}"{% if sorts.value == '%s-%s'|format(sort, order) %} selected{% endif %}>{{ sorts.text }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            {% if articles %}
+                {% for article in articles %}
+                    <div class="article-row">
+                        <h2><a href="{{ article.href }}">{{ article.name }}</a></h2>
+
+                        <ul class="list-inline mb-3">
+                            <li class="list-inline-item"><i class="fa-solid fa-user-gear"></i> {{ text_by }} <a href="{{ article.filter_author }}">{{ article.author }}</a></li>
+                            <li class="list-inline-item"><i class="fa-solid fa-calendar-day"></i> {{ article.date_added }}</li>
+                            <li class="list-inline-item"><i class="fa-solid fa-comments"></i> {{ article.comment_total }}</li>
+                        </ul>
+
+                        <div class="row">
+                            {% if article.image %}
+                                <div class="col-md-4 mb-3">
+                                    <a href="{{ article.href }}">
+                                        <img src="{{ article.image }}" title="{{ article.name }}" alt="{{ article.name }}" class="article-image"/>
+                                    </a>
+                                </div>
+                            {% endif %}
+                            <div class="col">
+                                <div class="article-description">{{ article.description }}</div>
+                                <div class="text-end mt-4">
+                                    <a href="{{ article.href }}" class="btn-garage-read">
+                                        <i class="fa-solid fa-terminal"></i>
+                                        <span data-lang-en="OPEN_BULLETIN" data-lang-ua="ВІДКРИТИ ЗВІТ" data-lang-pl="OTWÓRZ BIULETYN"></span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <div class="row mt-5">
+                    <div class="col-sm-6 text-start">{{ pagination }}</div>
+                    <div class="col-sm-6 text-end" style="font-size: 10px; color: #333; text-transform: uppercase;">{{ results }}</div>
+                </div>
+            {% else %}
+                <div class="text-center py-5" style="border: 1px dashed #222;">
+                    <i class="fa-solid fa-database" style="font-size: 40px; color: #1a1a1a; margin-bottom: 20px; display: block;"></i>
+                    <p style="color: #444; letter-spacing: 5px;">{{ text_no_results }}</p>
+                </div>
+            {% endif %}
+
+            {{ content_bottom }}
         </div>
-      {% else %}
-        <p class="text-center">{{ text_no_results }}</p>
-      {% endif %}
-      {{ content_bottom }}
+        {{ column_right }}
     </div>
-    {{ column_right }}
-  </div>
 </div>
-<script type="text/javascript"><!--
-$('#button-search').bind('click', function() {
-    url = 'index.php?route=cms/blog&language={{ language }}';
 
-    var search = $('#input-search').val();
-
-    if (search) {
-        url += '&search=' + encodeURIComponent(search);
-    }
-
-    var topic_id = $('#input-topic').prop('value');
-
-    if (topic_id > 0) {
-        url += '&topic_id=' + topic_id;
-    }
-
-    location = url;
-});
-
-$('#input-search').bind('keydown', function(e) {
-    if (e.keyCode == 13) {
-        $('#button-search').trigger('click');
-    }
-});
-//--></script>
+<script type="text/javascript"></script>
 {{ footer }}

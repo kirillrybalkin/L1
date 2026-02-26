@@ -1,0 +1,94 @@
+<style>
+    .review-item {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        border-left: 3px solid #ff0000;
+        padding: 20px;
+        margin-bottom: 20px;
+        font-family: 'Consolas', monospace;
+    }
+    .review-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #1a1a1a;
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+    .review-author {
+        font-family: 'Orbitron', sans-serif;
+        color: #fff;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .review-date {
+        color: #444;
+        font-size: 11px;
+    }
+    .review-text {
+        color: #aaa;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+    }
+    .review-rating {
+        color: #ff0000;
+        font-size: 10px;
+    }
+    .review-pagination .pagination {
+        justify-content: flex-end;
+        border-top: 1px solid #1a1a1a;
+        padding-top: 20px;
+    }
+    /* Стилізація пагінації під Launch */
+    .review-pagination .page-link {
+        background: #000;
+        border: 1px solid #222;
+        color: #666;
+    }
+    .review-pagination .page-item.active .page-link {
+        background: #ff0000;
+        border-color: #ff0000;
+        color: #000;
+    }
+</style>
+
+{% if reviews %}
+  <div class="reviews-container">
+    {% for review in reviews %}
+      <div class="review-item">
+        <div class="review-header">
+          <div class="review-author">
+            <i class="fa-solid fa-user-gear me-2" style="color: #ff0000;"></i> {{ review.author }}
+          </div>
+          <div class="review-date">
+            [ {{ review.date_added }} ]
+          </div>
+        </div>
+        
+        <div class="review-text">
+          {{ review.text }}
+        </div>
+
+        <div class="review-rating">
+          {% for i in 1..5 %}
+            {% if review.rating < i %}
+              <i class="fa-regular fa-star"></i>
+            {% else %}
+              <i class="fa-solid fa-star"></i>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+    
+    <div class="review-pagination">
+      {{ pagination }}
+    </div>
+  </div>
+{% else %}
+  <div class="text-center py-4" style="border: 1px dashed #222; color: #444; font-family: 'Orbitron'; font-size: 12px;">
+    [ NO_FEEDBACK_DATA_AVAILABLE_IN_SECTOR ]
+  </div>
+{% endif %}

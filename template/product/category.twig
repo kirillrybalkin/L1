@@ -1,0 +1,222 @@
+{{ header }}
+<style>
+    /* 1. ЗАГОЛОВОК ТА ОПИС (DATA_HEADER) */
+    #product-category h1 {
+        font-family: 'Orbitron', sans-serif;
+        color: #ff0000;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 25px;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+    }
+    .category-info-wrap {
+        background: rgba(5, 5, 5, 0.8);
+        border: 1px solid #1a1a1a;
+        padding: 20px;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .category-info-wrap::after {
+        content: "CAT_IDENTIFIER_v4";
+        position: absolute;
+        top: -10px;
+        right: 15px;
+        background: #000;
+        color: #444;
+        font-size: 9px;
+        padding: 0 5px;
+        font-family: 'Consolas';
+    }
+
+    /* 2. ПІДКАТЕГОРІЇ (REFINE_NODES) */
+    .refine-list {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 40px;
+    }
+    .refine-list li a {
+        background: #111;
+        border: 1px solid #222;
+        color: #aaa !important;
+        text-decoration: none;
+        padding: 8px 15px;
+        font-family: 'Orbitron';
+        font-size: 11px;
+        text-transform: uppercase;
+        transition: 0.3s;
+        display: block;
+    }
+    .refine-list li a:hover {
+        border-color: #ff0000;
+        color: #fff !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+    }
+
+    /* 3. ПАНЕЛЬ КЕРУВАННЯ (SCAN_CONTROLS) */
+    .control-panel-wrap {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+    .control-panel-wrap .input-group-text {
+        background: transparent !important;
+        border: none !important;
+        color: #444;
+        font-family: 'Orbitron';
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+    .control-panel-wrap .form-select {
+        background-color: #000 !important;
+        border: 1px solid #222 !important;
+        color: #eee !important;
+        font-family: 'Consolas';
+        font-size: 13px;
+        border-radius: 0;
+    }
+    .control-panel-wrap .form-select:focus {
+        border-color: #ff0000 !important;
+        box-shadow: none;
+    }
+
+    .btn-view-mode {
+        background: #111 !important;
+        border: 1px solid #222 !important;
+        color: #555 !important;
+        border-radius: 0 !important;
+    }
+    .btn-view-mode.active, .btn-view-mode:hover {
+        color: #ff0000 !important;
+        border-color: #ff0000 !important;
+    }
+
+    /* 4. КНОПКА ПОРІВНЯННЯ */
+    #compare-total {
+        background: transparent !important;
+        border: 1px solid #333 !important;
+        color: #888 !important;
+        font-family: 'Orbitron';
+        font-size: 11px;
+        text-transform: uppercase;
+        border-radius: 0;
+    }
+    #compare-total:hover {
+        border-color: #ff0000 !important;
+        color: #fff !important;
+    }
+</style>
+
+<div id="product-category" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <div class="row">
+    {{ column_left }}
+
+    <div id="content" class="col">
+      {{ content_top }}
+
+      <h1>{{ heading_title }}</h1>
+
+      {% if image or description %}
+        <div class="category-info-wrap">
+          <div class="row align-items-center">
+            {% if image %}
+              <div class="col-sm-3 mb-3 mb-sm-0">
+                <img src="{{ image }}" alt="{{ heading_title }}" title="{{ heading_title }}" class="img-fluid" style="border: 1px solid #333; padding: 5px; background: #000;"/>
+              </div>
+            {% endif %}
+            {% if description %}
+              <div class="col-sm-{% if image %}9{% else %}12{% endif %}" style="font-family: 'Consolas', monospace; font-size: 14px; color: #888;">
+                {{ description }}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if categories %}
+        <h3 style="font-family: 'Orbitron'; font-size: 12px; color: #444; text-transform: uppercase; margin-bottom: 15px;">
+            <i class="fa-solid fa-network-wired me-2"></i> {{ text_refine }}
+        </h3>
+        <ul class="refine-list">
+          {% for category in categories %}
+            <li><a href="{{ category.href }}"><i class="fa-solid fa-folder-open me-2" style="font-size: 10px;"></i> {{ category.name }}</a></li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if products %}
+        <div class="control-panel-wrap">
+          <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
+              <a href="{{ compare }}" id="compare-total" class="btn btn-primary d-block">
+                <i class="fa-solid fa-arrow-right-arrow-left me-2"></i> {{ text_compare }}
+              </a>
+            </div>
+
+            <div class="col-lg-1 d-none d-lg-block">
+              <div class="btn-group">
+                <button type="button" id="button-list" class="btn btn-view-mode" data-bs-toggle="tooltip" title="{{ button_list }}"><i class="fa-solid fa-table-list"></i></button>
+                <button type="button" id="button-grid" class="btn btn-view-mode" data-bs-toggle="tooltip" title="{{ button_grid }}"><i class="fa-solid fa-table-cells"></i></button>
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-md-4 col-6">
+              <div class="input-group">
+                <label for="input-sort" class="input-group-text d-none d-sm-block">{{ text_sort }}</label>
+                <select id="input-sort" class="form-select" onchange="location = this.value;">
+                  {% for sorts in sorts %}
+                    <option value="{{ sorts.href }}"{% if sorts.value == '%s-%s'|format(sort, order) %} selected{% endif %}>{{ sorts.text }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-6">
+              <div class="input-group">
+                <label for="input-limit" class="input-group-text d-none d-sm-block">{{ text_limit }}</label>
+                <select id="input-limit" class="form-select" onchange="location = this.value;">
+                  {% for limits in limits %}
+                    <option value="{{ limits.href }}"{% if limits.value == limit %} selected{% endif %}>{{ limits.text }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="product-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-3">
+          {% for product in products %}
+            <div class="col">{{ product }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="row mt-5 pt-4 border-top border-dark align-items-center">
+          <div class="col-sm-6 text-start" id="system-pagination">{{ pagination }}</div>
+          <div class="col-sm-6 text-end" style="font-family: 'Consolas'; font-size: 11px; color: #444;">{{ results }}</div>
+        </div>
+      {% endif %}
+
+      {% if not categories and not products %}
+        <div class="category-info-wrap text-center py-5">
+            <p style="font-family: 'Orbitron'; color: #ff0000;">[ NOTICE: NO_DATA_FOUND_IN_THIS_SECTOR ]</p>
+            <div class="mt-4"><a href="{{ continue }}" class="btn btn-primary btn-lg" style="background:#ff0000; border:none; border-radius:0; font-family:'Orbitron'; font-size:12px;">{{ button_continue }}</a></div>
+        </div>
+      {% endif %}
+
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+
+{{ footer }}

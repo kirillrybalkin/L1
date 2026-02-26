@@ -1,0 +1,259 @@
+{{ header }}
+
+&lt;style&gt;
+    /* 1. ОБЩИЙ ФОН СТРАНИЦЫ */
+    #account-register {
+        background-color: #0d0d0d !important;
+        color: #eee !important;
+        padding-top: 40px;
+        padding-bottom: 80px;
+    }
+
+    /* 2. ЗАГОЛОВКИ И ГРУППЫ ПОЛЕЙ */
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+        color: #fff;
+        margin-bottom: 30px;
+    }
+
+    legend {
+        color: #ff0000 !important;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        border-bottom: 1px solid #333;
+        padding-bottom: 10px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* 3. ИНПУТЫ И ФОРМЫ */
+    .form-control, .form-select {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+        border-radius: 0 !important;
+        padding: 12px !important;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #ff0000 !important;
+        box-shadow: none !important;
+    }
+
+    .col-form-label {
+        color: #aaa;
+        font-weight: bold;
+    }
+
+    /* 4. КНОПКА РЕГИСТРАЦИИ */
+    .btn-primary {
+        background-color: #ff0000 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 12px 30px !important;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #cc0000 !important;
+        transform: scale(1.05);
+    }
+
+    /* 5. ИСПРАВЛЕНИЕ ПРАВОЙ ПАНЕЛИ (Сбоку) */
+    #column-right .list-group-item {
+        background-color: #111 !important;
+        border: 1px solid #222 !important;
+        color: #ccc !important;
+        transition: 0.3s;
+    }
+
+    #column-right .list-group-item:hover {
+        border-color: #ff0000 !important;
+        color: #ff0000 !important;
+        background-color: #1a1a1a !important;
+    }
+
+    #column-right .list-group-item.active {
+        background-color: #ff0000 !important;
+        border-color: #ff0000 !important;
+        color: #fff !important;
+    }
+
+    /* 6. ПЕРЕКЛЮЧАТЕЛИ (Switch) */
+    .form-check-input:checked {
+        background-color: #ff0000 !important;
+        border-color: #ff0000 !important;
+    }
+
+    /* Прячем хлебные крошки */
+    .breadcrumb { display: none !important; }
+
+    /* МГНОВЕННЫЙ ПЕРЕВОД */
+    .lang-block { display: none; }
+    body[data-lang=&quot;pl&quot;] .lang-pl { display: inline; }
+    body[data-lang=&quot;ua&quot;] .lang-ua { display: inline; }
+    body[data-lang=&quot;en&quot;] .lang-en { display: inline; }
+&lt;/style&gt;
+
+&lt;div id=&quot;account-register&quot; class=&quot;container&quot;&gt;
+  &lt;div class=&quot;row&quot;&gt;
+    {{ column_left }}
+    &lt;div id=&quot;content&quot; class=&quot;col&quot;&gt;
+      {{ content_top }}
+
+      &lt;h1&gt;
+          &lt;span class=&quot;lang-block lang-en&quot;&gt;Register Account&lt;/span&gt;
+          &lt;span class=&quot;lang-block lang-ua&quot;&gt;Реєстрація акаунта&lt;/span&gt;
+          &lt;span class=&quot;lang-block lang-pl&quot;&gt;Zarejestruj konto&lt;/span&gt;
+      &lt;/h1&gt;
+
+      &lt;p&gt;
+          &lt;span class=&quot;lang-block lang-en&quot;&gt;If you already have an account with us, please login at the &lt;a href=&quot;{{ login }}&quot; style=&quot;color:#ff0000;&quot;&gt;login page&lt;/a&gt;.&lt;/span&gt;
+          &lt;span class=&quot;lang-block lang-ua&quot;&gt;Якщо ви вже маєте акаунт, будь ласка, перейдіть на &lt;a href=&quot;{{ login }}&quot; style=&quot;color:#ff0000;&quot;&gt;сторінку входу&lt;/a&gt;.&lt;/span&gt;
+          &lt;span class=&quot;lang-block lang-pl&quot;&gt;Jeśli masz już u nas konto, zaloguj się na &lt;a href=&quot;{{ login }}&quot; style=&quot;color:#ff0000;&quot;&gt;stronie logowania&lt;/a&gt;.&lt;/span&gt;
+      &lt;/p&gt;
+
+      &lt;form id=&quot;form-register&quot; action=&quot;{{ register }}&quot; method=&quot;post&quot; data-oc-toggle=&quot;ajax&quot;&gt;
+        &lt;fieldset id=&quot;account&quot;&gt;
+          &lt;legend&gt;
+              &lt;span class=&quot;lang-block lang-en&quot;&gt;Your Personal Details&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-ua&quot;&gt;Ваші персональні дані&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-pl&quot;&gt;Twoje dane osobowe&lt;/span&gt;
+          &lt;/legend&gt;
+
+          {% if customer_groups|length &gt; 1 %}
+            &lt;div class=&quot;row mb-3 required&quot;&gt;
+              &lt;label class=&quot;col-sm-2 col-form-label&quot;&gt;{{ entry_customer_group }}&lt;/label&gt;
+              &lt;div class=&quot;col-sm-10&quot;&gt;
+                &lt;select name=&quot;customer_group_id&quot; id=&quot;input-customer-group&quot; class=&quot;form-select&quot;&gt;
+                  {% for customer_group in customer_groups %}
+                    &lt;option value=&quot;{{ customer_group.customer_group_id }}&quot;{% if customer_group.customer_group_id == customer_group_id %} selected{% endif %}&gt;{{ customer_group.name }}&lt;/option&gt;
+                  {% endfor %}
+                &lt;/select&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          {% endif %}
+
+          &lt;div class=&quot;row mb-3 required&quot;&gt;
+            &lt;label for=&quot;input-firstname&quot; class=&quot;col-sm-2 col-form-label&quot;&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;First Name&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Ім'я&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Imię&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div class=&quot;col-sm-10&quot;&gt;
+              &lt;input type=&quot;text&quot; name=&quot;firstname&quot; value=&quot;&quot; placeholder=&quot;...&quot; id=&quot;input-firstname&quot; class=&quot;form-control&quot;/&gt;
+              &lt;div id=&quot;error-firstname&quot; class=&quot;invalid-feedback&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;row mb-3 required&quot;&gt;
+            &lt;label for=&quot;input-lastname&quot; class=&quot;col-sm-2 col-form-label&quot;&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;Last Name&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Прізвище&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Nazwisko&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div class=&quot;col-sm-10&quot;&gt;
+              &lt;input type=&quot;text&quot; name=&quot;lastname&quot; value=&quot;&quot; placeholder=&quot;...&quot; id=&quot;input-lastname&quot; class=&quot;form-control&quot;/&gt;
+              &lt;div id=&quot;error-lastname&quot; class=&quot;invalid-feedback&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;div class=&quot;row mb-3 required&quot;&gt;
+            &lt;label for=&quot;input-email&quot; class=&quot;col-sm-2 col-form-label&quot;&gt;E-Mail&lt;/label&gt;
+            &lt;div class=&quot;col-sm-10&quot;&gt;
+              &lt;input type=&quot;email&quot; name=&quot;email&quot; value=&quot;&quot; placeholder=&quot;example@mail.com&quot; id=&quot;input-email&quot; class=&quot;form-control&quot;/&gt;
+              &lt;div id=&quot;error-email&quot; class=&quot;invalid-feedback&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+
+          {% if config_telephone_display %}
+            &lt;div class=&quot;row mb-3{% if config_telephone_required %} required{% endif %}&quot;&gt;
+              &lt;label for=&quot;input-telephone&quot; class=&quot;col-sm-2 col-form-label&quot;&gt;
+                  &lt;span class=&quot;lang-block lang-en&quot;&gt;Telephone&lt;/span&gt;
+                  &lt;span class=&quot;lang-block lang-ua&quot;&gt;Телефон&lt;/span&gt;
+                  &lt;span class=&quot;lang-block lang-pl&quot;&gt;Telefon&lt;/span&gt;
+              &lt;/label&gt;
+              &lt;div class=&quot;col-sm-10&quot;&gt;
+                &lt;input type=&quot;tel&quot; name=&quot;telephone&quot; value=&quot;&quot; placeholder=&quot;+48 ...&quot; id=&quot;input-telephone&quot; class=&quot;form-control&quot;/&gt;
+                &lt;div id=&quot;error-telephone&quot; class=&quot;invalid-feedback&quot;&gt;&lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          {% endif %}
+        &lt;/fieldset&gt;
+
+        &lt;fieldset&gt;
+          &lt;legend&gt;
+              &lt;span class=&quot;lang-block lang-en&quot;&gt;Your Password&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-ua&quot;&gt;Ваш пароль&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-pl&quot;&gt;Twoje hasło&lt;/span&gt;
+          &lt;/legend&gt;
+          &lt;div class=&quot;row mb-3 required&quot;&gt;
+            &lt;label for=&quot;input-password&quot; class=&quot;col-sm-2 col-form-label&quot;&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;Password&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Пароль&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Hasło&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div class=&quot;col-sm-10&quot;&gt;
+              &lt;input type=&quot;password&quot; name=&quot;password&quot; value=&quot;&quot; placeholder=&quot;******&quot; id=&quot;input-password&quot; class=&quot;form-control&quot;/&gt;
+              &lt;div id=&quot;error-password&quot; class=&quot;invalid-feedback&quot;&gt;&lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/fieldset&gt;
+
+        &lt;fieldset&gt;
+          &lt;legend&gt;
+              &lt;span class=&quot;lang-block lang-en&quot;&gt;Newsletter&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-ua&quot;&gt;Розсилка&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-pl&quot;&gt;Biuletyn&lt;/span&gt;
+          &lt;/legend&gt;
+          &lt;div class=&quot;row mb-3&quot;&gt;
+            &lt;label class=&quot;col-sm-2 col-form-label&quot;&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;Subscribe&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Підписатися&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Subskrybuj&lt;/span&gt;
+            &lt;/label&gt;
+            &lt;div class=&quot;col-sm-10&quot;&gt;
+              &lt;div class=&quot;form-check form-switch form-switch-lg&quot;&gt;
+                &lt;input type=&quot;hidden&quot; name=&quot;newsletter&quot; value=&quot;0&quot;/&gt;
+                &lt;input type=&quot;checkbox&quot; name=&quot;newsletter&quot; value=&quot;1&quot; id=&quot;input-newsletter&quot; class=&quot;form-check-input&quot;/&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/fieldset&gt;
+
+        {{ captcha }}
+
+        &lt;div class=&quot;text-end&quot; style=&quot;margin-top: 30px;&quot;&gt;
+          {% if text_agree %}
+            &lt;div class=&quot;form-check form-switch form-switch-lg form-check-reverse form-check-inline&quot;&gt;
+              &lt;label class=&quot;form-check-label&quot; style=&quot;color:#aaa; font-size: 0.9rem;&quot;&gt;{{ text_agree }}&lt;/label&gt;
+              &lt;input type=&quot;checkbox&quot; name=&quot;agree&quot; value=&quot;1&quot; class=&quot;form-check-input&quot;/&gt;
+            &lt;/div&gt;
+          {% endif %}
+          &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;
+              &lt;span class=&quot;lang-block lang-en&quot;&gt;Continue&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-ua&quot;&gt;Продовжити&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-pl&quot;&gt;Kontynuuj&lt;/span&gt;
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/form&gt;
+
+      {{ content_bottom }}
+    &lt;/div&gt;
+
+    &lt;div id=&quot;column-right&quot; class=&quot;col-md-4 d-none d-md-block ms-auto&quot;&gt;
+    {{ column_right }}
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+
+{{ footer }}', 1, '2026-02-23 14:01:36

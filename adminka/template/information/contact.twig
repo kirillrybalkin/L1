@@ -1,0 +1,263 @@
+{{ header }}
+&lt;style&gt;
+    /* ПРИНУДИТЕЛЬНОЕ ЗАТЕМНЕНИЕ ВСЕЙ СТРАНИЦЫ */
+    body, #information-contact, #content { background-color: #0d0d0d !important; color: #eee !important; }
+
+    /* УДАЛЕНИЕ ХЛЕБНЫХ КРОШЕК */
+    .breadcrumb { display: none !important; }
+
+    /* СТИЛИЗАЦИЯ ЗАГОЛОВКОВ С ОТСТУПОМ ОТ КРАСНОЙ ПОЛОСЫ */
+    h1, h3, legend {
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-left: 5px solid #ff0000;
+        padding-left: 25px !important;
+        margin-bottom: 30px !important;
+        color: #fff !important;
+        margin-top: 20px;
+    }
+
+    /* КАРТОЧКА ИНФОРМАЦИИ */
+    .card {
+        background: #161616 !important;
+        border: 1px solid #333 !important;
+        border-top: 3px solid #ff0000 !important;
+        border-radius: 0 !important;
+        margin-bottom: 40px;
+    }
+    .card-body { color: #ccc !important; }
+    .card-body strong { color: #ff0000; text-transform: uppercase; }
+
+    /* ФОРМА ОБРАТНОЙ СВЯЗИ */
+    #form-contact {
+        background: #111;
+        padding: 30px;
+        border: 1px solid #222;
+    }
+
+    /* ПОЛЯ ВВОДА: СВЕТЛЫЙ ТЕКСТ И ВИДИМЫЕ ПОДСКАЗКИ */
+    .form-control {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #ffffff !important; /* Цвет вводимого текста */
+        border-radius: 0 !important;
+        padding: 12px !important;
+    }
+
+    /* Цвет текста-подсказки (placeholder) */
+    .form-control::placeholder {
+        color: #888 !important;
+        opacity: 1;
+    }
+
+    .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.2) !important;
+        color: #fff !important;
+    }
+
+    .col-form-label {
+        color: #ff0000 !important;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-size: 0.85rem;
+        padding-left: 25px;
+    }
+
+    /* КНОПКИ */
+    .btn-primary, .btn-submit {
+        background-color: #ff0000 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        text-transform: uppercase !important;
+        font-weight: 900 !important;
+        padding: 15px 40px !important;
+        transition: 0.3s;
+    }
+    .btn-primary:hover {
+        background-color: #fff !important;
+        color: #ff0000 !important;
+        transform: translateY(-2px);
+    }
+
+    /* МЕНЮ И ЛОГИКА ЯЗЫКОВ */
+    #navbar-menu, .navbar {
+        background-color: #0a0a0a !important;
+        border-bottom: 2px solid #ff0000 !important;
+        padding: 0 !important;
+    }
+
+    .nav.navbar-nav &gt; li &gt; a {
+        color: #ffffff !important;
+        text-transform: uppercase !important;
+        font-weight: 800 !important;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 13px !important;
+        padding: 15px 25px !important;
+        transition: 0.3s all ease;
+    }
+
+    .nav.navbar-nav &gt; li:hover &gt; a {
+        background-color: #ff0000 !important;
+        color: #000000 !important;
+    }
+
+    .lang-block { display: none; }
+    /* УНИЧТОЖЕНИЕ СИНЕГО ЦВЕТА И ЛИШНИХ ТЕНЕЙ В МЕНЮ */
+    #menu, 
+    .navbar, 
+    #navbar-menu, 
+    .navbar-collapse, 
+    .nav-container {
+        background-color: #0a0a0a !important; /* Глубокий черный фон */
+        background-image: none !important;    /* Убираем синие градиенты */
+        border: none !important;             /* Убираем все рамки */
+        box-shadow: none !important;         /* Убираем синее свечение */
+        outline: none !important;
+    }
+
+    /* ФИКС КРАСНОЙ ЛИНИИ ПОД МЕНЮ */
+    #menu, .navbar {
+        border-bottom: 2px solid #ff0000 !important; 
+    }
+
+    /* ССЫЛКИ В МЕНЮ (Убираем синий фон при фокусе и нажатии) */
+    .nav.navbar-nav &gt; li &gt; a,
+    .nav-link {
+        background: transparent !important;
+        color: #ffffff !important;
+        text-shadow: none !important;
+    }
+
+    /* ПРИ НАВЕДЕНИИ - СТРОГО КРАСНЫЙ */
+    .nav.navbar-nav &gt; li &gt; a:hover,
+    .nav.navbar-nav &gt; li:hover &gt; a {
+        background-color: #ff0000 !important;
+        color: #000000 !important;
+    }
+
+    /* УБИРАЕМ СИНИЙ ЦВЕТ У АКТИВНЫХ ПУНКТОВ (Для некоторых тем) */
+    .navbar-nav &gt; li &gt; a:focus, 
+    .navbar-nav &gt; li &gt; a:active {
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
+
+    /* ИСПРАВЛЕНИЕ ДЛЯ ВЫПАДАЮЩИХ СПИСКОВ (Если есть) */
+    .dropdown-menu {
+        background-color: #111 !important;
+        border: 1px solid #ff0000 !important;
+    }
+    .dropdown-item {
+        color: #fff !important;
+    }
+    .dropdown-item:hover {
+        background-color: #ff0000 !important;
+        color: #000 !important;
+    }
+&lt;/style&gt;
+
+&lt;div id=&quot;information-contact&quot; class=&quot;container&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        {{ column_left }}
+        &lt;div id=&quot;content&quot; class=&quot;col&quot;&gt;
+            {{ content_top }}
+
+            &lt;h1&gt;{{ heading_title }}&lt;/h1&gt;
+
+            &lt;div class=&quot;card&quot;&gt;
+                &lt;div class=&quot;card-body&quot;&gt;
+                    &lt;div class=&quot;row&quot;&gt;
+                        {% if image %}
+                            &lt;div class=&quot;col-sm-3&quot;&gt;&lt;img src=&quot;{{ image }}&quot; alt=&quot;{{ store }}&quot; title=&quot;{{ store }}&quot; class=&quot;img-thumbnail&quot; style=&quot;background: #222; border: 1px solid #444;&quot;/&gt;&lt;/div&gt;
+                        {% endif %}
+                        &lt;div class=&quot;col-sm-3&quot;&gt;
+                            &lt;strong&gt;{{ store }}&lt;/strong&gt;&lt;br/&gt;
+                            &lt;address&gt;{{ address }}&lt;/address&gt;
+                            {% if geocode %}
+                                &lt;a href=&quot;https://maps.google.com/maps?q={{ geocode|url_encode }}&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary btn-sm&quot;&gt;&lt;i class=&quot;fa-solid fa-location-dot&quot;&gt;&lt;/i&gt; {{ button_map }}&lt;/a&gt;
+                            {% endif %}
+                        &lt;/div&gt;
+                        &lt;div class=&quot;col-sm-3&quot;&gt;
+                            &lt;strong&gt;{{ text_telephone }}&lt;/strong&gt;&lt;br/&gt;
+                            &lt;span style=&quot;font-size: 1.2rem; font-weight: 800;&quot;&gt;{{ telephone }}&lt;/span&gt;
+                        &lt;/div&gt;
+                        &lt;div class=&quot;col-sm-3&quot;&gt;
+                            {% if open %}
+                                &lt;strong&gt;{{ text_open }}&lt;/strong&gt;&lt;br/&gt;
+                                {{ open }}&lt;br/&gt;&lt;br/&gt;
+                            {% endif %}
+                            {% if comment %}
+                                &lt;strong&gt;{{ text_comment }}&lt;/strong&gt;&lt;br/&gt;
+                                {{ comment }}
+                            {% endif %}
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+
+            &lt;form id=&quot;form-contact&quot; action=&quot;{{ send }}&quot; method=&quot;post&quot; data-oc-toggle=&quot;ajax&quot;&gt;
+                &lt;fieldset&gt;
+                    &lt;legend&gt;
+                        &lt;span class=&quot;lang-block lang-en&quot;&gt;CONTACT FORM&lt;/span&gt;
+                        &lt;span class=&quot;lang-block lang-ua&quot;&gt;КОНТАКТНА ФОРМА&lt;/span&gt;
+                        &lt;span class=&quot;lang-block lang-pl&quot;&gt;FORMULARZ KONTAKTOWY&lt;/span&gt;
+                    &lt;/legend&gt;
+
+                    &lt;div class=&quot;row mb-3 required&quot;&gt;
+                        &lt;label for=&quot;input-name&quot; class=&quot;col-sm-2 col-form-label&quot;&gt;
+                            &lt;span class=&quot;lang-block lang-en&quot;&gt;YOUR NAME&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-ua&quot;&gt;ВАШЕ ІМ'Я&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-pl&quot;&gt;TWOJE IMIĘ&lt;/span&gt;
+                        &lt;/label&gt;
+                        &lt;div class=&quot;col-sm-10&quot;&gt;
+                            &lt;input type=&quot;text&quot; name=&quot;name&quot; value=&quot;{{ name }}&quot; id=&quot;input-name&quot; class=&quot;form-control&quot; placeholder=&quot;...&quot;/&gt;
+                            &lt;div id=&quot;error-name&quot; class=&quot;invalid-feedback&quot;&gt;&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;div class=&quot;row mb-3 required&quot;&gt;
+                        &lt;label for=&quot;input-email&quot; class=&quot;col-sm-2 col-form-label&quot;&gt;
+                            &lt;span class=&quot;lang-block lang-en&quot;&gt;E-MAIL ADDRESS&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-ua&quot;&gt;E-MAIL АДРЕСА&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-pl&quot;&gt;ADRES E-MAIL&lt;/span&gt;
+                        &lt;/label&gt;
+                        &lt;div class=&quot;col-sm-10&quot;&gt;
+                            &lt;input type=&quot;text&quot; name=&quot;email&quot; value=&quot;{{ email }}&quot; id=&quot;input-email&quot; class=&quot;form-control&quot; placeholder=&quot;...&quot;/&gt;
+                            &lt;div id=&quot;error-email&quot; class=&quot;invalid-feedback&quot;&gt;&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;div class=&quot;row mb-3 required&quot;&gt;
+                        &lt;label for=&quot;input-enquiry&quot; class=&quot;col-sm-2 col-form-label&quot;&gt;
+                            &lt;span class=&quot;lang-block lang-en&quot;&gt;ENQUIRY&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-ua&quot;&gt;ПОВІДОМЛЕННЯ&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-pl&quot;&gt;ZAPYTANIE&lt;/span&gt;
+                        &lt;/label&gt;
+                        &lt;div class=&quot;col-sm-10&quot;&gt;
+                            &lt;textarea name=&quot;enquiry&quot; rows=&quot;6&quot; id=&quot;input-enquiry&quot; class=&quot;form-control&quot; placeholder=&quot;...&quot;&gt;&lt;/textarea&gt;
+                            &lt;div id=&quot;error-enquiry&quot; class=&quot;invalid-feedback&quot;&gt;&lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    {{ captcha }}
+                &lt;/fieldset&gt;
+                &lt;div class=&quot;text-end&quot;&gt;
+                    &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;
+                        &lt;span class=&quot;lang-block lang-en&quot;&gt;SEND MESSAGE&lt;/span&gt;
+                        &lt;span class=&quot;lang-block lang-ua&quot;&gt;ВІДПРАВИТИ&lt;/span&gt;
+                        &lt;span class=&quot;lang-block lang-pl&quot;&gt;WYŚLIJ WIADOMOŚĆ&lt;/span&gt;
+                    &lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/form&gt;
+
+            {{ content_bottom }}
+        &lt;/div&gt;
+        {{ column_right }}
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+document.addEventListener(&quot;DOMContentLoaded&quot;, function() {
+    var url = window.location.href.toLowerCase();
+    var cookieValue = (document.cookie.split('; \

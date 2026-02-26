@@ -1,7 +1,48 @@
 {% if modules %}
+<style>
+    /* 1. СТИЛІЗАЦІЯ ЛІВОЇ ПАНЕЛІ (SIDEBAR TERMINAL) */
+    #column-left {
+        background: rgba(5, 5, 5, 0.5);
+        border-right: 1px solid #1a1a1a;
+        padding-right: 20px;
+        position: relative;
+        min-height: 100vh;
+    }
+
+    /* Декоративний елемент "Сканування" зверху */
+    #column-left::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: -2px;
+        width: 3px;
+        height: 100px;
+        background: #ff0000;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+    }
+
+    /* Маркування версії інтерфейсу внизу колонки */
+    #column-left::after {
+        content: "MODULE_NAVI_v4.2";
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        font-size: 8px;
+        color: #222;
+        letter-spacing: 3px;
+        transform: rotate(-90deg);
+        transform-origin: left bottom;
+    }
+
+    /* Відступи між модулями всередині */
+    #column-left > div {
+        margin-bottom: 35px;
+    }
+</style>
+
 <aside id="column-left" class="col-3 d-none d-md-block">
   {% for module in modules %}
-  {{ module }}
+    {{ module }}
   {% endfor %}
 </aside>
 {% endif %}

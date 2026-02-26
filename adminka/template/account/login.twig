@@ -1,0 +1,207 @@
+{{ header }}
+
+&lt;style&gt;
+    /* 1. ГЛОБАЛЬНЫЙ ФОН И СЕТКА */
+    #account-login {
+        background-color: #0d0d0d !important;
+        color: #eee !important;
+        padding-top: 60px;
+        padding-bottom: 100px;
+        min-height: 80vh;
+    }
+
+    .breadcrumb { display: none !important; }
+
+    .login-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+        color: #fff;
+        margin-bottom: 40px;
+    }
+
+    /* 3. КАРТОЧКИ */
+    .login-card {
+        background: #111;
+        border: 1px solid #222;
+        padding: 40px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: 0.3s;
+    }
+
+    .login-card:hover { border-color: #444; }
+
+    .login-card strong {
+        color: #ff0000;
+        text-transform: uppercase;
+        font-family: 'Orbitron', sans-serif;
+        display: block;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+    }
+
+    /* 4. ПОЛЯ ВВОДА */
+    .form-control {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+        border-radius: 0 !important;
+        padding: 14px !important;
+    }
+
+    .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.2) !important;
+    }
+
+    /* 5. КНОПКИ */
+    .btn-primary {
+        background-color: #ff0000 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 15px 30px !important;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        font-weight: 900;
+        width: 100%;
+        transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #fff !important;
+        color: #ff0000 !important;
+    }
+
+    /* 6. УВЕДОМЛЕНИЕ ОБ ОШИБКЕ (Garage Style) */
+    /* Мы показываем его, только если в URL или в системе есть ошибка */
+    .garage-error-alert {
+        background: #ff0000;
+        color: #fff;
+        padding: 20px;
+        margin-bottom: 30px;
+        border: 2px solid #fff;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        font-weight: 900;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+        display: none; /* Управляется через Твиг ниже */
+    }
+&lt;/style&gt;
+
+&lt;div id=&quot;account-login&quot; class=&quot;container&quot;&gt;
+    &lt;div class=&quot;login-wrapper&quot;&gt;
+        
+        {# БЛОК ОШИБКИ: Показывается только если сервер прислал warning #}
+        &lt;div id=&quot;error-alert&quot; class=&quot;garage-error-alert&quot; {% if error_warning %}style=&quot;display: block;&quot;{% endif %}&gt;
+            &lt;i class=&quot;fa-solid fa-triangle-exclamation&quot; style=&quot;margin-right: 15px;&quot;&gt;&lt;/i&gt;
+            &lt;span class=&quot;lang-block lang-en&quot;&gt;Warning: No match for E-Mail and/or Password.&lt;/span&gt;
+            &lt;span class=&quot;lang-block lang-ua&quot;&gt;Помилка: Неправильний e-mail або пароль.&lt;/span&gt;
+            &lt;span class=&quot;lang-block lang-pl&quot;&gt;Błąd: Nieprawidłowy e-mail lub hasło.&lt;/span&gt;
+        &lt;/div&gt;
+
+        {# УСПЕШНАЯ РЕГИСТРАЦИЯ #}
+        {% if success %}
+            &lt;div class=&quot;alert alert-success&quot; style=&quot;background:#111; border-left:4px solid #00ff00; color:#fff; border-radius:0;&quot;&gt;
+                &lt;i class=&quot;fa-solid fa-check-circle&quot; style=&quot;color:#00ff00; margin-right:10px;&quot;&gt;&lt;/i&gt; {{ success }}
+            &lt;/div&gt;
+        {% endif %}
+
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div id=&quot;content&quot; class=&quot;col-12&quot;&gt;
+                {{ content_top }}
+                
+                &lt;h1&gt;
+                    &lt;span class=&quot;lang-block lang-en&quot;&gt;Account Login&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Вхід в акаунт&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Logowanie&lt;/span&gt;
+                &lt;/h1&gt;
+
+                &lt;div class=&quot;row g-4&quot;&gt;
+                    &lt;div class=&quot;col-md-6&quot;&gt;
+                        &lt;div class=&quot;login-card&quot;&gt;
+                            &lt;div&gt;
+                                &lt;strong&gt;
+                                    &lt;span class=&quot;lang-block lang-en&quot;&gt;New Customer&lt;/span&gt;
+                                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Новий клієнт&lt;/span&gt;
+                                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Nowy klient&lt;/span&gt;
+                                &lt;/strong&gt;
+                                &lt;p style=&quot;color: #888; font-size: 0.95rem; line-height: 1.6;&quot;&gt;
+                                    &lt;span class=&quot;lang-block lang-en&quot;&gt;Registering allows you to shop faster and track your order status.&lt;/span&gt;
+                                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Реєстрація дозволить вам купувати швидше та відстежувати статус замовлень.&lt;/span&gt;
+                                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Rejestracja pozwala na szybsze zakupy и śledzenie statusu zamówień.&lt;/span&gt;
+                                &lt;/p&gt;
+                            &lt;/div&gt;
+                            &lt;a href=&quot;{{ register }}&quot; class=&quot;btn btn-primary&quot;&gt;
+                                &lt;span class=&quot;lang-block lang-en&quot;&gt;Register&lt;/span&gt;
+                                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Реєстрація&lt;/span&gt;
+                                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Zarejestruj się&lt;/span&gt;
+                            &lt;/a&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;div class=&quot;col-md-6&quot;&gt;
+                        &lt;div class=&quot;login-card&quot;&gt;
+                            {# Используем стандартный AJAX OC4, но наш футер все переведет автоматически #}
+                            &lt;form action=&quot;{{ login }}&quot; method=&quot;post&quot; id=&quot;form-login&quot; data-oc-toggle=&quot;ajax&quot;&gt;
+                                &lt;strong&gt;
+                                    &lt;span class=&quot;lang-block lang-en&quot;&gt;Returning Customer&lt;/span&gt;
+                                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Постійний клієнт&lt;/span&gt;
+                                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Stały klient&lt;/span&gt;
+                                &lt;/strong&gt;
+                                
+                                &lt;div class=&quot;mb-3&quot;&gt;
+                                    &lt;label class=&quot;form-label&quot; style=&quot;font-size:12px; color:#666; text-transform:uppercase;&quot;&gt;E-mail&lt;/label&gt;
+                                    &lt;input type=&quot;text&quot; name=&quot;email&quot; value=&quot;{{ email }}&quot; placeholder=&quot;Email&quot; class=&quot;form-control&quot; /&gt;
+                                &lt;/div&gt;
+                                
+                                &lt;div class=&quot;mb-3&quot;&gt;
+                                    &lt;label class=&quot;form-label&quot; style=&quot;font-size:12px; color:#666; text-transform:uppercase;&quot;&gt;
+                                        &lt;span class=&quot;lang-block lang-en&quot;&gt;Password&lt;/span&gt;
+                                        &lt;span class=&quot;lang-block lang-ua&quot;&gt;Пароль&lt;/span&gt;
+                                        &lt;span class=&quot;lang-block lang-pl&quot;&gt;Hasło&lt;/span&gt;
+                                    &lt;/label&gt;
+                                    &lt;input type=&quot;password&quot; name=&quot;password&quot; value=&quot;{{ password }}&quot; placeholder=&quot;...&quot; class=&quot;form-control&quot; /&gt;
+                                    
+                                    &lt;div class=&quot;text-end mt-2&quot;&gt;
+                                        &lt;a href=&quot;{{ forgotten }}&quot; style=&quot;color: #ff0000; font-size: 11px; text-transform: uppercase; text-decoration: none; font-weight: bold;&quot;&gt;
+                                            &lt;span class=&quot;lang-block lang-en&quot;&gt;Forgotten Password?&lt;/span&gt;
+                                            &lt;span class=&quot;lang-block lang-ua&quot;&gt;Забули пароль?&lt;/span&gt;
+                                            &lt;span class=&quot;lang-block lang-pl&quot;&gt;Zapomniałeś hasła?&lt;/span&gt;
+                                        &lt;/a&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+                                
+                                &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;
+                                    &lt;span class=&quot;lang-block lang-en&quot;&gt;Login&lt;/span&gt;
+                                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Увійти&lt;/span&gt;
+                                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Zaloguj się&lt;/span&gt;
+                                &lt;/button&gt;
+                                
+                                {% if redirect %}
+                                    &lt;input type=&quot;hidden&quot; name=&quot;redirect&quot; value=&quot;{{ redirect }}&quot; /&gt;
+                                {% endif %}
+                            &lt;/form&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+
+                {{ content_bottom }}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+{# Скрипт-адаптер для AJAX-ответов OpenCart 4 #}
+&lt;script&gt;
+$(document).on('ajaxComplete', function(e, xhr, settings) {
+    if (settings.url.indexOf('route=account/login\

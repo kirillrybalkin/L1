@@ -1,0 +1,468 @@
+&lt;style&gt;
+    /* 1. ГЛОБАЛЬНЫЙ ДИЗАЙН */
+    html, body, #product-category, #content, .container, .row, header, footer, nav {
+        background-color: #0a0a0a !important;
+        color: #ffffff !important;
+        border: none !important;
+    }
+
+    header, footer, .breadcrumb {
+        border-bottom: 1px solid #1a1a1a !important;
+        border-top: 1px solid #1a1a1a !important;
+    }
+
+    /* 2. ШАПКА КАТЕГОРИИ */
+    .cat-header {
+        border-left: 5px solid #ff0000;
+        background: linear-gradient(90deg, #1a1a1a 0%, #0a0a0a 100%);
+        padding: 15px 25px;
+        margin: 20px 0;
+        display: flex;
+        align-items: center;
+        box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .cat-header h1 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 1.3rem !important;
+        color: #fff !important;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin: 0;
+    }
+
+    /* 3. КАРТОЧКИ ТОВАРОВ */
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 40px;
+    }
+
+    .card-item {
+        background: #111;
+        border: 1px solid #222;
+        transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-item:hover {
+        border-color: #ff0000;
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.2);
+        transform: translateY(-5px);
+    }
+
+    .card-top-actions {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        z-index: 10;
+        opacity: 0;
+        transform: translateX(20px);
+        transition: 0.3s ease;
+    }
+
+    .card-item:hover .card-top-actions {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    .action-btn {
+        width: 35px;
+        height: 35px;
+        background: rgba(0, 0, 0, 0.8);
+        border: 1px solid #333;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: 0.3s;
+        font-size: 14px;
+    }
+
+    .action-btn:hover { background: #ff0000; border-color: #ff0000; color: #000; }
+
+    .card-img-wrap {
+        height: 240px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+        overflow: hidden;
+        padding: 15px;
+        border-bottom: 1px solid #1a1a1a;
+    }
+
+    .card-img-wrap img {
+        max-width: 90%;
+        max-height: 90%;
+        object-fit: contain;
+        transition: 0.5s ease;
+    }
+
+    .card-item:hover .card-img-wrap img {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.4));
+    }
+
+    .card-body {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .card-title {
+        color: #fff !important;
+        text-align: center;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 13px;
+        text-transform: uppercase;
+        text-decoration: none !important;
+        margin-bottom: 15px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        height: 36px;
+    }
+
+    .price-tag {
+        font-family: 'Orbitron', sans-serif;
+        color: #ff0000;
+        font-size: 1.6rem;
+        font-weight: 900;
+        text-align: center;
+        margin-top: auto;
+    }
+
+    .btn-order {
+        background: #1a1a1a;
+        color: #fff !important;
+        text-align: center;
+        padding: 16px;
+        font-weight: 900;
+        font-family: 'Orbitron', sans-serif;
+        text-decoration: none !important;
+        cursor: pointer;
+        transition: 0.3s;
+        border: none;
+        border-top: 1px solid #222;
+        letter-spacing: 2px;
+    }
+
+    .card-item:hover .btn-order { background: #ff0000; color: #000 !important; }
+
+    .btn-order-text::after { content: &quot;ORDER&quot;; }
+    body[data-lang=&quot;pl&quot;] .btn-order-text::after { content: &quot;ZAMÓW&quot;; }
+    body[data-lang=&quot;ua&quot;] .btn-order-text::after { content: &quot;ЗАМОВИТИ&quot;; }
+
+	/* Стиль для активного сердечка */
+    .action-btn.active {
+        background: #ff0000 !important;
+        border-color: #ff0000 !important;
+        color: #000 !important;
+    }
+
+    .action-btn.active i {
+        font-weight: 900; /* Делаем иконку закрашенной (FontAwesome Solid) */
+    }
+
+    /* Убираем кнопку сравнения из сетки, если она там была прописана жестко */
+    .btn-compare-garage { display: none !important; }
+
+    /* 4. УВЕДОМЛЕНИЯ GARAGE */
+    .garage-toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 320px;
+        background: #000;
+        border: 2px solid #ff0000;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+        z-index: 10000;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    .toast-header {
+        background: #1a1a1a;
+        padding: 10px 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #333;
+    }
+
+    .toast-title { color: #ff0000; font-weight: 900; font-size: 14px; letter-spacing: 1px; }
+    .toast-close { color: #fff; cursor: pointer; font-size: 20px; line-height: 1; }
+    .toast-body { padding: 20px; color: #fff; }
+    .toast-body p { margin-bottom: 15px; font-size: 12px; line-height: 1.4; }
+    .toast-link {
+        color: #000; background: #ff0000; text-decoration: none;
+        padding: 8px 15px; display: inline-block; font-weight: 900; font-size: 11px; transition: 0.3s;
+    }
+    .toast-link:hover { background: #fff; }
+    .toast-progress { height: 3px; background: #ff0000; width: 100%; animation: toastProgress 5s linear forwards; }
+    @keyframes toastProgress { from { width: 100%; } to { width: 0%; } }
+    
+    .garage-toast {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 350px;
+        background: rgba(10, 10, 10, 0.95);
+        border: 1px solid #ff0000;
+        backdrop-filter: blur(10px);
+        z-index: 10000;
+        font-family: 'Orbitron', sans-serif;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8);
+    }
+
+    .toast-header {
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .toast-title {
+        color: #ff0000;
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    .toast-body {
+        padding: 20px;
+    }
+
+    .toast-body p {
+        color: #ccc;
+        font-size: 12px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        font-family: 'Inter', sans-serif; /* Для лучшей читаемости текста */
+        text-transform: none; /* Текст сообщения не капсом — так аккуратнее */
+    }
+
+    .toast-link {
+        color: #fff;
+        text-decoration: none;
+        font-size: 10px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        padding: 8px 16px;
+        border: 1px solid #ff0000;
+        transition: 0.3s;
+        display: inline-block;
+    }
+
+    .toast-link:hover {
+        background: #ff0000;
+        color: #000;
+    }
+
+    .toast-progress {
+        height: 2px;
+        background: #ff0000;
+        width: 100%;
+        animation: toastProgress 5s linear forwards;
+    }
+&lt;/style&gt;
+
+{{ header }}
+
+&lt;div id=&quot;product-category&quot; class=&quot;container&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;div id=&quot;content&quot; class=&quot;col-sm-12&quot;&gt;
+            &lt;div class=&quot;cat-header&quot;&gt;
+                &lt;h1&gt;{{ heading_title }}&lt;/h1&gt;
+            &lt;/div&gt;
+
+            {% if categories %}
+                    &lt;link href=&quot;https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap&quot; rel=&quot;stylesheet&quot;&gt;
+                    &lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css&quot;&gt;
+
+                    &lt;div class=&quot;workshop-interface&quot;&gt;
+                        &lt;div class=&quot;interface-container&quot;&gt;
+
+                            &lt;div class=&quot;hud-header style-1&quot;&gt;
+                                &lt;div&gt;
+                                    &lt;div class=&quot;hud-title&quot;&gt;
+                                        {% if heading_title == &quot;Послуги автосервісу&quot; %}
+                                           &lt;span class=&quot;text-red&quot;&gt; ОБЕРИ ТЕ, ЩО ТУРБУЄ ТВОЮ АВТІВКУ&lt;/span&gt;
+                                        {% else %}
+                                            {{ heading_title }}
+                                        {% endif %}
+                                        &lt;span class=&quot;blink&quot;&gt;● LIVE&lt;/span&gt;
+                                    &lt;/div&gt;
+                                    &lt;div class=&quot;hud-subtitle&quot;&gt;{% if heading_title == &quot;Послуги автосервісу&quot; %}Інтерактивна карта нашого автосервісу{% else %}Виберіть розділ на планшеті{% endif %}&lt;/div&gt;
+                                &lt;/div&gt;
+                            &lt;/div&gt;
+
+                            &lt;div class=&quot;device-stage&quot;&gt;
+                                &lt;div class=&quot;launch-pro3-body&quot;&gt;
+                                    &lt;div class=&quot;camera-hole&quot;&gt;&lt;/div&gt;
+                                    &lt;div class=&quot;sensor-hole&quot;&gt;&lt;/div&gt;
+                                    &lt;div class=&quot;armor-grip left&quot;&gt;&lt;/div&gt;
+                                    &lt;div class=&quot;armor-grip right&quot;&gt;&lt;/div&gt;
+                                    &lt;div class=&quot;device-bezel&quot;&gt;
+                                        &lt;div class=&quot;device-screen&quot;&gt;
+                                            &lt;div class=&quot;glass-reflection&quot;&gt;&lt;/div&gt;
+
+                                            {% if heading_title == &quot;Послуги автосервісу&quot; %}
+                                                &lt;div class=&quot;screen-content map-view&quot;&gt;
+                                                    &lt;img src=&quot;https://i.imgur.com/ImIDx2z.jpeg&quot; class=&quot;bg-image&quot; alt=&quot;Схема СТО&quot;&gt;
+                                                    &lt;div class=&quot;markers-overlay&quot;&gt;
+                                                        {% for category in categories %}
+                                                            {% set zone_style = 'display: none;' %}{% set zone_icon = '+' %}
+                                                            {% if 'Шиномонт' in category.name %}{% set zone_style = 'top: 68%; left: 21%;' %}{% set zone_icon = '◎' %}
+                                                            {% elseif 'Підійм' in category.name %}{% set zone_style = 'top: 40%; left: 48%;' %}{% set zone_icon = '⬆' %}
+                                                            {% elseif 'Діагност' in category.name %}{% set zone_style = 'top: 70%; left: 48%;' %}{% set zone_icon = '⚡' %}
+                                                            {% elseif 'розвал' in category.name %}{% set zone_style = 'top: 78%; left: 62%;' %}{% set zone_icon = '⌖' %}
+                                                            {% elseif 'Компресор' in category.name %}{% set zone_style = 'top: 42%; left: 28%;' %}{% set zone_icon = '♨' %}
+                                                            {% elseif 'Кліма' in category.name %}{% set zone_style = 'top: 62%; left: 40%;' %}{% set zone_icon = '❄' %}
+                                                            {% elseif 'Візки' in category.name or 'меблі' in category.name %}{% set zone_style = 'top: 50%; left: 18%;' %}{% set zone_icon = '▤' %}
+                                                            {% elseif 'Гаражне' in category.name %}{% set zone_style = 'top: 53%; left: 7%;' %}{% set zone_icon = '⚒' %}
+                                                            {% endif %}
+                                                            &lt;div class=&quot;marker-point&quot; style=&quot;{{ zone_style }}&quot; data-link=&quot;sync-item-{{ loop.index }}&quot; onclick=&quot;location.href='{{ category.href }}'&quot;&gt;
+                                                                &lt;div class=&quot;marker-pulse-ring&quot;&gt;&lt;/div&gt;
+                                                                &lt;div class=&quot;marker-center&quot;&gt;{{ zone_icon }}&lt;/div&gt;
+                                                                &lt;div class=&quot;marker-popover&quot;&gt;
+                                                                    &lt;span class=&quot;mp-title&quot;&gt;{{ category.name }}&lt;/span&gt;
+                                                                    &lt;span class=&quot;mp-action&quot;&gt;ПЕРЕЙТИ &amp;rarr;&lt;/span&gt;
+                                                                &lt;/div&gt;
+                                                            &lt;/div&gt;
+                                                        {% endfor %}
+                                                    &lt;/div&gt;
+                                                &lt;/div&gt;
+                                            {% else %}
+                                                &lt;div class=&quot;screen-content tiles-view&quot;&gt;
+                                                    &lt;div class=&quot;tablet-nav-bar&quot;&gt;
+                                                        &lt;button class=&quot;t-back&quot; onclick=&quot;history.back()&quot;&gt;&lt;i class=&quot;fas fa-chevron-left&quot;&gt;&lt;/i&gt; Назад&lt;/button&gt;
+                                                        &lt;div class=&quot;t-path&quot;&gt;Головна / Послуги автосервісу / {{ heading_title }}&lt;/div&gt;
+                                                    &lt;/div&gt;
+                                                    &lt;div class=&quot;tiles-scroll-area&quot;&gt;
+                                                        &lt;div class=&quot;tiles-grid&quot;&gt;
+                                                            {% for category in categories %}
+                                                                &lt;a href=&quot;{{ category.href }}&quot; class=&quot;tile-card&quot;&gt;
+                                                                    &lt;div class=&quot;tile-img&quot;&gt;
+                                                                        &lt;img src=&quot;{{ category.image ? category.image : 'image/no_image.png' }}&quot; alt=&quot;{{ category.name }}&quot;&gt;
+                                                                    &lt;/div&gt;
+                                                                    &lt;div class=&quot;tile-label&quot;&gt;{{ category.name }}&lt;/div&gt;
+                                                                &lt;/a&gt;
+                                                            {% endfor %}
+                                                        &lt;/div&gt;
+                                                    &lt;/div&gt;
+                                                &lt;/div&gt;
+                                            {% endif %}
+
+                                            &lt;div class=&quot;ui-grid-overlay&quot;&gt;&lt;/div&gt;
+                                        &lt;/div&gt;
+                                        &lt;div class=&quot;launch-chrome-logo&quot;&gt;LAUNCH&lt;/div&gt;
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+                                &lt;div class=&quot;device-shadow&quot;&gt;&lt;/div&gt;
+                            &lt;/div&gt;
+
+                            {% if heading_title == &quot;Обладнання для автосервісу&quot; %}
+                                &lt;div class=&quot;bottom-cats-wrapper&quot;&gt;
+                                    &lt;button class=&quot;scroll-arrow scroll-left&quot; id=&quot;scroll-left&quot;&gt;&lt;i class=&quot;fas fa-chevron-left&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+                                    &lt;div class=&quot;bottom-cats&quot; id=&quot;bottom-cats-container&quot;&gt;
+                                        {% for category in categories %}
+                                            &lt;a href=&quot;{{ category.href }}&quot; class=&quot;b-cat-card&quot; id=&quot;sync-item-{{ loop.index }}&quot; data-target=&quot;sync-item-{{ loop.index }}&quot;&gt;
+                                                &lt;div class=&quot;cat-img-wrap&quot;&gt;
+                                                    &lt;img src=&quot;{{ category.image ? category.image : 'image/no_image.png' }}&quot; alt=&quot;{{ category.name }}&quot;&gt;
+                                                &lt;/div&gt;
+                                                &lt;div class=&quot;cat-info&quot;&gt;
+                                                    &lt;span class=&quot;cat-name&quot;&gt;{{ category.name }}&lt;/span&gt;
+                                                    &lt;span class=&quot;cat-arrow&quot;&gt;Перейти &amp;rarr;&lt;/span&gt;
+                                                &lt;/div&gt;
+                                            &lt;/a&gt;
+                                        {% endfor %}
+                                    &lt;/div&gt;
+                                    &lt;button class=&quot;scroll-arrow scroll-right&quot; id=&quot;scroll-right&quot;&gt;&lt;i class=&quot;fas fa-chevron-right&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+                                &lt;/div&gt;
+                            {% endif %}
+
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+
+                    &lt;style&gt;
+                    /* === КОРПУС ПЛАНШЕТА (БАЗА) === */
+                    .workshop-interface { background: #0a0a0a; padding: 40px 0; font-family: 'Inter', sans-serif; }
+                    .interface-container { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+                    .device-stage { perspective: 2000px; display: flex; flex-direction: column; align-items: center; margin-bottom: 30px; }
+                    .launch-pro3-body {
+                        position: relative; width: 100%; max-width: 1000px; background: #c01313; /* Фирменный красный */
+                        border-radius: 40px; padding: 12px; box-shadow: inset 0 2px 4px rgba(252, 3, 3,0.3), 0 20px 40px rgba(0,0,0,0.2);
+                    }
+                    .armor-grip { position: absolute; top: 60px; bottom: 60px; width: 15px; background: #a01010; }
+                    .armor-grip.left { left: 0; border-radius: 0 10px 10px 0; }
+                    .armor-grip.right { right: 0; border-radius: 10px 0 0 10px; }
+                    .device-bezel { background: #080a0f; border-radius: 30px; padding: 25px 25px 50px 25px; position: relative; border: 2px solid #1a1d24; }
+                    .device-screen { position: relative; width: 100%; border-radius: 4px; overflow: hidden; background: #000; height: 580px; }
+                    .launch-chrome-logo { position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%); font-family: 'Rajdhani', sans-serif; font-weight: 800; font-size: 24px; color: #4a4e5a; letter-spacing: 4px; }
+
+                    /* === ЭКРАН: ПОДКАТЕГОРИИ (ПЛИТКА) === */
+                    .tiles-view { display: flex; flex-direction: column; height: 100%; background: #000; }
+                    .tablet-nav-bar { background: #11141b; padding: 15px 20px; display: flex; align-items: center; border-bottom: 1px solid #222; }
+                    .t-back { background: #c01313; color: #fff; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 13px; margin-right: 20px; }
+                    .t-path { color: #888; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+                    .tiles-scroll-area { flex-grow: 1; overflow-y: auto; padding: 30px; }
+                    .tiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 25px; }
+                    .tile-card { background: #11141b; border-radius: 12px; padding: 20px; text-decoration: none; transition: 0.3s; display: flex; flex-direction: column; align-items: center; border: 1px solid #222; }
+                    .tile-card:hover { border-color: #c01313; transform: translateY(-5px); background: #161a23; }
+                    .tile-img { width: 100px; height: 100px; background: #fff; border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 10px; margin-bottom: 15px; }
+                    .tile-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+                    .tile-label { color: #fff; font-size: 14px; text-align: center; font-weight: 500; line-height: 1.2; }
+                    .tiles-scroll-area::-webkit-scrollbar { width: 5px; }
+                    .tiles-scroll-area::-webkit-scrollbar-thumb { background: #c01313; border-radius: 10px; }
+
+                    /* === ЭКРАН: ГЛАВНАЯ (МАРКЕРЫ) === */
+                    .bg-image { width: 100%; height: 100%; object-fit: cover; }
+                    .marker-point { position: absolute; cursor: pointer; z-index: 10; }
+                    .marker-center { width: 30px; height: 30px; background: #c01313; border: 2px solid #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 16px; font-weight: bold; }
+                    .marker-pulse-ring { position: absolute; width: 50px; height: 50px; left: -10px; top: -10px; border: 2px solid #c01313; border-radius: 50%; animation: p-pulse 2s infinite; }
+                    @keyframes p-pulse { 0% {transform: scale(0.6); opacity: 1;} 100% {transform: scale(1.4); opacity: 0;} }
+                    .marker-popover { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); background: #fff; padding: 10px 15px; border-radius: 6px; white-space: nowrap; opacity: 0; visibility: hidden; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+                    .marker-point:hover .marker-popover { opacity: 1; visibility: visible; }
+                    .mp-title { display: block; color: #000; font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+                    .mp-action { color: #c01313; font-size: 11px; font-weight: 800; }
+
+                    /* === НИЖНИЙ СПИСОК КАРТОЧЕК === */
+                    .bottom-cats-wrapper { position: relative; display: flex; align-items: center; padding: 0 40px; }
+                    .bottom-cats { display: flex; gap: 20px; overflow-x: auto; scroll-behavior: smooth; padding: 10px 5px 30px; scrollbar-width: none; }
+                    .bottom-cats::-webkit-scrollbar { display: none; }
+                    .b-cat-card { flex: 0 0 220px; background: #fff; border: 1px solid #eee; border-radius: 12px; text-decoration: none; transition: 0.3s; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+                    .b-cat-card:hover, .b-cat-card.active-card-sync { border-color: #c01313; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+                    .cat-img-wrap { height: 140px; display: flex; align-items: center; justify-content: center; padding: 15px; border-bottom: 1px solid #f9f9f9; }
+                    .cat-img-wrap img { max-width: 100%; max-height: 100%; object-fit: contain; }
+                    .cat-info { padding: 15px; }
+                    .cat-name { display: block; font-size: 14px; font-weight: 700; color: #333; margin-bottom: 5px; height: 34px; overflow: hidden; }
+                    .cat-arrow { color: #c01313; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+
+                    /* ДЕКОР И СТРЕЛКИ */
+                    .scroll-arrow { width: 44px; height: 44px; border-radius: 50%; background: #fff; border: 1px solid #ddd; color: #333; position: absolute; z-index: 10; cursor: pointer; transition: 0.3s; }
+                    .scroll-arrow:hover { background: #c01313; border-color: #c01313; color: #fff; }
+                    .scroll-left { left: 0; } .scroll-right { right: 0; }
+                    .hud-header { border-left: 4px solid #c01313; padding-left: 20px; margin-bottom: 30px; }
+                    .hud-title { font-size: 24px; font-weight: 800; color: #111; font-family: 'Rajdhani'; }
+                    .text-red { color: #c01313; }
+                    .blink { color: #c01313; animation: b-pulse 1.5s infinite; font-size: 10px; margin-left: 10px; }
+                    @keyframes b-pulse { 0% {opacity: 1;} 50% {opacity: 0.3;} 100% {opacity: 1;} }
+                    .ui-grid-overlay { position: absolute; inset: 0; background: radial-gradient(rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 20px 20px; pointer-events: none; }
+                    &lt;/style&gt;
+
+                    &lt;script&gt;
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const markers = document.querySelectorAll('.marker-point\

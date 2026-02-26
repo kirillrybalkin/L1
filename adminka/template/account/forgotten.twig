@@ -1,0 +1,162 @@
+{{ header }}
+
+&lt;style&gt;
+    /* Фикс для того, чтобы контент не залезал под хедер */
+    main {
+        display: block;
+        position: relative;
+        z-index: 1;
+        background-color: #0d0d0d;
+    }
+
+    #account-forgotten {
+        color: #eee !important;
+        padding-top: 80px;
+        padding-bottom: 100px;
+        min-height: 70vh;
+    }
+
+    .breadcrumb { display: none !important; }
+
+    .forgotten-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+        color: #fff;
+        margin-bottom: 35px;
+        font-size: 26px;
+    }
+
+    .forgotten-card {
+        background: #111;
+        border: 1px solid #222;
+        padding: 40px;
+        border-top: 3px solid #ff0000;
+    }
+
+    .form-control {
+        background-color: #1a1a1a !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+        border-radius: 0 !important;
+        padding: 15px !important;
+        margin-bottom: 15px;
+    }
+
+    .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.3) !important;
+    }
+
+    .btn-primary {
+        background-color: #ff0000 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 16px 30px !important;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        font-weight: 900;
+        width: 100%;
+        transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #fff !important;
+        color: #ff0000 !important;
+    }
+
+    .btn-back {
+        background: transparent;
+        color: #666;
+        border: 1px solid #333;
+        text-align: center;
+        padding: 12px;
+        text-decoration: none;
+        text-transform: uppercase;
+        font-size: 12px;
+        margin-top: 20px;
+        display: block;
+        transition: 0.3s;
+    }
+
+    .btn-back:hover {
+        color: #fff;
+        border-color: #666;
+    }
+
+    /* Стиль ошибки */
+    #garage-error {
+        display: none;
+        background: #ff0000;
+        color: #fff;
+        padding: 20px;
+        margin-bottom: 25px;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        font-weight: bold;
+        border: 1px solid #fff;
+    }
+&lt;/style&gt;
+
+&lt;main&gt;
+    &lt;div id=&quot;account-forgotten&quot; class=&quot;container&quot;&gt;
+        &lt;div class=&quot;forgotten-wrapper&quot;&gt;
+
+            &lt;div id=&quot;garage-error&quot;&gt;
+                &lt;i class=&quot;fa-solid fa-triangle-exclamation&quot; style=&quot;margin-right: 15px;&quot;&gt;&lt;/i&gt;
+                &lt;span class=&quot;lang-block lang-en&quot;&gt;Warning: E-Mail Address was not found!&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-ua&quot;&gt;Помилка: E-Mail не знайдено в базі!&lt;/span&gt;
+                &lt;span class=&quot;lang-block lang-pl&quot;&gt;Błąd: Nie znaleziono adresu E-Mail!&lt;/span&gt;
+            &lt;/div&gt;
+
+            &lt;div id=&quot;content&quot;&gt;
+                {{ content_top }}
+
+                &lt;h1&gt;
+                    &lt;span class=&quot;lang-block lang-en&quot;&gt;Forgotten Password&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Забули пароль?&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Zapomniałeś hasła?&lt;/span&gt;
+                &lt;/h1&gt;
+
+                &lt;div class=&quot;forgotten-card&quot;&gt;
+                    &lt;form action=&quot;{{ confirm }}&quot; method=&quot;post&quot; id=&quot;form-forgotten&quot; data-oc-toggle=&quot;ajax&quot;&gt;
+                        &lt;p style=&quot;color:#888; margin-bottom: 25px; font-size: 14px; line-height: 1.6;&quot;&gt;
+                            &lt;span class=&quot;lang-block lang-en&quot;&gt;Enter your e-mail address. We will send you a reset link.&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-ua&quot;&gt;Введіть ваш e-mail. Ми надішлемо вам посилання для скидання.&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-pl&quot;&gt;Wprowadź swój e-mail. Wyślemy Ci link do resetowania.&lt;/span&gt;
+                        &lt;/p&gt;
+
+                        &lt;div class=&quot;mb-3&quot;&gt;
+                            &lt;label class=&quot;form-label&quot; style=&quot;color:#555; font-size:11px; text-transform:uppercase; letter-spacing:1px;&quot;&gt;E-Mail Address&lt;/label&gt;
+                            &lt;input type=&quot;email&quot; name=&quot;email&quot; value=&quot;&quot; placeholder=&quot;example@mail.com&quot; id=&quot;input-email&quot; class=&quot;form-control&quot; required autofocus /&gt;
+                        &lt;/div&gt;
+
+                        &lt;button type=&quot;submit&quot; class=&quot;btn btn-primary&quot;&gt;
+                            &lt;span class=&quot;lang-block lang-en&quot;&gt;Reset Password&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-ua&quot;&gt;Скинути пароль&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-pl&quot;&gt;Resetuj hasło&lt;/span&gt;
+                        &lt;/button&gt;
+                        
+                        &lt;a href=&quot;{{ back }}&quot; class=&quot;btn btn-back&quot;&gt;
+                            &lt;span class=&quot;lang-block lang-en&quot;&gt;Return to Login&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-ua&quot;&gt;Назад до входу&lt;/span&gt;
+                            &lt;span class=&quot;lang-block lang-pl&quot;&gt;Powrót do logowania&lt;/span&gt;
+                        &lt;/a&gt;
+                    &lt;/form&gt;
+                &lt;/div&gt;
+
+                {{ content_bottom }}
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/main&gt;
+
+&lt;script&gt;
+$(document).on('ajaxComplete', function(e, xhr, settings) {
+    if (settings.url.indexOf('route=account/forgotten\

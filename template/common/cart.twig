@@ -1,47 +1,136 @@
+<style>
+    /* 1. ГЛАВНАЯ КНОПКА (INDICATOR) */
+    .dropdown .btn-dark.dropdown-toggle {
+        background: #000 !important;
+        border: 1px solid #1a1a1a !important;
+        border-left: 3px solid #ff0000 !important;
+        color: #fff !important;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        border-radius: 0;
+        padding: 12px 20px;
+        box-shadow: none !important;
+    }
+    .dropdown .btn-dark.dropdown-toggle:hover {
+        background: #050505 !important;
+        border-color: #ff0000 !important;
+    }
+
+    /* 2. ВЫПАДАЮЩАЯ ПАНЕЛЬ (MONITOR_WINDOW) */
+    .dropdown-menu-end {
+        background: rgba(5, 5, 5, 0.95) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid #ff0000 !important;
+        border-radius: 0 !important;
+        width: 350px;
+        margin-top: 10px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.8) !important;
+    }
+
+    /* 3. ТАБЛИЦА ТОВАРОВ (UNIT_LIST) */
+    .table-striped tbody tr { background: transparent !important; }
+    .table-striped td {
+        border-bottom: 1px solid #111 !important;
+        vertical-align: middle;
+        padding: 10px 5px !important;
+        color: #eee !important;
+        font-family: 'Consolas', monospace;
+        font-size: 12px;
+    }
+    .dropdown-menu a { color: #fff !important; text-decoration: none; font-weight: 700; }
+    .dropdown-menu a:hover { color: #ff0000 !important; }
+
+    .img-thumbnail {
+        background: #000 !important;
+        border: 1px solid #333 !important;
+        border-radius: 0 !important;
+        padding: 2px !important;
+    }
+
+    /* 4. ЦЕНЫ И ИТОГИ */
+    #cart-total-info td { border: none !important; padding: 5px !important; color: #666; font-size: 11px; text-transform: uppercase; }
+    #cart-total-info td:last-child { color: #00ff00; font-weight: 900; font-size: 14px; text-align: right; }
+
+    /* 5. КОМАНДНЫЕ КНОПКИ (SYSTEM_ACTIONS) */
+    .cart-actions {
+        border-top: 1px solid #1a1a1a;
+        padding-top: 15px;
+        margin-top: 10px;
+    }
+    .btn-cart-link {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #888 !important;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+    .btn-cart-link:hover { color: #ff0000 !important; }
+    .btn-checkout-link {
+        background: #ff0000;
+        color: #000 !important;
+        padding: 8px 15px;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 10px;
+        font-weight: 900;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+    .btn-checkout-link:hover { background: #fff; box-shadow: 0 0 15px rgba(255,0,0,0.4); }
+
+    /* Кнопка удаления */
+    .btn-danger-cart {
+        background: transparent !important;
+        border: none !important;
+        color: #333 !important;
+        transition: 0.3s;
+    }
+    .btn-danger-cart:hover { color: #ff0000 !important; }
+</style>
+
 <div class="dropdown d-grid">
-  <button type="button" data-bs-toggle="dropdown" class="btn btn-lg btn-dark d-block dropdown-toggle"><i class="fa-solid fa-cart-shopping"></i> {{ text_items }}</button>
-  <ul class="dropdown-menu dropdown-menu-end p-2">
+  <button type="button" data-bs-toggle="dropdown" class="btn btn-lg btn-dark d-block dropdown-toggle">
+    <i class="fa-solid fa-microchip me-2" style="color: #ff0000;"></i> {{ text_items }}
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end p-3">
     {% if products %}
       <li>
-        <table class="table table-striped mb-2">
-          {% for product in products %}
-            <tr>
-              <td class="text-center w-25">{% if product.thumb %}<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-thumbnail"/></a>{% endif %}</td>
-              <td><a href="{{ product.href }}">{{ product.name }}</a>
-                <ul class="list-unstyled mb-0">
-                  <li>
-                    <small> - {{ text_model }}: {{ product.model }}</small>
-                  </li>
-                  {% for option in product.option %}
-                    <li>
-                      <small> - {{ option.name }}: {{ option.value }}</small>
-                    </li>
-                  {% endfor %}
-                  {% if product.subscription %}
-                    <li>
-                      <small> - {{ text_subscription }}: {{ product.subscription }}</small>
-                    </li>
+        <div class="table-responsive">
+          <table class="table table-striped mb-2">
+            {% for product in products %}
+              <tr>
+                <td class="text-center" style="width: 60px;">
+                  {% if product.thumb %}
+                    <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-thumbnail"/></a>
                   {% endif %}
-                  {% if product.reward %}
-                    <li>
-                      <small> - {{ text_points }}: {{ product.reward }}</small>
-                    </li>
-                  {% endif %}
-                </ul>
-              </td>
-              <td class="text-end text-nowrap">x {{ product.quantity }}</td>
-              <td class="text-end">{{ product.total }}</td>
-              <td class="text-end">
-                <form action="{{ remove }}" method="post" data-oc-toggle="ajax" data-oc-load="{{ list }}" data-oc-target="#cart">
-                  <input type="hidden" name="key" value="{{ product.cart_id }}">
-                  <button type="submit" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa-solid fa-circle-xmark"></i></button>
-                </form>
-              </td>
-            </tr>
-          {% endfor %}
-        </table>
+                </td>
+                <td>
+                  <a href="{{ product.href }}" style="font-size: 11px;">{{ product.name }}</a>
+                  <div style="font-size: 9px; color: #555; margin-top: 3px;">
+                    [{{ product.model }}]
+                    {% for option in product.option %}
+                      <br/>• {{ option.name }}: {{ option.value }}
+                    {% endfor %}
+                  </div>
+                </td>
+                <td class="text-end text-nowrap" style="font-size: 10px; color: #ff0000; font-weight: 900;">x{{ product.quantity }}</td>
+                <td class="text-end" style="font-weight: 700;">{{ product.total }}</td>
+                <td class="text-end">
+                  <form action="{{ remove }}" method="post" data-oc-toggle="ajax" data-oc-load="{{ list }}" data-oc-target="#cart">
+                    <input type="hidden" name="key" value="{{ product.cart_id }}">
+                    <button type="submit" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger-cart"><i class="fa-solid fa-xmark"></i></button>
+                  </form>
+                </td>
+              </tr>
+            {% endfor %}
+          </table>
+        </div>
         <div>
-          <table class="table table-sm table-bordered mb-2">
+          <table id="cart-total-info" class="table table-sm mb-3">
             {% for total in totals %}
               <tr>
                 <td class="text-end"><strong>{{ total.title }}</strong></td>
@@ -49,11 +138,17 @@
               </tr>
             {% endfor %}
           </table>
-          <p class="text-end"><a href="{{ cart }}"><strong><i class="fa-solid fa-cart-shopping"></i> {{ text_cart }}</strong></a>&nbsp;&nbsp;&nbsp;<a href="{{ checkout }}"><strong><i class="fa-solid fa-share"></i> {{ text_checkout }}</strong></a></p>
+          <div class="cart-actions d-flex justify-content-between align-items-center">
+            <a href="{{ cart }}" class="btn-cart-link"><i class="fa-solid fa-folder-open me-1"></i> GOTO_CART</a>
+            <a href="{{ checkout }}" class="btn-checkout-link"><i class="fa-solid fa-shield-check me-1"></i> EXECUTE_CHECKOUT</a>
+          </div>
         </div>
       </li>
     {% else %}
-      <li class="text-center p-4">{{ text_no_results }}</li>
+      <li class="text-center p-4">
+        <i class="fa-solid fa-box-open d-block mb-2" style="font-size: 24px; color: #1a1a1a;"></i>
+        <span style="font-size: 10px; color: #444; text-transform: uppercase; letter-spacing: 2px;">{{ text_no_results }}</span>
+      </li>
     {% endif %}
   </ul>
 </div>

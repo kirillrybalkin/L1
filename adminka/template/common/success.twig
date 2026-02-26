@@ -1,0 +1,178 @@
+{{ header }}
+
+&lt;style&gt;
+    /* 1. ГЛОБАЛЬНЫЙ ФОН */
+    #common-success {
+        background-color: #0d0d0d !important;
+        color: #eee !important;
+        padding-top: 50px;
+        padding-bottom: 80px;
+        min-height: 65vh;
+    }
+
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    .success-title {
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+        color: #fff;
+        margin-bottom: 30px;
+        line-height: 1.2;
+    }
+
+    /* 3. БОКС С ТЕКСТОМ */
+    .message-box {
+        background: #111; 
+        padding: 40px; 
+        border: 1px solid #222; 
+        border-top: 3px solid #ff0000;
+        margin-bottom: 35px; 
+    }
+
+    .message-box p {
+        font-size: 1.1rem;
+        color: #ccc;
+        line-height: 1.7;
+    }
+
+    /* 4. КНОПКА */
+    .btn-primary {
+        background-color: #ff0000 !important;
+        border: none !important;
+        border-radius: 0 !important;
+        padding: 15px 45px !important;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #fff !important;
+        color: #ff0000 !important;
+    }
+
+    /* 5. ПРАВАЯ ПАНЕЛЬ (ФИКС ШИРИНЫ) */
+    #column-right {
+        padding-left: 50px !important;
+        min-width: 360px !important;
+    }
+
+    #column-right .list-group-item {
+        background-color: #111 !important;
+        border: 1px solid #222 !important;
+        color: #888 !important;
+        padding: 14px 25px !important;
+        margin-bottom: 5px !important;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 1px;
+        white-space: nowrap !important;
+        transition: 0.3s all ease;
+        display: block !important;
+    }
+
+    #column-right .list-group-item:hover {
+        color: #fff !important;
+        border-left: 6px solid #ff0000 !important;
+        background-color: #1a1a1a !important;
+        padding-left: 30px !important;
+    }
+
+    /* Скрываем ненужные пункты в колонке */
+    #column-right a[href*=&quot;reward&quot;], 
+    #column-right a[href*=&quot;affiliate&quot;], 
+    #column-right a[href*=&quot;newsletter&quot;] {
+        display: none !important;
+    }
+
+    /* 6. ЛОГИКА ПЕРЕВОДА */
+    .lang-block { display: none !important; }
+    body[data-lang=&quot;pl&quot;] .lang-pl { display: inline-block !important; }
+    body[data-lang=&quot;ua&quot;] .lang-ua { display: inline-block !important; }
+    body[data-lang=&quot;en&quot;] .lang-en { display: inline-block !important; }
+    
+    body[data-lang=&quot;pl&quot;] div.lang-pl { display: block !important; }
+    body[data-lang=&quot;ua&quot;] div.lang-ua { display: block !important; }
+    body[data-lang=&quot;en&quot;] div.lang-en { display: block !important; }
+&lt;/style&gt;
+
+&lt;div id=&quot;common-success&quot; class=&quot;container&quot;&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        {{ column_left }}
+        
+        &lt;div id=&quot;content&quot; class=&quot;col-md-7 col-sm-12&quot;&gt;
+            {{ content_top }}
+            
+            &lt;h1 class=&quot;success-title&quot;&gt;
+                {# Проверка: ВЫХОД #}
+                {% if &quot;Logout&quot; in heading_title or &quot;Вихід&quot; in heading_title or &quot;Wylogowanie&quot; in heading_title %}
+                    &lt;span class=&quot;lang-block lang-en&quot;&gt;Account Logout&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Вихід з акаунта&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Wylogowano&lt;/span&gt;
+                
+                {# Проверка: РЕГИСТРАЦИЯ #}
+                {% elseif &quot;Created&quot; in heading_title or &quot;створено&quot; in heading_title or &quot;utworzone&quot; in heading_title %}
+                    &lt;span class=&quot;lang-block lang-en&quot;&gt;Account Created!&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Акаунт створено!&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Konto utworzone!&lt;/span&gt;
+
+                {# Проверка: КОНТАКТЫ #}
+                {% elseif &quot;Contact&quot; in heading_title or &quot;Контакт&quot; in heading_title or &quot;Kontakt&quot; in heading_title %}
+                    &lt;span class=&quot;lang-block lang-en&quot;&gt;Message Sent&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Повідомлення відправлено&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Wiadomość wysłana&lt;/span&gt;
+
+                {% else %}
+                    {{ heading_title }}
+                {% endif %}
+            &lt;/h1&gt;
+            
+            &lt;div class=&quot;message-box&quot;&gt;
+                {# Текст: ВЫХОД #}
+                {% if &quot;Logout&quot; in heading_title or &quot;Вихід&quot; in heading_title or &quot;Wylogowanie&quot; in heading_title %}
+                    &lt;div class=&quot;lang-block lang-en&quot;&gt;You have been logged off your account. It is now safe to leave the computer.&lt;/div&gt;
+                    &lt;div class=&quot;lang-block lang-ua&quot;&gt;Ви вийшли зі свого облікового запису. Тепер можна безпечно залишити комп'ютер.&lt;/div&gt;
+                    &lt;div class=&quot;lang-block lang-pl&quot;&gt;Wylogowałeś się z konta. Możesz teraz bezpiecznie opuścić komputer.&lt;/div&gt;
+                
+                {# Текст: РЕГИСТРАЦИЯ #}
+                {% elseif &quot;Created&quot; in heading_title or &quot;створено&quot; in heading_title or &quot;utworzone&quot; in heading_title %}
+                    &lt;div class=&quot;lang-block lang-en&quot;&gt;Congratulations! Your new account has been successfully created!&lt;/div&gt;
+                    &lt;div class=&quot;lang-block lang-ua&quot;&gt;Вітаємо! Ваш новий акаунт було успішно створено!&lt;/div&gt;
+                    &lt;div class=&quot;lang-block lang-pl&quot;&gt;Gratulacje! Twoje nowe konto zostało pomyślnie utworzone!&lt;/div&gt;
+
+                {# Текст: КОНТАКТЫ #}
+                {% elseif &quot;Contact&quot; in heading_title or &quot;Контакт&quot; in heading_title or &quot;Kontakt&quot; in heading_title %}
+                    &lt;div class=&quot;lang-block lang-en&quot;&gt;Your enquiry has been successfully sent to the store owner!&lt;/div&gt;
+                    &lt;div class=&quot;lang-block lang-ua&quot;&gt;Ваш запит успішно надіслано власнику магазину!&lt;/div&gt;
+                    &lt;div class=&quot;lang-block lang-pl&quot;&gt;Twoje zapytanie zostało pomyślnie wysłane do właściciela sklepu!&lt;/div&gt;
+
+                {% else %}
+                    {{ text_message }}
+                {% endif %}
+            &lt;/div&gt;
+            
+            &lt;div class=&quot;text-start&quot;&gt;
+                &lt;a href=&quot;{{ continue }}&quot; class=&quot;btn btn-primary&quot;&gt;
+                    &lt;span class=&quot;lang-block lang-en&quot;&gt;Continue&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Продовжити&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Kontynuuj&lt;/span&gt;
+                &lt;/a&gt;
+            &lt;/div&gt;
+
+            {{ content_bottom }}
+        &lt;/div&gt;
+
+        &lt;div id=&quot;column-right&quot; class=&quot;col-md-5 d-none d-md-block&quot;&gt;
+            {{ column_right }}
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+(function() {
+    function refreshSuccessLang() {
+        const activeLang = document.body.getAttribute('data-lang\

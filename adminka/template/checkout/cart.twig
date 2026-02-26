@@ -1,0 +1,43 @@
+{{ header }}
+&lt;style&gt;
+    #checkout-cart {
+        background: #0a0a0a; color: #fff; padding: 40px 0;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+    
+    h1 {
+        font-size: 28px; font-weight: 900; text-transform: uppercase;
+        border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* Стили для VIN-блока, который мы добавим в список */
+    .vin-container {
+        margin-top: 30px; background: #0f0f0f; border-left: 4px solid #00ff00;
+        padding: 25px; display: none; /* Покажем через JS если есть услуги */
+    }
+    .vin-label { color: #ff0000; font-size: 10px; letter-spacing: 2px; margin-bottom: 15px; display: block; }
+    .vin-input {
+        background: #000; border: 1px solid #333; color: #00ff00; width: 100%;
+        padding: 15px; font-family: 'Consolas', monospace; font-size: 18px; outline: none;
+    }
+    .vin-input:focus { border-color: #00ff00; }
+&lt;/style&gt;
+
+&lt;div id=&quot;checkout-cart&quot; class=&quot;container&quot;&gt;
+    &lt;div id=&quot;alert&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;div id=&quot;content&quot; class=&quot;col&quot;&gt;
+            {{ content_top }}
+            &lt;h1&gt;{{ heading_title }}&lt;/h1&gt;
+            
+            {# Сюда подгружается список товаров #}
+            &lt;div id=&quot;shopping-cart&quot;&gt;{{ list }}&lt;/div&gt;
+            
+            {{ content_bottom }}
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+{{ footer }}', 1, '2026-02-25 20:38:26

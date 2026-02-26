@@ -1,21 +1,49 @@
-{{ text_welcome }}<br/>
-<br/>
-{% if not approval %}
-{{ text_login }}<br/>
-<br/>
-{{ login }}<br/>
-<br/>
-{{ text_service }}<br/>
-<br/>
-{{ text_thanks }}<br/>
-{{ store }}<br/>
-{{ store_url }}
-{% else %}
-{{ text_approval }}<br/>
-<br/>
-{{ login }}<br/>
-<br/>
-{{ text_thanks }}<br/>
-{{ store }}<br/>
-{{ store_url }}
-{% endif %}
+<div style="background-color: #050505; color: #aaaaaa; font-family: 'Courier New', Courier, monospace; padding: 40px; border: 1px solid #1a1a1a; max-width: 600px; margin: 0 auto;">
+  
+  <div style="border-bottom: 2px solid #ff0000; padding-bottom: 20px; margin-bottom: 30px; text-align: center;">
+    <span style="color: #ffffff; font-weight: bold; font-size: 18px; letter-spacing: 3px; text-transform: uppercase;">
+      [ NEW_OPERATOR_DETECTED ]
+    </span>
+  </div>
+
+  <div style="margin-bottom: 30px;">
+    <p style="color: #ff0000; font-weight: bold; font-size: 14px; margin-bottom: 15px;">> [SYSTEM_MESSAGE]:</p>
+    <p style="font-size: 16px; color: #eeeeee; line-height: 1.6;">{{ text_welcome }}</p>
+  </div>
+
+  {% if not approval %}
+    <div style="background-color: #0a0a0a; border: 1px solid #333333; padding: 25px; margin-bottom: 30px;">
+      <p style="color: #666666; font-size: 11px; margin-top: 0; text-transform: uppercase;">{{ text_login }}</p>
+      
+      <div style="text-align: center; margin: 25px 0;">
+        <a href="{{ login }}" style="background-color: #ff0000; color: #000000; padding: 15px 30px; text-decoration: none; font-family: Arial, sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 2px; display: inline-block; text-transform: uppercase;">
+          ENTER_SYSTEM_INTERFACE
+        </a>
+      </div>
+      
+      <p style="color: #444444; font-size: 12px; margin-bottom: 0;">> {{ text_service }}</p>
+    </div>
+
+    <div style="border-top: 1px solid #222222; padding-top: 20px; color: #444444; font-size: 12px;">
+      <p>{{ text_thanks }}</p>
+      <strong style="color: #ff0000; font-size: 14px;">{{ store }}</strong><br/>
+      <a href="{{ store_url }}" style="color: #666666; text-decoration: none; font-size: 10px;">{{ store_url }}</a>
+    </div>
+
+  {% else %}
+    <div style="background-color: #1a0f00; border: 1px solid #ff8800; padding: 25px; margin-bottom: 30px;">
+      <p style="color: #ff8800; font-weight: bold; font-size: 14px; margin-top: 0;">[!] {{ text_approval }}</p>
+      <p style="color: #888888; font-size: 12px; margin-bottom: 0;">{{ login }}</p>
+    </div>
+
+    <div style="border-top: 1px solid #222222; padding-top: 20px; color: #444444; font-size: 12px;">
+      <p>{{ text_thanks }}</p>
+      <strong style="color: #ff8800;">{{ store }}</strong><br/>
+      <a href="{{ store_url }}" style="color: #666666; text-decoration: none;">{{ store_url }}</a>
+    </div>
+  {% endif %}
+
+  <div style="margin-top: 40px; text-align: right; opacity: 0.1; font-size: 8px; color: #ffffff; letter-spacing: 4px;">
+    ID_GEN_PROTOCOL_v4.2 // LAUNCH_PRO3_GLOBAL
+  </div>
+</div>

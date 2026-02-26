@@ -1,24 +1,48 @@
-{{ text_order_id }} {{ order_id }}<br/>
-{{ text_date_added }} {{ date_added }}<br/>
-<br/>
-{{ text_order_status }}<br/>
-<br/>
-{{ order_status }}<br/>
-<br/>
-{% if link %}
-{{ text_link }}<br/>
-<br/>
-{{ link }}<br/>
-{% endif %}
-{% if comment %}
-<br/>
-{{ text_comment }}<br/>
-<br/>
-{{ comment }}<br/>
-{{ text_footer }}<br/>
-{% else %} 
-{{ text_footer }}<br/>
-{% endif %}
-<br/>
-{{ store }}<br/>
-{{ store_url }}
+<div style="background-color: #050505; color: #aaaaaa; font-family: 'Courier New', Courier, monospace; padding: 40px; border: 1px solid #1a1a1a; max-width: 600px; margin: 0 auto;">
+  
+  <div style="border-bottom: 2px solid #ff0000; padding-bottom: 20px; margin-bottom: 30px;">
+    <span style="color: #ffffff; font-weight: bold; font-size: 18px; letter-spacing: 2px; text-transform: uppercase;">
+      [ ORDER_STATUS_UPDATE ]
+    </span>
+  </div>
+
+  <div style="margin-bottom: 30px; font-size: 14px;">
+    <p style="margin: 5px 0;"><b style="color: #444;">{{ text_order_id }}</b> <span style="color: #ffffff;">#{{ order_id }}</span></p>
+    <p style="margin: 5px 0;"><b style="color: #444;">{{ text_date_added }}</b> {{ date_added }}</p>
+  </div>
+
+  <div style="background-color: #111; border: 1px solid #ff0000; padding: 25px; text-align: center; margin-bottom: 30px;">
+    <p style="color: #666; font-size: 10px; text-transform: uppercase; margin-top: 0; letter-spacing: 2px;">{{ text_order_status }}</p>
+    <span style="color: #ffffff; font-size: 24px; font-weight: bold; text-transform: uppercase; letter-spacing: 3px;">
+      {{ order_status }}
+    </span>
+  </div>
+
+  {% if comment %}
+    <div style="background-color: #0a0a0a; border-left: 3px solid #ff0000; padding: 20px; margin-bottom: 30px;">
+      <p style="color: #ff0000; font-weight: bold; font-size: 11px; margin-top: 0; text-transform: uppercase;">> [{{ text_comment }}]:</p>
+      <p style="color: #eeeeee; font-size: 14px; margin-bottom: 0; line-height: 1.6;">{{ comment }}</p>
+    </div>
+  {% endif %}
+
+  {% if link %}
+    <div style="text-align: center; margin: 35px 0;">
+      <p style="color: #444; font-size: 11px; margin-bottom: 15px;">{{ text_link }}</p>
+      <a href="{{ link }}" style="background-color: #ff0000; color: #000000; padding: 15px 30px; text-decoration: none; font-family: Arial, sans-serif; font-weight: 900; font-size: 13px; letter-spacing: 2px; display: inline-block; text-transform: uppercase;">
+        VIEW_ORDER_STATION
+      </a>
+    </div>
+  {% endif %}
+
+  <div style="border-top: 1px solid #222; padding-top: 20px; color: #444; font-size: 12px; line-height: 1.6;">
+    <p>{{ text_footer }}</p>
+    <p style="margin-top: 20px;">
+      <strong style="color: #ff0000; font-size: 14px;">{{ store }}</strong><br/>
+      <a href="{{ store_url }}" style="color: #666; text-decoration: none; font-size: 10px;">{{ store_url }}</a>
+    </p>
+  </div>
+
+  <div style="margin-top: 30px; text-align: right; opacity: 0.1; font-size: 8px; color: #ffffff; letter-spacing: 5px;">
+    STATUS_PUSH_SERVICE // LAUNCH_PRO3_v4
+  </div>
+</div>

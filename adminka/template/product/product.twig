@@ -1,0 +1,145 @@
+{{ header }}
+&lt;style&gt;
+    /* 1. ГЛОБАЛЬНЫЙ СТИЛЬ */
+    #product-info { background: #0a0a0a; color: #fff; padding-top: 40px; font-family: 'Orbitron', sans-serif; min-height: 100vh; }
+    .breadcrumb, .breadcrumb-item { display: none !important; }
+
+    /* 2. СКАНЕР ИЗОБРАЖЕНИЙ */
+    .product-image-scanner { border: 1px solid #222; background: #000; padding: 15px; position: relative; }
+    .product-image-scanner::before {
+        content: &quot;LIVE_DATA_FEED&quot;; position: absolute; top: 10px; left: 15px;
+        color: #ff0000; font-size: 9px; letter-spacing: 2px; animation: blink 2s infinite;
+    }
+    .img-main-wrap img { width: 100%; height: auto; object-fit: contain; }
+
+    /* 3. ИНФО-ПАНЕЛЬ */
+    .product-info-panel { padding-left: 30px; }
+    h1 { font-size: 32px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; border-left: 4px solid #ff0000; padding-left: 20px; }
+    .tech-list { list-style: none; padding: 0; margin-bottom: 30px; }
+    .tech-list li { font-size: 11px; color: #888; margin-bottom: 12px; text-transform: uppercase; display: flex; justify-content: space-between; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
+    .tech-list b { color: #fff; }
+
+    /* ПЕРЕВОДЫ ЛЕЙБЛОВ */
+    .label-model::after { content: &quot;MODEL:&quot;; }
+    .label-stock::after { content: &quot;AVAILABILITY:&quot;; }
+    body[data-lang=&quot;pl&quot;] .label-model::after { content: &quot;MODEL:&quot;; }
+    body[data-lang=&quot;pl&quot;] .label-stock::after { content: &quot;DOSTĘPNOŚĆ:&quot;; }
+    body[data-lang=&quot;ua&quot;] .label-model::after { content: &quot;МОДЕЛЬ:&quot;; }
+    body[data-lang=&quot;ua&quot;] .label-stock::after { content: &quot;НАЯВНІСТЬ:&quot;; }
+
+    /* 4. ЦЕНА */
+    .price-gauge { background: #111; border: 1px solid #222; padding: 25px; margin-bottom: 35px; position: relative; }
+    .price-gauge::after { content: &quot;&quot;; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: #ff0000; }
+    .price-new { color: #ff0000; font-size: 42px; font-weight: 900; }
+
+    /* 5. СЛОТЫ ВРЕМЕНИ */
+    .booking-options { margin-bottom: 30px; background: #000; border: 1px solid #1a1a1a; padding: 20px; }
+    .option-label { color: #ff0000; font-size: 10px; letter-spacing: 2px; margin-bottom: 10px; display: block; text-transform: uppercase; }
+    input[type=&quot;date&quot;] { background: #111; border: 1px solid #333; color: #fff; padding: 10px; width: 100%; font-family: 'Orbitron'; margin-bottom: 20px; outline: none; }
+    .time-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 10px; }
+    .time-slot { position: relative; }
+    .time-slot input { position: absolute; opacity: 0; cursor: pointer; }
+    .time-slot label { display: block; background: #111; border: 1px solid #222; color: #666; padding: 10px 5px; text-align: center; font-size: 12px; cursor: pointer; transition: 0.3s; }
+    .time-slot input:checked + label { border-color: #ff0000; color: #fff; box-shadow: inset 0 0 10px rgba(255,0,0,0.3); background: rgba(255,0,0,0.05); }
+    .slot-disabled { opacity: 0.1; pointer-events: none; filter: grayscale(1); }
+
+    /* 6. КНОПКИ */
+    .qty-wrap { display: flex; gap: 10px; margin-bottom: 20px; }
+    #input-quantity { background: #000; border: 1px solid #333; color: #fff; width: 70px; text-align: center; font-family: 'Orbitron'; }
+    .btn-start-engine { flex-grow: 1; background: #ff0000; color: #000 !important; border: none; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px; font-size: 16px; cursor: pointer; }
+    .btn-start-engine:hover { background: #fff; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255,0,0,0.4); }
+
+    .btn-book-text::after { content: &quot;BOOK TIME&quot;; }
+    body[data-lang=&quot;pl&quot;] .btn-book-text::after { content: &quot;ZAREZERWUJ CZAS&quot;; }
+    body[data-lang=&quot;ua&quot;] .btn-book-text::after { content: &quot;ЗАБРОНЮВАТИ ЧАС&quot;; }
+
+    .btn-wish-garage { background: transparent; border: 1px solid #333; color: #888; padding: 12px 20px; font-size: 10px; font-family: 'Orbitron', sans-serif; letter-spacing: 2px; transition: 0.4s; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; }
+    .btn-wish-garage.active { color: #ff0000; border-color: #ff0000; }
+
+    .label-wishlist::after { content: &quot;ADD TO FAVORITES&quot;; }
+    body[data-lang=&quot;pl&quot;] .label-wishlist::after { content: &quot;DODAJ DO ULUBIONYCH&quot;; }
+    body[data-lang=&quot;ua&quot;] .label-wishlist::after { content: &quot;ДОДАТИ В УЛЮБЛЕНЕ&quot;; }
+
+    .description-title::after { content: &quot;DESCRIPTION&quot;; }
+    body[data-lang=&quot;pl&quot;] .description-title::after { content: &quot;OPIS&quot;; }
+    body[data-lang=&quot;ua&quot;] .description-title::after { content: &quot;ОПИС&quot;; }
+    .description-content { color: #ccc; line-height: 1.8; font-size: 14px; margin-top: 20px; }
+
+    @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.2;} 100% {opacity: 1;} }
+&lt;/style&gt;
+
+&lt;div id=&quot;product-info&quot; class=&quot;container&quot;&gt;
+    &lt;div id=&quot;alert&quot;&gt;&lt;/div&gt;
+    &lt;div class=&quot;row&quot;&gt;
+        &lt;div id=&quot;content&quot; class=&quot;col&quot;&gt;
+            {{ content_top }}
+            &lt;div class=&quot;row&quot;&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;div class=&quot;product-image-scanner magnific-popup text-center&quot;&gt;
+                        {% if thumb %}&lt;a href=&quot;{{ popup }}&quot;&gt;&lt;img src=&quot;{{ thumb }}&quot; class=&quot;img-fluid&quot; /&gt;&lt;/a&gt;{% endif %}
+                    &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;div class=&quot;col-lg-6&quot;&gt;
+                    &lt;div class=&quot;product-info-panel&quot;&gt;
+                        &lt;h1&gt;{{ heading_title }}&lt;/h1&gt;
+                        &lt;ul class=&quot;tech-list&quot;&gt;
+                            &lt;li&gt;&lt;span class=&quot;label-model&quot;&gt;&lt;/span&gt; &lt;b&gt;{{ model }}&lt;/b&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;span class=&quot;label-stock&quot;&gt;&lt;/span&gt; &lt;b style=&quot;color:#00ff00;&quot;&gt;{{ stock }}&lt;/b&gt;&lt;/li&gt;
+                        &lt;/ul&gt;
+                        {% if price %}
+                        &lt;div class=&quot;price-gauge&quot;&gt;
+                            &lt;span style=&quot;font-size: 9px; color: #444; position: absolute; top: 10px; right: 15px;&quot;&gt;CORE_V_PRICE&lt;/span&gt;
+                            &lt;div class=&quot;price-new&quot;&gt;{{ special ? special : price }}&lt;/div&gt;
+                        &lt;/div&gt;
+                        {% endif %}
+
+                        &lt;form id=&quot;form-product&quot;&gt;
+                            &lt;div class=&quot;booking-options&quot;&gt;
+                                {% if options %}
+                                    {% for option in options %}
+                                        {% if option.type == 'date' %}
+                                            &lt;label class=&quot;option-label&quot;&gt;{{ option.name }}&lt;/label&gt;
+                                            &lt;input type=&quot;date&quot; name=&quot;option[{{ option.product_option_id }}]&quot; value=&quot;{{ option.value }}&quot; class=&quot;form-control date-picker-trigger&quot; required /&gt;
+                                        {% endif %}
+                                        {% if option.type == 'radio' %}
+                                            &lt;label class=&quot;option-label&quot;&gt;{{ option.name }}&lt;/label&gt;
+                                            &lt;div class=&quot;time-grid&quot;&gt;
+                                                {% for option_value in option.product_option_value %}
+                                                    &lt;div class=&quot;time-slot&quot; data-time=&quot;{{ option_value.name }}&quot;&gt;
+                                                        &lt;input type=&quot;radio&quot; name=&quot;option[{{ option.product_option_id }}]&quot; value=&quot;{{ option_value.product_option_value_id }}&quot; id=&quot;opt-{{ option_value.product_option_value_id }}&quot; /&gt;
+                                                        &lt;label for=&quot;opt-{{ option_value.product_option_value_id }}&quot;&gt;{{ option_value.name }}&lt;/label&gt;
+                                                    &lt;/div&gt;
+                                                {% endfor %}
+                                            &lt;/div&gt;
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            &lt;/div&gt;
+                            &lt;div class=&quot;qty-wrap&quot;&gt;
+                                &lt;input type=&quot;number&quot; name=&quot;quantity&quot; value=&quot;{{ minimum }}&quot; id=&quot;input-quantity&quot; class=&quot;form-control&quot; /&gt;
+                                &lt;input type=&quot;hidden&quot; name=&quot;product_id&quot; value=&quot;{{ product_id }}&quot;/&gt;
+                                
+                                &lt;button type=&quot;button&quot; onclick=&quot;executeBooking()&quot; class=&quot;btn-start-engine&quot;&gt;
+                                    &lt;i class=&quot;fa-solid fa-calendar-check&quot;&gt;&lt;/i&gt; &lt;span class=&quot;btn-book-text&quot;&gt;&lt;/span&gt;
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                            &lt;button type=&quot;button&quot; onclick=&quot;executeWishlist()&quot; class=&quot;btn-wish-garage&quot; data-id=&quot;{{ product_id }}&quot;&gt;
+                                &lt;i class=&quot;fa-regular fa-heart&quot;&gt;&lt;/i&gt; &lt;span class=&quot;label-wishlist&quot;&gt;&lt;/span&gt;
+                            &lt;/button&gt;
+                        &lt;/form&gt;
+                    &lt;/div&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;div class=&quot;description-section&quot;&gt;
+                &lt;span class=&quot;description-title&quot; style=&quot;color: #ff0000; font-weight: 900; letter-spacing: 3px; border-bottom: 1px solid #222; display: block; padding-bottom: 10px; margin-top: 40px;&quot;&gt;&lt;/span&gt;
+                &lt;div class=&quot;description-content&quot;&gt;{{ description }}&lt;/div&gt;
+            &lt;/div&gt;
+            {{ content_bottom }}
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type=&quot;text/javascript&quot;&gt;
+// 1. ГЛОБАЛЬНАЯ ФУНКЦИЯ БРОНИРОВАНИЯ
+function executeBooking() {
+    console.log('--- Нажатие кнопки БРОНИРОВАТЬ ---\

@@ -1,0 +1,234 @@
+{{ header }}
+
+&lt;style&gt;
+    /* 1. ОБЩАЯ СТИЛИСТИКА */
+    main {
+        display: block;
+        background-color: #0d0d0d;
+        min-height: 100vh;
+        color: #eee;
+    }
+
+    #account-wishlist {
+        padding-top: 40px;
+        padding-bottom: 80px;
+    }
+
+    .breadcrumb { display: none !important; }
+
+    h1 {
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+        color: #fff;
+        margin-bottom: 40px;
+        font-size: 1.8rem;
+    }
+
+    /* 2. СЕТКА ТОВАРОВ */
+    .wishlist-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+    }
+
+    .wishlist-item {
+        background: #111;
+        border: 1px solid #222;
+        position: relative;
+        transition: 0.3s all ease;
+        display: flex;
+        flex-direction: column;
+        border-bottom: 3px solid #333;
+    }
+
+    .wishlist-item:hover {
+        border-color: #ff0000;
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(255, 0, 0, 0.15);
+        border-bottom: 3px solid #ff0000;
+    }
+
+    /* 3. ИЗОБРАЖЕНИЕ */
+    .wishlist-image {
+        position: relative;
+        padding: 20px;
+        background: #161616;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .wishlist-image img {
+        max-width: 100%;
+        height: 200px;
+        object-fit: contain;
+        transition: 0.5s ease;
+    }
+
+    .wishlist-item:hover .wishlist-image img {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 10px rgba(255, 0, 0, 0.3));
+    }
+
+    /* 4. ИНФОРМАЦИЯ */
+    .wishlist-info {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .wishlist-name {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 14px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        height: 40px;
+        overflow: hidden;
+    }
+
+    .wishlist-name a {
+        color: #fff;
+        text-decoration: none;
+        transition: 0.3s;
+    }
+
+    .wishlist-name a:hover { color: #ff0000; }
+
+    .wishlist-model {
+        color: #666;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+    }
+
+    .wishlist-price {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 18px;
+        color: #ff0000;
+        font-weight: 900;
+        margin-top: auto;
+    }
+
+    /* 5. КНОПКИ */
+    .wishlist-actions {
+        display: flex;
+        border-top: 1px solid #222;
+    }
+
+    .btn-add-cart {
+        flex-grow: 1;
+        background: #ff0000;
+        color: #fff;
+        border: none;
+        padding: 15px;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    .btn-add-cart:hover {
+        background: #fff;
+        color: #ff0000;
+    }
+
+    .btn-remove-wish {
+        background: #1a1a1a;
+        color: #444;
+        border: none;
+        padding: 15px 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-remove-wish:hover {
+        color: #ff0000;
+        background: #222;
+    }
+
+    /* ПУСТОЙ СПИСОК */
+    .wishlist-empty {
+        text-align: center;
+        padding: 100px 0;
+        background: #111;
+        border: 1px dashed #333;
+    }
+
+    .wishlist-empty i {
+        font-size: 50px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .btn-back-garage {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 15px 40px;
+        border: 2px solid #ff0000;
+        color: #fff;
+        text-decoration: none;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        transition: 0.3s;
+    }
+
+    .btn-back-garage:hover {
+        background: #ff0000;
+    }
+
+    /* ЛОГИКА ПЕРЕВОДА */
+    .lang-block { display: none !important; }
+&lt;/style&gt;
+
+&lt;main&gt;
+    &lt;div id=&quot;account-wishlist&quot; class=&quot;container&quot;&gt;
+        {% if success %}
+            &lt;div class=&quot;alert alert-success alert-dismissible&quot;&gt;&lt;i class=&quot;fa-solid fa-circle-check&quot;&gt;&lt;/i&gt; {{ success }} &lt;button type=&quot;button&quot; class=&quot;btn-close&quot; data-bs-dismiss=&quot;alert&quot;&gt;&lt;/button&gt;&lt;/div&gt;
+        {% endif %}
+
+        &lt;div class=&quot;row&quot;&gt;
+            &lt;div id=&quot;content&quot; class=&quot;col-12&quot;&gt;
+                {{ content_top }}
+                
+                &lt;h1&gt;
+                    &lt;span class=&quot;lang-block lang-en&quot;&gt;My Wish List&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-ua&quot;&gt;Список бажань&lt;/span&gt;
+                    &lt;span class=&quot;lang-block lang-pl&quot;&gt;Lista życzeń&lt;/span&gt;
+                &lt;/h1&gt;
+
+                {% if products %}
+                    &lt;div class=&quot;wishlist-grid&quot;&gt;
+                        {% for product in products %}
+                            &lt;div class=&quot;wishlist-item&quot;&gt;
+                                &lt;div class=&quot;wishlist-image&quot;&gt;
+                                    &lt;a href=&quot;{{ product.href }}&quot;&gt;&lt;img src=&quot;{{ product.thumb }}&quot; alt=&quot;{{ product.name }}&quot; title=&quot;{{ product.name }}&quot;&gt;&lt;/a&gt;
+                                &lt;/div&gt;
+                                
+                                &lt;div class=&quot;wishlist-info&quot;&gt;
+                                    &lt;div class=&quot;wishlist-model&quot;&gt;{{ product.model }}&lt;/div&gt;
+                                    &lt;div class=&quot;wishlist-name&quot;&gt;
+                                        &lt;a href=&quot;{{ product.href }}&quot;&gt;{{ product.name }}&lt;/a&gt;
+                                    &lt;/div&gt;
+                                    
+                                    &lt;div class=&quot;wishlist-price&quot;&gt;
+                                        {% if product.price %}
+                                            {% if not product.special %}
+                                                {{ product.price }}
+                                            {% else %}
+                                                &lt;span style=&quot;text-decoration: line-through; color: #666; font-size: 14px; margin-right: 10px;&quot;&gt;{{ product.price }}&lt;/span&gt; {{ product.special }}
+                                            {% endif %}
+                                        {% endif %}
+                                    &lt;/div&gt;
+                                &lt;/div&gt;
+
+                                &lt;div class=&quot;wishlist-actions&quot;&gt;
+                                    &lt;button type=&quot;button&quot; onclick=&quot;cart.add('{{ product.product_id }}\

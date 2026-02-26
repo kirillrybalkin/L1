@@ -1,31 +1,58 @@
-{{ text_received }}<br/>
-<br/>
-{{ text_order_id }} {{ order_id }}<br/>
-{{ text_date_added }} {{ date_added }}<br/>
-{{ text_order_status }} {{ order_status }}<br/>
-<br/>
-{{ text_product }}<br/>
-<br/>
-{% for product in products %}
-{{ product.quantity }}x {{ product.name }} ({{ product.model }}) {{ product.total }}<br/>
-{% if product.option %}
-{% for option in product.option %}
-	- {{ option.name }} {{ option.value }}<br/>
-{% endfor %}
-{% endif %}
-{% endfor %}
-<br/>
-{{ text_total }}<br/>
-<br/>
-{% for total in totals %}
-{{ total.title }}: {{ total.value }}<br/>
-{% endfor %}
-<br/>
-{% if comment %}
-{{ text_comment }}<br/>
-<br/>
-{{ comment }}<br/>
-{% endif %}
-<br/>
-{{ store }}<br/>
-{{ store_url }}
+<div style="background-color: #050505; color: #aaaaaa; font-family: 'Courier New', Courier, monospace; padding: 30px; border: 1px solid #1a1a1a; max-width: 650px; margin: 0 auto;">
+  
+  <div style="background-color: #ff0000; color: #000000; padding: 15px 25px; font-weight: bold; font-size: 16px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; text-align: center;">
+    [!] {{ text_received }}
+  </div>
+
+  <div style="margin-bottom: 25px; border-bottom: 1px solid #222; padding-bottom: 15px;">
+    <p style="margin: 5px 0; font-size: 13px;"><b style="color: #444;">{{ text_order_id }}</b> <span style="color: #ffffff;">#{{ order_id }}</span></p>
+    <p style="margin: 5px 0; font-size: 13px;"><b style="color: #444;">{{ text_date_added }}</b> {{ date_added }}</p>
+    <p style="margin: 5px 0; font-size: 13px;"><b style="color: #444;">{{ text_order_status }}</b> <span style="color: #00ff00;">{{ order_status }}</span></p>
+  </div>
+
+  <p style="color: #ff0000; font-weight: bold; font-size: 12px; margin-bottom: 15px;">> [{{ text_product }}]:</p>
+  
+  <div style="background-color: #0a0a0a; border: 1px solid #1a1a1a; padding: 15px; margin-bottom: 25px;">
+    {% for product in products %}
+      <div style="border-bottom: 1px solid #111; padding: 10px 0; margin-bottom: 5px;">
+        <span style="color: #ff0000; font-weight: bold;">{{ product.quantity }}x</span> 
+        <span style="color: #ffffff;">{{ product.name }}</span> 
+        <span style="color: #444; font-size: 11px;">({{ product.model }})</span>
+        <span style="float: right; color: #ffffff;">{{ product.total }}</span>
+        
+        {% if product.option %}
+          <div style="margin-left: 20px; font-size: 11px; color: #666; margin-top: 5px;">
+            {% for option in product.option %}
+              - {{ option.name }}: {{ option.value }}<br/>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+
+  <div style="background-color: #111; padding: 15px; text-align: right; margin-bottom: 25px;">
+    {% for total in totals %}
+      <p style="margin: 5px 0; font-size: 14px;">
+        <span style="color: #444; font-size: 11px;">{{ total.title }}:</span> 
+        <span style="color: #ffffff; margin-left: 15px; font-weight: bold;">{{ total.value }}</span>
+      </p>
+    {% endfor %}
+  </div>
+
+  {% if comment %}
+    <div style="border: 1px dashed #333; padding: 15px; margin-bottom: 25px;">
+      <p style="color: #ff0000; font-weight: bold; font-size: 11px; margin-top: 0;">> [{{ text_comment }}]:</p>
+      <p style="color: #888; font-size: 13px; margin-bottom: 0;">{{ comment }}</p>
+    </div>
+  {% endif %}
+
+  <div style="border-top: 1px solid #222; padding-top: 20px;">
+    <span style="color: #ffffff; font-weight: bold;">{{ store }}</span><br/>
+    <a href="{{ store_url }}" style="color: #444; font-size: 10px; text-decoration: none;">{{ store_url }}</a>
+  </div>
+
+  <div style="margin-top: 30px; text-align: center; font-size: 8px; color: #222; letter-spacing: 5px;">
+    ADMIN_NOTIFICATION_v4.2 // DATA_END
+  </div>
+</div>

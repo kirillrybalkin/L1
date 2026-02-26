@@ -1,9 +1,81 @@
 </main>
+<style>
+    /* 1. ЗАГАЛЬНИЙ СТИЛЬ ФУТЕРА */
+    footer {
+        background: #000;
+        color: #fff;
+        padding-top: 60px;
+        padding-bottom: 30px;
+        border-top: 1px solid #1a1a1a;
+        font-family: 'Orbitron', sans-serif;
+        position: relative;
+    }
+    footer::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #ff0000, transparent);
+    }
+
+    /* 2. ЗАГОЛОВКИ СЕКЦІЙ */
+    footer h5 {
+        color: #ff0000;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 25px;
+        font-weight: 900;
+    }
+    footer h5::before { content: "[ "; color: #333; }
+    footer h5::after { content: " ]"; color: #333; }
+
+    /* 3. СПИСКИ ПОСИЛАНЬ */
+    footer ul.list-unstyled li {
+        margin-bottom: 10px;
+    }
+    footer ul.list-unstyled li a {
+        color: #666;
+        text-decoration: none;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        text-transform: uppercase;
+        transition: 0.3s;
+        display: inline-block;
+    }
+    footer ul.list-unstyled li a:hover {
+        color: #fff;
+        padding-left: 10px;
+        text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+    footer ul.list-unstyled li a::before {
+        content: "> ";
+        color: #ff0000;
+        opacity: 0;
+        transition: 0.3s;
+    }
+    footer ul.list-unstyled li a:hover::before {
+        opacity: 1;
+    }
+
+    /* 4. НИЖНЯ ПАНЕЛЬ (POWERED) */
+    footer hr { border-color: #1a1a1a; margin: 40px 0 20px 0; }
+    .powered-text {
+        font-family: 'Consolas', monospace;
+        font-size: 10px;
+        color: #222;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+</style>
+
 <footer>
   <div class="container">
     <div class="row">
       {% if informations or blog %}
-        <div class="col-sm-3">
+        <div class="col-sm-3 mb-4">
           <h5>{{ text_information }}</h5>
           <ul class="list-unstyled">
             {% if blog %}
@@ -15,7 +87,8 @@
           </ul>
         </div>
       {% endif %}
-      <div class="col-sm-3">
+
+      <div class="col-sm-3 mb-4">
         <h5>{{ text_service }}</h5>
         <ul class="list-unstyled">
           <li><a href="{{ contact }}">{{ text_contact }}</a></li>
@@ -26,7 +99,8 @@
           <li><a href="{{ sitemap }}">{{ text_sitemap }}</a></li>
         </ul>
       </div>
-      <div class="col-sm-3">
+
+      <div class="col-sm-3 mb-4">
         <h5>{{ text_extra }}</h5>
         <ul class="list-unstyled">
           <li><a href="{{ manufacturer }}">{{ text_manufacturer }}</a></li>
@@ -36,7 +110,8 @@
           <li><a href="{{ special }}">{{ text_special }}</a></li>
         </ul>
       </div>
-      <div class="col-sm-3">
+
+      <div class="col-sm-3 mb-4">
         <h5>{{ text_account }}</h5>
         <ul class="list-unstyled">
           <li><a href="{{ account }}">{{ text_account }}</a></li>
@@ -46,16 +121,23 @@
         </ul>
       </div>
     </div>
+
     <hr>
-    <p>{{ powered }}</p>
-    <!--
-OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
-Please donate via PayPal to donate@opencart.com
-//-->
+
+    <div class="row align-items-center">
+        <div class="col-md-6">
+            <p class="powered-text mb-0">{{ powered }}</p>
+        </div>
+        <div class="col-md-6 text-md-end">
+            <span class="powered-text">SYSTEM_STATUS: <span style="color: #00ff00;">STABLE_v4.2</span></span>
+        </div>
+    </div>
   </div>
 </footer>
 </div>
+
 {{ cookie }}
+
 <script src="{{ bootstrap }}" type="text/javascript"></script>
 {% for script in scripts %}
   <script src="{{ script.href }}" type="text/javascript"></script>

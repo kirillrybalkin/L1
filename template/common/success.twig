@@ -1,16 +1,112 @@
 {{ header }}
+<style>
+    /* 1. ХЛІБНІ КРИХТИ (SYSTEM_PATH) */
+    .breadcrumb {
+        background: transparent;
+        padding: 10px 0;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #1a1a1a;
+    }
+    .breadcrumb-item, .breadcrumb-item a {
+        color: #444 !important;
+        font-family: 'Consolas', monospace;
+        font-size: 10px;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+    .breadcrumb-item.active { color: #ff0000 !important; }
+    .breadcrumb-item + .breadcrumb-item::before { content: "/"; color: #222; }
+
+    /* 2. ГОЛОВНИЙ БЛОК УСПІХУ (SUCCESS_INTERFACE) */
+    #content h1 {
+        font-family: 'Orbitron', sans-serif;
+        color: #00ff00; /* Зелений для успіху */
+        font-size: 24px;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 30px;
+        border-left: 4px solid #00ff00;
+        padding-left: 20px;
+    }
+
+    .success-wrapper {
+        background: #050505;
+        border: 1px solid #1a1a1a;
+        padding: 40px;
+        position: relative;
+        font-family: 'Consolas', monospace;
+        color: #aaa;
+        line-height: 1.8;
+        margin-bottom: 30px;
+    }
+    .success-wrapper::before {
+        content: "TRANSACTION_LOG_STABLE";
+        position: absolute;
+        top: -10px;
+        right: 20px;
+        background: #0a0a0a;
+        padding: 0 10px;
+        font-size: 9px;
+        color: #00ff00;
+        letter-spacing: 2px;
+    }
+
+    /* 3. КНОПКА (SYSTEM_RETURN) */
+    .btn-continue-system {
+        background: #ff0000 !important;
+        color: #000 !important;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 900;
+        font-size: 12px;
+        padding: 12px 30px !important;
+        border-radius: 0 !important;
+        border: none !important;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        transition: 0.3s;
+    }
+    .btn-continue-system:hover {
+        background: #fff !important;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    }
+</style>
+
 <div id="common-success" class="container">
   <ul class="breadcrumb">
     {% for breadcrumb in breadcrumbs %}
       <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
     {% endfor %}
   </ul>
-  <div class="row">{{ column_left }}
-    <div id="content" class="col">{{ content_top }}
-      <h1>{{ heading_title }}</h1>
-      {{ text_message }}
-      <div class="text-end"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
-      {{ content_bottom }}</div>
-    {{ column_right }}</div>
+
+  <div class="row">
+    {{ column_left }}
+
+    <div id="content" class="col">
+      {{ content_top }}
+
+      <h1><i class="fa-solid fa-circle-check me-3"></i>{{ heading_title }}</h1>
+
+      <div class="success-wrapper">
+        <div class="mb-4" style="color: #00ff00; font-size: 12px;">
+            > INITIALIZING_FINAL_RESPONSE...<br>
+            > DATA_SYNC_COMPLETE.<br>
+            > STATUS: SUCCESS.
+        </div>
+
+        {{ text_message }}
+
+        <div class="mt-5 text-end">
+            <a href="{{ continue }}" class="btn btn-continue-system">
+                <i class="fa-solid fa-arrow-right-to-bracket me-2"></i> RETURN_TO_INTERFACE
+            </a>
+        </div>
+      </div>
+
+      {{ content_bottom }}
+    </div>
+
+    {{ column_right }}
+  </div>
 </div>
+
 {{ footer }}

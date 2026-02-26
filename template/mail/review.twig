@@ -1,12 +1,37 @@
-{{ text_waiting }}<br/>
-<br/>
-{{ text_product }} {{ product }}<br/>
-{{ text_reviewer }} {{ reviewer }}<br/>
-{{ text_rating }} {{ rating }}<br/>
-<br/>
-{{ text_review }}<br/>
-<br/>
-{{ text }}<br/>
-<br/>
-{{ store }}<br/>
-{{ store_url }}
+<div style="background-color: #050505; color: #aaaaaa; font-family: 'Courier New', Courier, monospace; padding: 30px; border: 1px solid #1a1a1a; max-width: 600px; margin: 0 auto;">
+  
+  <div style="background-color: #ff0000; color: #000000; padding: 15px 25px; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; text-align: center;">
+    [!] {{ text_waiting }}
+  </div>
+
+  <div style="background-color: #0a0a0a; border: 1px solid #222222; padding: 20px; margin-bottom: 25px;">
+    <table width="100%" cellpadding="5" cellspacing="0" style="font-family: 'Courier New', Courier, monospace; font-size: 13px;">
+      <tr>
+        <td width="140" style="color: #444444;">{{ text_product }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #111; font-weight: bold;">{{ product }}</td>
+      </tr>
+      <tr>
+        <td style="color: #444444;">{{ text_reviewer }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #111;">{{ reviewer }}</td>
+      </tr>
+      <tr>
+        <td style="color: #444444;">{{ text_rating }}</td>
+        <td style="color: #ff0000; border-bottom: 1px solid #111; font-weight: bold;">{{ rating }} / 5</td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="border: 1px dashed #333333; padding: 20px; background-color: #0c0c0c; margin-bottom: 30px;">
+    <p style="color: #ff0000; font-weight: bold; font-size: 11px; margin-top: 0; text-transform: uppercase;">> [{{ text_review }}]:</p>
+    <p style="color: #eeeeee; font-size: 14px; line-height: 1.6; margin-bottom: 0;">{{ text }}</p>
+  </div>
+
+  <div style="border-top: 1px solid #222222; padding-top: 20px; font-size: 12px;">
+    <span style="color: #ffffff; font-weight: bold;">{{ store }}</span><br/>
+    <a href="{{ store_url }}" style="color: #444444; font-size: 10px; text-decoration: none;">{{ store_url }}</a>
+  </div>
+
+  <div style="margin-top: 25px; text-align: right; font-size: 8px; color: #222222; letter-spacing: 4px;">
+    INCOMING_FEEDBACK_LOG // PRO3_STATION
+  </div>
+</div>

@@ -1,21 +1,96 @@
+<style>
+    /* 1. КОНТЕЙНЕР ПАГІНАЦІЇ */
+    .pagination {
+        display: flex;
+        gap: 5px;
+        padding: 20px 0;
+        margin: 0;
+        border: none;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    /* 2. БАЗОВИЙ СТИЛЬ ПОСИЛАННЯ (PAGE_NODE) */
+    .pagination .page-link {
+        background: #000 !important;
+        border: 1px solid #222 !important;
+        color: #666 !important;
+        font-size: 11px;
+        padding: 8px 12px !important;
+        border-radius: 0 !important;
+        transition: 0.3s;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+    }
+
+    /* 3. ЕФЕКТ ПРИ НАВЕДЕННІ (HOVER_NODE) */
+    .pagination .page-item:not(.active) .page-link:hover {
+        border-color: #fff !important;
+        color: #fff !important;
+        background: #050505 !important;
+        z-index: 2;
+    }
+
+    /* 4. АКТИВНА СТОРІНКА (ACTIVE_SESSION) */
+    .pagination .page-item.active .page-link {
+        background: #ff0000 !important;
+        border-color: #ff0000 !important;
+        color: #000 !important;
+        font-weight: 900;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+    }
+
+    /* 5. СТИЛЬ ДЛЯ СТРІЛОК НАВІГАЦІЇ */
+    .pagination .page-item:first-child .page-link,
+    .pagination .page-item:last-child .page-link {
+        font-size: 10px;
+    }
+</style>
+
 <ul class="pagination">
   {% if first %}
-    <li class="page-item"><a href="{{ first }}" class="page-link">|&lt;</a></li>
+    <li class="page-item">
+        <a href="{{ first }}" class="page-link" title="FIRST_DATA_SET">
+            <i class="fa-solid fa-angles-left"></i>
+        </a>
+    </li>
   {% endif %}
+
   {% if prev %}
-    <li class="page-item"><a href="{{ prev }}" class="page-link">&lt;</a></li>
+    <li class="page-item">
+        <a href="{{ prev }}" class="page-link" title="PREVIOUS_SET">
+            <i class="fa-solid fa-angle-left"></i>
+        </a>
+    </li>
   {% endif %}
+
   {% for link in links %}
     {% if link.page == page %}
-      <li class="page-item active"><span class="page-link">{{ link.page }}</span></li>
+      <li class="page-item active">
+          <span class="page-link">{{ link.page }}</span>
+      </li>
     {% else %}
-      <li class="page-item"><a href="{{ link.href }}" class="page-link">{{ link.page }}</a></li>
+      <li class="page-item">
+          <a href="{{ link.href }}" class="page-link">{{ link.page }}</a>
+      </li>
     {% endif %}
   {% endfor %}
+
   {% if next %}
-    <li class="page-item"><a href="{{ next }}" class="page-link">&gt;</a></li>
+    <li class="page-item">
+        <a href="{{ next }}" class="page-link" title="NEXT_SET">
+            <i class="fa-solid fa-angle-right"></i>
+        </a>
+    </li>
   {% endif %}
+
   {% if last %}
-    <li class="page-item"><a href="{{ last }}" class="page-link">&gt;|</a></li>
+    <li class="page-item">
+        <a href="{{ last }}" class="page-link" title="LAST_DATA_SET">
+            <i class="fa-solid fa-angles-right"></i>
+        </a>
+    </li>
   {% endif %}
 </ul>

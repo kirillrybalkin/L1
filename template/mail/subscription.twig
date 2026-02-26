@@ -1,97 +1,106 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>{{ title }}</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>{{ title }}</title>
 </head>
-<body style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000;">
-<div style="width: 680px;"><a href="{{ store_url }}" title="{{ store_name }}"><img src="{{ logo }}" alt="{{ store_name }}" style="margin-bottom: 20px; border: none;"/></a>
-  <p style="margin-top: 0px; margin-bottom: 20px;">{{ text_greeting }}</p>
-  {% if customer_id %}
-    <p style="margin-top: 0px; margin-bottom: 20px;">{{ text_link }}</p>
-    <p style="margin-top: 0px; margin-bottom: 20px;"><a href="{{ link }}">{{ link }}</a></p>
-  {% endif %}
-  <table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
-    <thead>
-      <tr>
-        <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;" colspan="2">{{ text_subscription_detail }}</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><b>{{ text_orders_id }}</b> <a href="{{ order }}">#{{ order_id }}</a>
-          <br/>
-          <b>{{ text_date_added }}</b> {{ date_added }}
-          <br/>
-          <b>{{ text_payment_method }}</b> {{ payment_method }}</td>
-        <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><b>{{ text_email }}</b> {{ email }}
-          <br/>
-          <b>{{ text_telephone }}</b> {{ telephone }}
-          <br/>
-          <b>{{ text_ip }}</b> {{ ip }}
-          <br/>
-          <b>{{ text_order_status }}</b> {{ order_status }}
-          <br/>
-          <b>{{ text_description }}</b> {{ description }}</td>
-      </tr>
-    </tbody>
-  </table>
-  {% if comment %}
-    <table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
+<body style="background-color: #050505; margin: 0; padding: 0; font-family: 'Courier New', Courier, monospace; color: #eeeeee;">
+<div style="width: 100%; max-width: 700px; margin: 0 auto; background-color: #0a0a0a; border: 1px solid #1a1a1a;">
+
+  <div style="padding: 30px; border-bottom: 2px solid #ff0000; text-align: center; background-color: #000000;">
+    {% if logo %}
+      <a href="{{ store_url }}" title="{{ store_name }}"><img src="{{ logo }}" alt="{{ store_name }}" style="max-width: 180px; border: none;"/></a>
+    {% else %}
+      <h2 style="margin: 0;"><a href="{{ store_url }}" title="{{ store_name }}" style="color: #ffffff; text-decoration: none; font-family: Arial, sans-serif; letter-spacing: 5px;">{{ store_name }}</a></h2>
+    {% endif %}
+  </div>
+
+  <div style="padding: 30px;">
+    <p style="color: #ff0000; font-weight: bold; margin-bottom: 20px; font-size: 14px;">> [RECURRING_SERVICE_INITIATED]:</p>
+    <p style="font-size: 13px; line-height: 1.6; color: #aaa;">{{ text_greeting }}</p>
+
+    {% if customer_id %}
+      <p style="margin: 20px 0;"><a href="{{ link }}" style="color: #ffffff; font-size: 11px; text-decoration: underline;">{{ text_link }}</a></p>
+    {% endif %}
+
+    <table style="border-collapse: collapse; width: 100%; margin-bottom: 30px; border: 1px solid #1a1a1a;">
       <thead>
         <tr>
-          <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;">{{ text_instruction }}</td>
+          <td style="font-size: 11px; background-color: #111111; font-weight: bold; text-align: left; padding: 10px; color: #ff0000; text-transform: uppercase; border-bottom: 1px solid #1a1a1a;" colspan="2">{{ text_subscription_detail }}</td>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">{{ comment }}</td>
+          <td style="font-size: 12px; text-align: left; padding: 15px; border-right: 1px solid #1a1a1a; vertical-align: top; width: 50%;">
+            <b style="color: #444;">{{ text_orders_id }}</b> <a href="{{ order }}" style="color: #ffffff;">#{{ order_id }}</a><br/>
+            <b style="color: #444;">{{ text_date_added }}</b> {{ date_added }}<br/>
+            <b style="color: #444;">{{ text_payment_method }}</b> {{ payment_method }}
+          </td>
+          <td style="font-size: 12px; text-align: left; padding: 15px; vertical-align: top;">
+            <b style="color: #444;">{{ text_email }}</b> {{ email }}<br/>
+            <b style="color: #444;">{{ text_order_status }}</b> <span style="color: #00ff00;">{{ order_status }}</span><br/>
+            <b style="color: #444;">{{ text_ip }}</b> {{ ip }}
+          </td>
+        </tr>
+        <tr>
+           <td colspan="2" style="font-size: 12px; text-align: left; padding: 15px; background: #000; border-top: 1px solid #1a1a1a;">
+             <b style="color: #ff0000;">{{ text_description }}:</b> <span style="color: #fff;">{{ description }}</span>
+           </td>
         </tr>
       </tbody>
     </table>
-  {% endif %}
-  <table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
-    <thead>
-      <tr>
-        <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;">{{ text_payment_address }}</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">{{ payment_address }}</td>
-      </tr>
-    </tbody>
-  </table>
-  <table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
-    <thead>
-      <tr>
-        <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;"><a href="{{ product }}">{{ text_product }}</a></td>
-        <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: left; padding: 7px; color: #222222;">{{ text_model }}</td>
-        <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: right; padding: 7px; color: #222222;">{{ text_quantity }}</td>
-        <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: right; padding: 7px; color: #222222;">{{ text_price }}</td>
-        <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; background-color: #EFEFEF; font-weight: bold; text-align: right; padding: 7px; color: #222222;">{{ text_total }}</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-          <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">{{ name }}</td>
-          <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">{{ model }}</td>
-          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{ quantity }}</td>
-          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{ price }}</td>
-          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{ total }}</td>
-      </tr>
-    </tbody>
-    <tfoot>
-      {% for total in totals %}
-        <tr>
-          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="4"><b>{{ total.title }}:</b></td>
-          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">{{ total.text }}</td>
+
+    {% if comment %}
+    <div style="background-color: #111; border-left: 3px solid #ff0000; padding: 20px; margin-bottom: 30px;">
+        <p style="margin: 0; font-size: 11px; color: #ff0000; font-weight: bold; text-transform: uppercase;">{{ text_instruction }}</p>
+        <p style="margin-top: 10px; font-size: 13px; color: #eee;">{{ comment }}</p>
+    </div>
+    {% endif %}
+
+    <table style="border-collapse: collapse; width: 100%; margin-bottom: 30px; border: 1px solid #1a1a1a;">
+      <thead>
+        <tr style="background-color: #111111;">
+          <td style="font-size: 11px; font-weight: bold; text-align: left; padding: 10px; color: #ffffff; text-transform: uppercase;">{{ text_product }}</td>
+          <td style="font-size: 11px; font-weight: bold; text-align: left; padding: 10px; color: #ffffff; text-transform: uppercase;">{{ text_model }}</td>
+          <td style="font-size: 11px; font-weight: bold; text-align: right; padding: 10px; color: #ffffff; text-transform: uppercase;">{{ text_quantity }}</td>
+          <td style="font-size: 11px; font-weight: bold; text-align: right; padding: 10px; color: #ffffff; text-transform: uppercase;">{{ text_total }}</td>
         </tr>
-      {% endfor %}
-    </tfoot>
-  </table>
-  {% if promotion %}{{ promotion }}{% endif %}
-  <p style="margin-top: 0px; margin-bottom: 20px;">{{ text_footer }}</p>
+      </thead>
+      <tbody>
+          <tr style="border-bottom: 1px solid #1a1a1a;">
+            <td style="font-size: 12px; text-align: left; padding: 12px; color: #ffffff;"><a href="{{ product }}" style="color: #ff0000; text-decoration: none;">{{ name }}</a></td>
+            <td style="font-size: 11px; text-align: left; padding: 12px; color: #666;">{{ model }}</td>
+            <td style="font-size: 12px; text-align: right; padding: 12px;">{{ quantity }}</td>
+            <td style="font-size: 12px; text-align: right; padding: 12px; font-weight: bold; color: #ffffff;">{{ total }}</td>
+          </tr>
+      </tbody>
+      <tfoot style="background-color: #000000;">
+        {% for total in totals %}
+          <tr>
+            <td style="font-size: 12px; text-align: right; padding: 8px 15px; color: #444;" colspan="3"><b>{{ total.title }}:</b></td>
+            <td style="font-size: 14px; text-align: right; padding: 8px 15px; color: #ff0000; font-weight: bold;">{{ total.text }}</td>
+          </tr>
+        {% endfor %}
+      </tfoot>
+    </table>
+
+    {% if promotion %}
+    <div style="padding: 20px; border: 1px dashed #333; margin-bottom: 30px; color: #00ff00; font-size: 12px; text-align: center;">
+        {{ promotion }}
+    </div>
+    {% endif %}
+
+    <div style="border-top: 1px solid #1a1a1a; padding-top: 20px; color: #444; font-size: 11px; line-height: 1.6;">
+      {{ text_footer }}
+      <p style="margin-top: 20px;">
+        <strong style="color: #ff0000; font-size: 14px;">{{ store_name }}</strong><br/>
+      </p>
+    </div>
+  </div>
+
+  <div style="background-color: #111; padding: 10px; text-align: center; font-size: 8px; color: #222; letter-spacing: 5px;">
+    RECURRING_PROTOCOL_v4.2 // DATA_SECURED
+  </div>
 </div>
 </body>
 </html>

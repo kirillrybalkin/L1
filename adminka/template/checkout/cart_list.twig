@@ -1,0 +1,142 @@
+{% if products %}
+&lt;style&gt;
+    /* СТИЛИ ТАБЛИЦЫ */
+    #output-cart { background: #000; border: 1px solid #222; padding: 10px; }
+    .table { color: #fff !important; border-color: #1a1a1a !important; margin-bottom: 0; }
+    .table thead th { 
+        color: #ff0000; font-family: 'Orbitron'; font-size: 10px; 
+        text-transform: uppercase; letter-spacing: 2px; border-bottom: 2px solid #ff0000;
+        padding: 15px 10px;
+    }
+    .table tbody td { vertical-align: middle; border-color: #111 !important; background: #000 !important; color: #fff !important; }
+    
+    /* ИЗОБРАЖЕНИЕ */
+    .img-thumbnail { background: #050505; border: 1px solid #333; padding: 2px; width: 60px; }
+    
+    /* ИНПУТ КОЛИЧЕСТВА */
+    .cart-qty-input { 
+        background: #000 !important; border: 1px solid #333 !important; 
+        color: #fff !important; text-align: center; font-family: 'Orbitron';
+    }
+    
+    /* VIN БЛОК */
+    .vin-order-wrap {
+        background: #0a0a0a; border-left: 4px solid #00ff00; padding: 20px;
+        margin-top: 30px; border-top: 1px solid #1a1a1a;
+    }
+    .vin-title { color: #00ff00; font-family: 'Orbitron'; font-size: 11px; letter-spacing: 1px; margin-bottom: 10px; display: block; }
+    .vin-field { 
+        background: #000; border: 1px solid #333; color: #00ff00; width: 100%; padding: 12px; 
+        font-family: 'Consolas', monospace; font-size: 16px; text-transform: uppercase;
+    }
+
+    /* КНОПКИ */
+    .btn-update-cart { background: #222; border: none; color: #fff; }
+    .btn-update-cart:hover { background: #ff0000; }
+    .btn-remove-cart { background: transparent; border: none; color: #444; font-size: 18px; }
+    .btn-remove-cart:hover { color: #ff0000; }
+    
+    .btn-action-checkout { 
+        background: #ff0000; color: #000 !important; font-weight: 900; 
+        font-family: 'Orbitron'; border: none; padding: 15px 30px; text-transform: uppercase;
+    }
+&lt;/style&gt;
+
+{# ПРОВЕРЯЕМ ЕСТЬ ЛИ УСЛУГИ (ID 60) #}
+{% set has_service = false %}
+{% for product in products %}
+    {% if 'path=60' in product.href %}{% set has_service = true %}{% endif %}
+{% endfor %}
+
+&lt;div id=&quot;output-cart&quot; class=&quot;table-responsive&quot;&gt;
+    &lt;table class=&quot;table&quot;&gt;
+        &lt;thead&gt;
+            &lt;tr&gt;
+                &lt;th class=&quot;text-center&quot; style=&quot;width: 80px;&quot;&gt;SCAN&lt;/th&gt;
+                &lt;th class=&quot;text-start&quot;&gt;
+                    {% if has_service %}
+                        &lt;span data-lang-ua=&quot;ПОСЛУГА / ДІАГНОСТИКА&quot; data-lang-pl=&quot;USŁUGA / DIAGNOSTYKA&quot; data-lang-en=&quot;SERVICE / DIAGNOSTICS&quot;&gt;&lt;/span&gt;
+                    {% else %}
+                        {{ column_name }}
+                    {% endif %}
+                &lt;/th&gt;
+                &lt;th class=&quot;text-center&quot; style=&quot;width: 150px;&quot;&gt;{{ column_quantity }}&lt;/th&gt;
+                &lt;th class=&quot;text-end&quot;&gt;
+                    {% if has_service %}
+                        &lt;span data-lang-ua=&quot;ВАРТІСТЬ&quot; data-lang-pl=&quot;KOSZT&quot; data-lang-en=&quot;COST&quot;&gt;&lt;/span&gt;
+                    {% else %}
+                        {{ column_price }}
+                    {% endif %}
+                &lt;/th&gt;
+                &lt;th class=&quot;text-end&quot;&gt;{{ column_total }}&lt;/th&gt;
+            &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            {% for product in products %}
+                &lt;tr&gt;
+                    &lt;td class=&quot;text-center&quot;&gt;
+                        {% if product.thumb %}
+                            &lt;img src=&quot;{{ product.thumb }}&quot; alt=&quot;{{ product.name }}&quot; class=&quot;img-thumbnail&quot;/&gt;
+                        {% endif %}
+                    &lt;/td&gt;
+                    &lt;td class=&quot;text-start&quot;&gt;
+                        &lt;a href=&quot;{{ product.href }}&quot; style=&quot;color: #fff; text-decoration: none; font-weight: 700; font-size: 15px;&quot;&gt;{{ product.name }}&lt;/a&gt;
+                        &lt;div class=&quot;small text-muted&quot; style=&quot;font-size: 10px;&quot;&gt;{{ text_model }}: {{ product.model }}&lt;/div&gt;
+                        {% for option in product.option %}
+                            &lt;div class=&quot;small&quot; style=&quot;color: #ff0000;&quot;&gt;• {{ option.name }}: {{ option.value }}&lt;/div&gt;
+                        {% endfor %}
+                    &lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;form method=&quot;post&quot; data-oc-target=&quot;#shopping-cart&quot;&gt;
+                            &lt;div class=&quot;input-group input-group-sm&quot;&gt;
+                                &lt;input type=&quot;text&quot; name=&quot;quantity&quot; value=&quot;{{ product.quantity }}&quot; class=&quot;form-control cart-qty-input&quot;/&gt;
+                                &lt;input type=&quot;hidden&quot; name=&quot;key&quot; value=&quot;{{ product.cart_id }}&quot;/&gt;
+                                &lt;button type=&quot;submit&quot; formaction=&quot;{{ edit }}&quot; class=&quot;btn btn-update-cart&quot;&gt;&lt;i class=&quot;fa-solid fa-rotate&quot;&gt;&lt;/i&gt;&lt;/button&gt;
+                                &lt;a href=&quot;{{ product.remove }}&quot; class=&quot;btn-remove-cart ml-2&quot;&gt;&lt;i class=&quot;fa-solid fa-circle-xmark&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+                            &lt;/div&gt;
+                        &lt;/form&gt;
+                    &lt;/td&gt;
+                    &lt;td class=&quot;text-end&quot;&gt;{{ product.price }}&lt;/td&gt;
+                    &lt;td class=&quot;text-end&quot; style=&quot;color: #ff0000; font-weight: 700;&quot;&gt;{{ product.total }}&lt;/td&gt;
+                &lt;/tr&gt;
+            {% endfor %}
+        &lt;/tbody&gt;
+        &lt;tfoot&gt;
+            {% for total in totals %}
+                &lt;tr&gt;
+                    &lt;td colspan=&quot;4&quot; class=&quot;text-end&quot; style=&quot;border: none; padding: 5px;&quot;&gt;
+                        &lt;span style=&quot;color: #888; font-size: 11px; text-transform: uppercase;&quot;&gt;{{ total.title }}&lt;/span&gt;
+                    &lt;/td&gt;
+                    &lt;td class=&quot;text-end&quot; style=&quot;border: none; padding: 5px; font-weight: 900; font-size: {{ loop.last ? '22px' : '16px' }}; color: {{ loop.last ? '#ff0000' : '#fff' }};&quot;&gt;
+                        {{ total.text }}
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            {% endfor %}
+        &lt;/tfoot&gt;
+    &lt;/table&gt;
+&lt;/div&gt;
+
+{# VIN-БЛОК: ПОКАЗЫВАЕМ ТОЛЬКО ДЛЯ УСЛУГ #}
+{% if has_service %}
+&lt;div class=&quot;vin-order-wrap&quot;&gt;
+    &lt;label class=&quot;vin-title&quot;&gt;
+        &lt;span data-lang-ua=&quot;ВВЕДІТЬ VIN-КОД АБО ДЕРЖНОМЕР АВТО&quot; data-lang-pl=&quot;WPISZ NUMER VIN LUB REJESTRACYJNY&quot; data-lang-en=&quot;ENTER VIN OR LICENSE PLATE&quot;&gt;&lt;/span&gt;
+    &lt;/label&gt;
+    &lt;input type=&quot;text&quot; name=&quot;comment&quot; class=&quot;vin-field&quot; placeholder=&quot;XTA210700...&quot; maxlength=&quot;17&quot;&gt;
+    &lt;div style=&quot;font-size: 8px; color: #444; margin-top: 8px; font-family: 'Orbitron';&quot;&gt;AUTO_RECOGNITION_SYSTEM: ACTIVE&lt;/div&gt;
+&lt;/div&gt;
+{% endif %}
+
+&lt;div class=&quot;row mt-4 mb-5&quot;&gt;
+    &lt;div class=&quot;col&quot;&gt;&lt;a href=&quot;{{ continue }}&quot; class=&quot;btn btn-outline-secondary btn-sm&quot; style=&quot;font-family: 'Orbitron'; font-size: 10px;&quot;&gt;← BACK TO SHOP&lt;/a&gt;&lt;/div&gt;
+    &lt;div class=&quot;col text-end&quot;&gt;
+        &lt;a href=&quot;{{ checkout }}&quot; class=&quot;btn-action-checkout&quot;&gt;
+             &lt;span data-lang-ua=&quot;ПІДТВЕРДИТИ ЗАПИС&quot; data-lang-pl=&quot;POTWIERDŹ ZAPIS&quot; data-lang-en=&quot;CONFIRM BOOKING&quot;&gt;&lt;/span&gt; →
+        &lt;/a&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+$(document).ready(function() {
+    function applyCartLang() {
+        const lang = document.body.getAttribute('data-lang\

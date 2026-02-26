@@ -1,12 +1,35 @@
-{{ text_received }}<br/>
-<br/>
-{{ text_amount }}<br/>
-<br/>
-{{ amount }}<br/>
-<br/>
-{{ text_total }}<br/>
-<br/>
-{{ total }}<br/>
-<br/>
-{{ store }}<br/>
-{{ store_url }}
+<div style="background-color: #050505; color: #aaaaaa; font-family: 'Courier New', Courier, monospace; padding: 40px; border: 1px solid #1a1a1a; max-width: 600px; margin: 0 auto;">
+  
+  <div style="border-bottom: 2px solid #00ff00; padding-bottom: 20px; margin-bottom: 30px;">
+    <span style="color: #ffffff; font-weight: bold; font-size: 18px; letter-spacing: 2px; text-transform: uppercase;">
+      [ {{ text_received }} ]
+    </span>
+  </div>
+
+  <div style="background-color: #0a0a0a; border: 1px solid #222; padding: 30px; text-align: center; margin-bottom: 30px;">
+    <p style="color: #444; font-size: 11px; text-transform: uppercase; margin-top: 0; letter-spacing: 2px;">{{ text_amount }}</p>
+    <span style="color: #00ff00; font-size: 32px; font-weight: bold; letter-spacing: 2px;">
+      {{ amount }}
+    </span>
+  </div>
+
+  <div style="background-color: #111; padding: 20px; border-left: 4px solid #333; margin-bottom: 40px;">
+    <table width="100%" cellpadding="0" cellspacing="0">
+      <tr>
+        <td style="color: #666; font-size: 13px; text-transform: uppercase;">{{ text_total }}</td>
+        <td style="color: #ffffff; font-size: 18px; font-weight: bold; text-align: right;">{{ total }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="border-top: 1px solid #1a1a1a; padding-top: 20px; color: #444; font-size: 12px;">
+    <p style="margin: 0; line-height: 1.6;">
+      <strong style="color: #ffffff;">{{ store }}</strong><br/>
+      <a href="{{ store_url }}" style="color: #00ff00; text-decoration: none; font-size: 10px;">{{ store_url }}</a>
+    </p>
+  </div>
+
+  <div style="margin-top: 35px; text-align: right; opacity: 0.1; font-size: 8px; color: #ffffff; letter-spacing: 4px;">
+    TRANS_ID_LOG_v4.2 // BALANCE_SYNC_OK
+  </div>
+</div>

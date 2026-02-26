@@ -1,0 +1,127 @@
+{{ header }}
+<style>
+    /* 1. СТИЛЬ ШЛЯХУ (FILE_PATH) */
+    .breadcrumb {
+        background: transparent;
+        padding: 15px 0;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #1a1a1a;
+    }
+    .breadcrumb-item, .breadcrumb-item a {
+        color: #444 !important;
+        font-family: 'Consolas', monospace;
+        font-size: 10px;
+        text-transform: uppercase;
+        text-decoration: none;
+    }
+    .breadcrumb-item.active { color: #ff0000 !important; }
+
+    /* 2. ЗАГОЛОВОК СТОРІНКИ (DOC_TITLE) */
+    #content h1 {
+        font-family: 'Orbitron', sans-serif;
+        color: #fff;
+        font-size: 26px;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        margin-bottom: 40px;
+        position: relative;
+        display: inline-block;
+    }
+    #content h1::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: #ff0000;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    }
+
+    /* 3. КОНТЕНТНА ЗОНА (TECH_SPECS_BODY) */
+    .description-wrap {
+        background: rgba(5, 5, 5, 0.8);
+        border: 1px solid #111;
+        padding: 40px;
+        font-family: 'Inter', sans-serif;
+        line-height: 1.8;
+        color: #ccc;
+        position: relative;
+    }
+
+    /* Авто-стилізація вкладеного HTML з адмінки */
+    .description-wrap h2, .description-wrap h3 {
+        font-family: 'Orbitron';
+        color: #ff0000;
+        font-size: 16px;
+        margin-top: 30px;
+        text-transform: uppercase;
+    }
+    .description-wrap p { margin-bottom: 20px; }
+    .description-wrap ul {
+        list-style: none;
+        padding-left: 0;
+    }
+    .description-wrap ul li {
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 10px;
+    }
+    .description-wrap ul li::before {
+        content: ">";
+        position: absolute;
+        left: 0;
+        color: #ff0000;
+        font-family: 'Consolas';
+        font-weight: bold;
+    }
+
+    /* Декоративний водяний знак */
+    .doc-watermark {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-family: 'Orbitron';
+        font-size: 8px;
+        color: #1a1a1a;
+        letter-spacing: 5px;
+        transform: rotate(-90deg);
+        transform-origin: right bottom;
+        pointer-events: none;
+    }
+</style>
+
+<div id="information-information" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <div class="row">
+    {{ column_left }}
+
+    <div id="content" class="col">
+      {{ content_top }}
+
+      <h1>{{ heading_title }}</h1>
+
+      <div class="description-wrap mt-2">
+        <div class="doc-watermark">LAUNCH_SYSTEM_DOCUMENTATION_v4.2</div>
+
+        {# Вивід основного тексту з адмінки #}
+        {{ description }}
+
+        <div class="mt-5 pt-4 border-top border-secondary" style="opacity: 0.2; font-size: 9px; font-family: 'Consolas';">
+            END_OF_DOCUMENT // CHECKSUM: OK // {{ "now"|date("Y-m-d H:i") }}
+        </div>
+      </div>
+
+      {{ content_bottom }}
+    </div>
+
+    {{ column_right }}
+  </div>
+</div>
+
+{{ footer }}

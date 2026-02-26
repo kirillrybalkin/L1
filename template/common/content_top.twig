@@ -1,3 +1,53 @@
-{% for module in modules %}
-{{ module }}
-{% endfor %}
+{% if modules %}
+<style>
+    /* 1. КОНТЕЙНЕР ВЕРХНІХ МОДУЛІВ */
+    #content-top {
+        margin-bottom: 40px;
+        position: relative;
+        padding-top: 10px;
+    }
+
+    /* Технічний індикатор початку контенту */
+    #content-top::before {
+        content: "INITIALIZING_CONTENT_STREAM...";
+        position: absolute;
+        top: -15px;
+        left: 0;
+        font-size: 8px;
+        color: #ff0000;
+        letter-spacing: 2px;
+        font-family: 'Orbitron', sans-serif;
+        text-transform: uppercase;
+        animation: pulse-text 2s infinite;
+    }
+
+    /* Неонова лінія-роздільник */
+    #content-top::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, #ff0000, transparent);
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+    }
+
+    @keyframes pulse-text {
+        0% { opacity: 0.4; }
+        50% { opacity: 1; }
+        100% { opacity: 0.4; }
+    }
+
+    /* Відступи для модулів (слайдери, банери) */
+    #content-top > div {
+        margin-bottom: 30px;
+    }
+</style>
+
+<div id="content-top">
+  {% for module in modules %}
+    {{ module }}
+  {% endfor %}
+</div>
+{% endif %}

@@ -1,20 +1,120 @@
-<div class="text-center">
+<style>
+    /* 1. ПАНЕЛЬ ДІЙ (ACTION BAR) */
+    .comment-actions {
+        background: #000;
+        padding: 20px;
+        border: 1px solid #1a1a1a;
+        margin-bottom: 30px;
+    }
+    .btn-system-sm {
+        background: #111;
+        border: 1px solid #333;
+        color: #888;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-radius: 0;
+        transition: 0.3s;
+        margin: 0 5px;
+    }
+    .btn-system-sm:hover {
+        background: #ff0000;
+        color: #000;
+        border-color: #ff0000;
+        box-shadow: 0 0 10px rgba(255,0,0,0.3);
+    }
+
+    /* 2. СОРТУВАННЯ ТА ЗАГОЛОВОК */
+    h2 {
+        font-size: 18px;
+        color: #ff0000;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin: 0;
+    }
+    .sort-terminal .input-group-text {
+        background: #050505;
+        border: 1px solid #222;
+        color: #444;
+        font-size: 9px;
+        text-transform: uppercase;
+    }
+    .sort-terminal .form-select {
+        background: #000 !important;
+        border: 1px solid #222 !important;
+        color: #00ff00 !important;
+        font-family: 'Consolas', monospace;
+        font-size: 12px;
+        border-radius: 0;
+    }
+
+    /* 3. МОДАЛЬНЕ ВІКНО (REPORT_MODAL) */
+    .modal-content {
+        background: #0a0a0a !important;
+        border: 1px solid #ff0000 !important;
+        border-radius: 0 !important;
+    }
+    .modal-header {
+        border-bottom: 1px solid #1a1a1a;
+    }
+    .modal-title {
+        color: #ff0000;
+        font-family: 'Orbitron';
+        font-size: 14px;
+        text-transform: uppercase;
+    }
+    .modal-body label {
+        color: #444;
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+    .modal-body .form-control {
+        background: #000 !important;
+        border: 1px solid #222 !important;
+        color: #00ff00 !important;
+        font-family: 'Consolas', monospace;
+        border-radius: 0;
+    }
+    .modal-body .form-control:focus {
+        border-color: #ff0000;
+        box-shadow: none;
+    }
+    .btn-close { filter: invert(1); }
+
+    .btn-submit-report {
+        background: #ff0000 !important;
+        color: #000 !important;
+        font-family: 'Orbitron';
+        font-weight: 900;
+        border-radius: 0;
+        border: none;
+        width: 100%;
+        text-transform: uppercase;
+    }
+</style>
+
+<div class="comment-actions text-center">
   {% if logged %}
-    <button type="button" value="{{ like }}" data-bs-toggle="tooltip" title="{{ button_like }}" data-oc-toggle="rate" class="btn btn-secondary"><i class="fa fa-thumbs-up"></i></button>
-    <button type="button" value="{{ dislike }}" data-bs-toggle="tooltip" title="{{ button_dislike }}" data-oc-toggle="rate" class="btn btn-secondary"><i class="fa fa-thumbs-down"></i></button>
-    <button type="button" value="{{ comment_add }}" data-oc-toggle="comment" data-oc-target="#comment-0" data-oc-trigger="#button-refresh" class="btn btn-secondary">{{ button_comment }}</button>
+    <button type="button" value="{{ like }}" data-bs-toggle="tooltip" title="{{ button_like }}" data-oc-toggle="rate" class="btn btn-system-sm"><i class="fa-solid fa-arrow-up"></i> SYSTEM_UP</button>
+    <button type="button" value="{{ dislike }}" data-bs-toggle="tooltip" title="{{ button_dislike }}" data-oc-toggle="rate" class="btn btn-system-sm"><i class="fa-solid fa-arrow-down"></i> SYSTEM_DOWN</button>
+    <button type="button" value="{{ comment_add }}" data-oc-toggle="comment" data-oc-target="#comment-0" data-oc-trigger="#button-refresh" class="btn btn-system-sm" style="color:#ff0000;">
+        <i class="fa-solid fa-pen-to-square"></i> WRITE_REPORT
+    </button>
   {% else %}
-    <a href="{{ login }}" class="btn btn-secondary"><i class="fa fa-thumbs-up"></i></a>
-    <a href="{{ login }}" class="btn btn-secondary"><i class="fa fa-thumbs-down"></i></a>
-    <a href="{{ login }}" class="btn btn-secondary">{{ button_login }}</a>
+    <a href="{{ login }}" class="btn btn-system-sm"><i class="fa-solid fa-arrow-up"></i></a>
+    <a href="{{ login }}" class="btn btn-system-sm"><i class="fa-solid fa-arrow-down"></i></a>
+    <a href="{{ login }}" class="btn btn-system-sm" style="color:#ff0000;">{{ button_login }}</a>
   {% endif %}
 </div>
-<hr/>
-<div class="row mb-3">
+
+<hr style="border-color: #1a1a1a;"/>
+
+<div class="row mb-4 align-items-center">
   <div class="col">
-    <h2>{{ heading_title }}</h2>
+    <h2><i class="fa-solid fa-comments me-2"></i> {{ heading_title }}</h2>
   </div>
-  <div class="col-4">
+  <div class="col-md-4 sort-terminal">
     <div class="input-group">
       <label for="input-sort" class="input-group-text">{{ text_sort }}</label>
       <select id="input-sort" class="form-select">
@@ -25,192 +125,37 @@
     </div>
   </div>
 </div>
+
 <div id="comment">{{ list }}</div>
-<div id="modal-comment" class="modal">
-  <div class="modal-dialog">
+
+{# MODAL_INTERFACE #}
+<div id="modal-comment" class="modal fade">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ text_write }}</h5>
+        <h5 class="modal-title"><i class="fa-solid fa-terminal me-2"></i> WRITE_SYSTEM_REPORT</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
         <form id="form-comment" action="" data-oc-target="" data-oc-trigger="">
           <div class="mb-3 required">
             <label for="input-author" class="form-label">{{ entry_author }}</label>
-            <input type="text" name="author" value="{{ author }}" placeholder="{{ entry_author }}" id="input-author" class="form-control"/>
+            <input type="text" name="author" value="{{ author }}" placeholder="OPERATOR_ID" id="input-author" class="form-control"/>
             <div id="error-author" class="invalid-feedback"></div>
           </div>
           <div class="mb-3 required">
             <label for="input-comment" class="form-label">{{ entry_comment }}</label>
-            <textarea name="comment" rows="5" placeholder="{{ entry_comment }}" id="input-comment" class="form-control">{{ comment }}</textarea>
+            <textarea name="comment" rows="5" placeholder="ENTER_TECHNICAL_DETAILS..." id="input-comment" class="form-control">{{ comment }}</textarea>
             <div id="error-comment" class="invalid-feedback"></div>
           </div>
           {{ captcha }}
         </form>
       </div>
-      <div class="modal-footer">
-        <button type="submit" id="button-comment" form="form-comment" class="btn btn-primary">{{ button_comment }}</button>
+      <div class="modal-footer" style="border-top: 1px solid #1a1a1a;">
+        <button type="submit" id="button-comment" form="form-comment" class="btn btn-submit-report">{{ button_comment }}</button>
       </div>
     </div>
   </div>
 </div>
-<script type="text/javascript"><!--
-$('#comment').on('click', '.pagination a', function(e) {
-    e.preventDefault();
 
-    $('#comment').load(this.href);
-});
-
-$('#input-sort').on('change', function(e) {
-    $('#comment').load($(this).val());
-});
-
-// Add Comment
-$('#cms-blog').on('click', '[data-oc-toggle=\'comment\']', function(e) {
-    e.preventDefault();
-
-    var element = this;
-
-    $('#form-comment').attr('action', $(element).val());
-    $('#form-comment').attr('data-oc-target', $(element).attr('data-oc-target'));
-    $('#form-comment').attr('data-oc-trigger', $(element).attr('data-oc-trigger'));
-
-    $('#modal-comment').modal('show');
-});
-
-$('#form-comment').on('submit', function(e) {
-    e.preventDefault();
-
-    var element = this;
-
-    $.ajax({
-        url: $(element).attr('action'),
-        type: 'post',
-        data: $(element).serialize(),
-        dataType: 'json',
-        cache: false,
-        contentType: 'application/x-www-form-urlencoded',
-        processData: false,
-        beforeSend: function() {
-            $('#button-comment').button('loading');
-        },
-        complete: function() {
-            $('#button-comment').button('reset');
-        },
-        success: function(json) {
-            console.log(json);
-
-            $('.alert-dismissible').remove();
-
-            $('#form-comment').find('.is-invalid').removeClass('is-invalid');
-            $('#form-comment').find('.invalid-feedback').removeClass('d-block');
-
-            if (json['error']) {
-                if (json['error']['warning']) {
-                    $('#modal-comment .modal-body').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['error']['warning'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
-                }
-
-                for (key in json['error']) {
-                    $('#input-' + key.replaceAll('_', '-')).addClass('is-invalid').find('.form-control, .form-select, .form-check-input, .form-check-label').addClass('is-invalid');
-                    $('#error-' + key.replaceAll('_', '-')).html(json['error'][key]).addClass('d-block');
-                }
-            }
-
-            if (json['success']) {
-                $('#modal-comment .modal-body').prepend('<div class="alert alert-success alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['success'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
-
-                $('#input-comment').val('');
-
-                $($('#form-comment').attr('data-oc-trigger')).trigger('click');
-            }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
-    });
-});
-
-// More
-$('#comment').on('click', '[data-oc-toggle=\'next\']', function(e) {
-    e.preventDefault();
-
-    var element = this;
-
-    $.ajax({
-        url: $(element).val(),
-        dataType: 'html',
-        beforeSend: function() {
-            $(element).button('loading');
-        },
-        complete: function() {
-            $(element).button('reset');
-        },
-        success: function(html) {
-            $(element).parent().before(html);
-            $(element).parent().remove();
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
-    });
-});
-
-// Refresh
-$('#comment').on('click', '[data-oc-toggle=\'refresh\']', function(e) {
-    e.preventDefault();
-
-    var element = this;
-
-    $.ajax({
-        url: $(element).val(),
-        dataType: 'html',
-        beforeSend: function() {
-            $(element).button('loading');
-        },
-        complete: function() {
-            $(element).button('reset');
-        },
-        success: function(html) {
-            $($(element).attr('data-oc-target')).remove();
-
-            $(element).parent().before(html);
-            $(element).parent().remove();
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
-    });
-});
-
-// Rating
-$('#comment-container').on('click', '[data-oc-toggle=\'rate\']', function(e) {
-    e.preventDefault();
-
-    var element = this;
-
-    $.ajax({
-        url: $(element).val(),
-        dataType: 'json',
-        beforeSend: function() {
-            $(element).button('loading');
-        },
-        complete: function() {
-            $(element).button('reset');
-        },
-        success: function(json) {
-            $('.alert-dismissible').remove();
-
-            if (json['error']) {
-                $('#alert').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['error'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
-            }
-
-            if (json['success']) {
-                $('#alert').prepend('<div class="alert alert-success alert-dismissible"><i class="fa-solid fa-circle-exclamation"></i> ' + json['success'] + ' <button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>');
-            }
-        },
-        error: function(xhr, ajaxOptions, thrownError) {
-            console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-        }
-    });
-});
-//--></script>
+<script type="text/javascript"></script>

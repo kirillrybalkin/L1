@@ -1,0 +1,13 @@
+{{ header }}
+
+&lt;script&gt;
+/**
+ * УЛЬТРА-ФОРСИРОВАННЫЙ ПЕРЕХВАТ ЯЗЫКА
+ * Исправляет проблему отображения английского языка на внутренних страницах.
+ */
+(function() {
+    function finalInfoTranslate() {
+        const url = window.location.href.toLowerCase();
+        const htmlLang = document.documentElement.lang.toLowerCase();
+        // Прямое чтение куки без сторонних библиотек
+        const cookie = (document.cookie.match('(^|;)\\\\s*language\\\\s*=\\\\s*([^;]+)\

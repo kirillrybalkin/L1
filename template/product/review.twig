@@ -1,0 +1,126 @@
+<style>
+    /* 1. ФОРМА ТА ЗАГОЛОВКИ */
+    #form-review h2 {
+        font-family: 'Orbitron', sans-serif;
+        color: #ff0000;
+        font-size: 16px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #1a1a1a;
+    }
+
+    /* 2. ПОЛЯ ВВОДУ (TERMINAL_INPUT) */
+    #form-review .form-label {
+        color: #666;
+        font-family: 'Orbitron';
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+    #form-review .form-control {
+        background-color: #000 !important;
+        border: 1px solid #222 !important;
+        color: #eee !important;
+        font-family: 'Consolas', monospace;
+        border-radius: 0;
+        transition: 0.3s;
+    }
+    #form-review .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.1);
+    }
+
+    /* 3. РЕЙТИНГ (RATING_INDICATOR) */
+    #input-rating {
+        background: #0a0a0a;
+        padding: 15px;
+        border: 1px solid #1a1a1a;
+        display: inline-block;
+        color: #444;
+        font-family: 'Orbitron';
+        font-size: 11px;
+    }
+    #input-rating input[type="radio"] {
+        accent-color: #ff0000;
+        cursor: pointer;
+        width: 18px;
+        height: 18px;
+        vertical-align: middle;
+        margin: 0 5px;
+    }
+
+    /* 4. КНОПКА (ACTION_TRIGGER) */
+    #button-review {
+        background: #ff0000 !important;
+        border: none !important;
+        color: #000 !important;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-radius: 0;
+        padding: 12px 30px;
+        transition: 0.3s;
+    }
+    #button-review:hover {
+        background: #fff !important;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+    }
+
+    /* Список існуючих відгуків */
+    #review {
+        border-bottom: 1px solid #1a1a1a;
+        padding-bottom: 20px;
+    }
+</style>
+
+<form id="form-review">
+  <div id="review">{{ list }}</div>
+
+  <h2><i class="fa-solid fa-pen-nib me-2"></i> {{ text_write }}</h2>
+
+  {% if review_guest %}
+    <div class="mb-4 required">
+      <label for="input-author" class="form-label">{{ entry_author }}</label>
+      <input type="text" name="author" value="{{ customer }}" id="input-author" class="form-control" placeholder="OPERATOR_ID..."/>
+      <div id="error-author" class="invalid-feedback"></div>
+    </div>
+
+    <div class="mb-4 required">
+      <label for="input-text" class="form-label">{{ entry_review }}</label>
+      <textarea name="text" rows="5" id="input-text" class="form-control" placeholder="ENTER_REPORT_DATA..."></textarea>
+      <div id="error-text" class="invalid-feedback"></div>
+      <div style="font-family: 'Consolas'; font-size: 10px; color: #444; margin-top: 5px;">> [LOG]: {{ text_note }}</div>
+    </div>
+
+    <div class="mb-4 required">
+      <label class="form-label d-block mb-2">{{ entry_rating }}</label>
+      <div id="input-rating">
+        <span style="opacity: 0.5;">{{ entry_bad }}</span>
+        <input type="radio" name="rating" value="1" class="form-check-input"/>
+        <input type="radio" name="rating" value="2" class="form-check-input"/>
+        <input type="radio" name="rating" value="3" class="form-check-input"/>
+        <input type="radio" name="rating" value="4" class="form-check-input"/>
+        <input type="radio" name="rating" value="5" class="form-check-input"/>
+        <span style="opacity: 0.5;">{{ entry_good }}</span>
+      </div>
+      <div id="error-rating" class="invalid-feedback"></div>
+    </div>
+
+    {{ captcha }}
+
+    <div class="text-end mt-4">
+      <button type="submit" id="button-review" class="btn btn-primary">
+          <i class="fa-solid fa-paper-plane me-2"></i> SUBMIT_REPORT
+      </button>
+    </div>
+  {% else %}
+    <div class="alert" style="background: #1a0f00; border: 1px solid #ff8800; color: #ff8800; border-radius: 0; font-family: 'Orbitron'; font-size: 12px;">
+        <i class="fa-solid fa-lock me-2"></i> {{ text_login }}
+    </div>
+  {% endif %}
+</form>
+
+<script type="text/javascript"></script>

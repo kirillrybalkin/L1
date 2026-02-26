@@ -2,13 +2,48 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>SECURITY_ACCESS_PROTOCOL</title>
 </head>
-<body>
-<p>{{ text_code }}</p>
-<p>{{ code }}</p>
-<p>{{ text_ip }} {{ ip }}</p>
-<p>{{ text_regards }}
-  <br/>
-  {{ store }}</p>
+<body style="background-color: #050505; margin: 0; padding: 40px; font-family: 'Courier New', Courier, monospace;">
+
+  <div style="max-width: 600px; margin: 0 auto; background-color: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px; position: relative; overflow: hidden;">
+
+    <div style="border-bottom: 2px solid #ff0000; padding-bottom: 20px; margin-bottom: 30px;">
+      <span style="color: #ffffff; font-weight: bold; font-size: 18px; letter-spacing: 2px;">
+        [ SECURITY_VERIFICATION_REQUIRED ]
+      </span>
+    </div>
+
+    <div style="margin-bottom: 40px;">
+      <p style="color: #888888; font-size: 14px; margin-bottom: 15px;">> [LOG]: {{ text_code }}</p>
+
+      <div style="background-color: #000000; border: 1px solid #ff0000; padding: 30px; text-align: center; margin: 20px 0;">
+        <span style="color: #ffffff; font-size: 42px; font-weight: bold; letter-spacing: 15px; display: block;">
+          {{ code }}
+        </span>
+        <span style="color: #444444; font-size: 10px; text-transform: uppercase; margin-top: 10px; display: block;">
+          ACCESS_CODE_EXPIRES_SHORTLY
+        </span>
+      </div>
+    </div>
+
+    <div style="background-color: #111111; padding: 15px; border-left: 3px solid #333333; margin-bottom: 30px;">
+      <p style="color: #666666; font-size: 12px; margin: 0;">
+        <span style="color: #ff0000;">[CONNECTION_SOURCE]:</span> {{ text_ip }} {{ ip }}
+      </p>
+    </div>
+
+    <div style="border-top: 1px solid #1a1a1a; padding-top: 20px; color: #444444; font-size: 12px;">
+      <p style="margin: 0;">
+        {{ text_regards }}<br/>
+        <strong style="color: #ff0000; font-size: 14px;">{{ store }}</strong>
+      </p>
+    </div>
+
+    <div style="margin-top: 30px; opacity: 0.1; font-size: 8px; color: #ffffff; text-align: right; letter-spacing: 5px;">
+      ENCRYPTION_LAYER_RSA4096 // LAUNCH_PRO3_CORE
+    </div>
+
+  </div>
 </body>
 </html>

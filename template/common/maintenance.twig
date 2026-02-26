@@ -1,7 +1,94 @@
 {{ header }}
-<div id="common-maintenance" class="container">
-  <div class="row">
-    <div class="col-12">{{ message }}</div>
+<style>
+    /* 1. СЕРВІСНИЙ КОНТЕЙНЕР */
+    #common-maintenance {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 100px 0;
+        background: radial-gradient(circle, #0f0000 0%, #0a0a0a 100%);
+    }
+
+    /* 2. ПАНЕЛЬ СПОВІЩЕННЯ (MAINTENANCE_BLOCK) */
+    .maintenance-panel {
+        background: #000;
+        border: 1px solid #ff0000;
+        padding: 50px;
+        position: relative;
+        max-width: 800px;
+        width: 100%;
+        box-shadow: 0 0 50px rgba(255, 0, 0, 0.1);
+    }
+
+    /* Декоративні системні кути */
+    .maintenance-panel::before {
+        content: ""; position: absolute; top: -5px; left: -5px; width: 20px; height: 20px;
+        border-top: 3px solid #ff0000; border-left: 3px solid #ff0000;
+    }
+    .maintenance-panel::after {
+        content: ""; position: absolute; bottom: -5px; right: -5px; width: 20px; height: 20px;
+        border-bottom: 3px solid #ff0000; border-right: 3px solid #ff0000;
+    }
+
+    /* 3. ТЕКСТ ТА ІНДИКАТОРИ */
+    .m-status {
+        font-family: 'Orbitron', sans-serif;
+        color: #ff0000;
+        font-size: 10px;
+        letter-spacing: 3px;
+        margin-bottom: 20px;
+        display: block;
+    }
+    .m-blink {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: #ff0000;
+        border-radius: 50%;
+        margin-right: 10px;
+        animation: m-pulse 1s infinite;
+    }
+
+    .m-message {
+        font-family: 'Consolas', monospace;
+        font-size: 18px;
+        color: #eee;
+        line-height: 1.6;
+    }
+    .m-message b, .m-message strong { color: #ff0000; }
+
+    @keyframes m-pulse {
+        0% { opacity: 1; box-shadow: 0 0 0px #ff0000; }
+        50% { opacity: 0.3; box-shadow: 0 0 15px #ff0000; }
+        100% { opacity: 1; box-shadow: 0 0 0px #ff0000; }
+    }
+</style>
+
+<div id="common-maintenance">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-lg-8">
+        <div class="maintenance-panel text-center">
+          <span class="m-status">
+            <span class="m-blink"></span> SYSTEM_STATUS: UNDER_CALIBRATION_v4.2
+          </span>
+
+          <div class="m-message">
+            <i class="fa-solid fa-screwdriver-wrench mb-4" style="font-size: 48px; color: #ff0000;"></i>
+            <br>
+            {{ message }}
+          </div>
+
+          <div class="mt-5" style="opacity: 0.1; font-size: 8px; letter-spacing: 10px; color: #fff;">
+            ACCESS_DENIED_TEMPORARY // LAUNCH_PRO3_SECURITY
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+
+
 {{ footer }}

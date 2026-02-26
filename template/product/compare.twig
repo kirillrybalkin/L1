@@ -1,0 +1,254 @@
+{{ header }}
+<style>
+    /* 1. ЗАГОЛОВОК СТОРІНКИ */
+    #product-compare h1 {
+        font-family: 'Orbitron', sans-serif;
+        color: #ff0000;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 30px;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+    }
+
+    /* 2. ТАБЛИЦЯ ПОРІВНЯННЯ (ANALYSIS_TABLE) */
+    .compare-table-wrapper {
+        overflow-x: auto;
+        background: #050505;
+        border: 1px solid #1a1a1a;
+    }
+    .table-compare {
+        color: #aaa !important;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        margin-bottom: 0;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    .table-compare thead td {
+        background: #111 !important;
+        color: #ff0000 !important;
+        font-family: 'Orbitron';
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 2px;
+        border-bottom: 2px solid #ff0000 !important;
+        padding: 15px !important;
+    }
+    .table-compare tbody td {
+        border: 1px solid #1a1a1a !important;
+        padding: 12px 15px !important;
+        vertical-align: middle;
+        background: transparent;
+    }
+    .table-compare tbody tr:hover td {
+        background: rgba(255, 255, 255, 0.02);
+        color: #fff;
+    }
+
+    /* Перша колонка (Назви параметрів) */
+    .table-compare tbody td:first-child {
+        background: #0a0a0a !important;
+        color: #666;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: 10px;
+        width: 200px;
+    }
+
+    /* 3. КОНТЕНТ ТОВАРУ */
+    .table-compare img {
+        background: #000;
+        border: 1px solid #333;
+        padding: 5px;
+        transition: 0.3s;
+    }
+    .table-compare a { color: #fff; text-decoration: none; font-family: 'Orbitron'; }
+    .table-compare a:hover { color: #ff0000; }
+
+    /* Ціна та Рейтинг */
+    .price-new { color: #00ff00; font-weight: bold; font-size: 16px; }
+    .price-old { color: #444; text-decoration: line-through; font-size: 12px; }
+    .rating .fa-star { color: #ff0000; font-size: 10px; }
+
+    /* 4. КНОПКИ (CMD_BLOCK) */
+    .btn-compare-cart {
+        background: #ff0000 !important;
+        border: none !important;
+        color: #000 !important;
+        font-family: 'Orbitron';
+        font-weight: 900;
+        border-radius: 0;
+        padding: 10px 15px !important;
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    .btn-compare-remove {
+        background: #111 !important;
+        border: 1px solid #333 !important;
+        color: #555 !important;
+        font-family: 'Orbitron';
+        font-size: 9px;
+        border-radius: 0;
+        width: 100%;
+    }
+    .btn-compare-remove:hover { border-color: #ff0000; color: #ff0000; }
+</style>
+
+<div id="product-compare" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+
+  {% if success %}
+    <div class="alert alert-success alert-dismissible" style="background:#000; border:1px solid #00ff00; color:#00ff00; border-radius:0;">
+        <i class="fa-solid fa-circle-check"></i> {{ success }}
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+    </div>
+  {% endif %}
+
+  <div class="row">
+    {{ column_left }}
+
+    <div id="content" class="col">
+      {{ content_top }}
+
+      <h1><i class="fa-solid fa-microchip me-3"></i>{{ heading_title }}</h1>
+
+      {% if products %}
+        <div class="compare-table-wrapper">
+          <table class="table table-compare">
+            <thead>
+              <tr>
+                <td colspan="{{ products|length + 1 }}">{{ text_product }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ text_name }}</td>
+                {% for product in products %}
+                  <td><a href="{{ product.href }}">{{ product.name }}</a></td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <td>{{ text_image }}</td>
+                {% for product in products %}
+                  <td class="text-center">
+                    {% if product.thumb %}
+                      <img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-fluid"/>
+                    {% endif %}
+                  </td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <td>{{ text_price }}</td>
+                {% for product in products %}
+                  <td>
+                    {% if not product.special %}
+                      <span class="price-new">{{ product.price }}</span>
+                    {% else %}
+                      <span class="price-new">{{ product.special }}</span> <span class="price-old">{{ product.price }}</span>
+                    {% endif %}
+                  </td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <td>{{ text_model }}</td>
+                {% for product in products %}
+                  <td style="color: #666;">{{ product.model }}</td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <td>{{ text_manufacturer }}</td>
+                {% for product in products %}
+                  <td>{{ product.manufacturer }}</td>
+                {% endfor %}
+              </tr>
+              <tr>
+                <td>{{ text_availability }}</td>
+                {% for product in products %}
+                  <td style="color: {% if 'In Stock' in product.availability or 'В наявності' in product.availability %}#00ff00{% else %}#ff0000{% endif %};">
+                    {{ product.availability }}
+                  </td>
+                {% endfor %}
+              </tr>
+              {% if review_status %}
+                <tr>
+                  <td>{{ text_rating }}</td>
+                  {% for product in products %}
+                    <td class="rating">
+                      {% for i in 1..5 %}
+                        {% if product.rating < i %}
+                          <i class="fa-regular fa-star"></i>
+                        {% else %}
+                          <i class="fa-solid fa-star"></i>
+                        {% endif %}
+                      {% endfor %}
+                      <div style="font-size: 9px; color: #444; margin-top: 5px;">{{ product.reviews }}</div>
+                    </td>
+                  {% endfor %}
+                </tr>
+              {% endif %}
+              <tr>
+                <td>{{ text_summary }}</td>
+                {% for product in products %}
+                  <td style="font-size: 11px; color: #777; line-height: 1.4;">{{ product.description }}</td>
+                {% endfor %}
+              </tr>
+            </tbody>
+
+            {% for attribute_group in attribute_groups %}
+              <thead>
+                <tr>
+                  <td colspan="{{ products|length + 1 }}">{{ attribute_group.name }}</td>
+                </tr>
+              </thead>
+              {% for key, attribute in attribute_group.attribute %}
+                <tbody>
+                  <tr>
+                    <td>{{ attribute.name }}</td>
+                    {% for product in products %}
+                      <td>{% if product.attribute[key] %}{{ product.attribute[key] }}{% endif %}</td>
+                    {% endfor %}
+                  </tr>
+                </tbody>
+              {% endfor %}
+            {% endfor %}
+
+            <tr>
+              <td></td>
+              {% for product in products %}
+                <td class="text-center">
+                  <form action="{{ cart_add }}" method="post" data-oc-toggle="ajax" data-oc-load="{{ cart }}" data-oc-target="#cart">
+                    <input type="hidden" name="product_id" value="{{ product.product_id }}"/>
+                    <input type="hidden" name="quantity" value="{{ product.minimum }}"/>
+                    <button type="submit" class="btn btn-compare-cart">
+                        <i class="fa-solid fa-cart-plus me-1"></i> {{ button_cart }}
+                    </button>
+                    <a href="{{ product.remove }}" class="btn btn-compare-remove">
+                        <i class="fa-solid fa-trash-can me-1"></i> {{ button_remove }}
+                    </a>
+                  </form>
+                </td>
+              {% endfor %}
+            </tr>
+          </table>
+        </div>
+      {% else %}
+        <div class="category-info-wrap text-center py-5" style="background:#050505; border:1px solid #1a1a1a;">
+            <p style="font-family: 'Orbitron'; color: #444;">[ NO_DATA_FOR_ANALYSIS ]</p>
+            <div class="mt-4"><a href="{{ continue }}" class="btn btn-primary" style="background:#ff0000; border:none; border-radius:0; font-family:'Orbitron';">{{ button_continue }}</a></div>
+        </div>
+      {% endif %}
+
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+
+
+
+{{ footer }}

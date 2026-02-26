@@ -1,0 +1,86 @@
+<style>
+    /* 1. СТИЛЬ МОДАЛЬНОГО ВІКНА (SYSTEM_POPUP) */
+    #modal-information .modal-content {
+        background: rgba(5, 5, 5, 0.98) !important;
+        backdrop-filter: blur(15px);
+        border: 1px solid #ff0000 !important;
+        border-radius: 0 !important;
+        box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+    }
+
+    /* 2. ШАПКА ВІКНА (DOC_HEADER) */
+    #modal-information .modal-header {
+        border-bottom: 1px solid #1a1a1a;
+        padding: 20px 30px;
+    }
+    #modal-information .modal-title {
+        font-family: 'Orbitron', sans-serif;
+        color: #ff0000;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    #modal-information .btn-close {
+        filter: invert(1) brightness(2); /* Робимо хрестик білим */
+        opacity: 0.8;
+    }
+
+    /* 3. ТІЛО ДОКУМЕНТА (DATA_STREAM) */
+    #modal-information .modal-body {
+        padding: 30px;
+        color: #ccc;
+        font-family: 'Inter', sans-serif;
+        line-height: 1.7;
+        max-height: 70vh;
+        overflow-y: auto;
+    }
+
+    /* Кастомний скролбар для "лазерного" ефекту */
+    #modal-information .modal-body::-webkit-scrollbar {
+        width: 3px;
+    }
+    #modal-information .modal-body::-webkit-scrollbar-track {
+        background: #000;
+    }
+    #modal-information .modal-body::-webkit-scrollbar-thumb {
+        background: #ff0000;
+        box-shadow: 0 0 10px #ff0000;
+    }
+
+    /* Авто-стилізація тексту всередині */
+    #modal-information .modal-body h1,
+    #modal-information .modal-body h2 {
+        font-family: 'Orbitron';
+        color: #fff;
+        font-size: 16px;
+        margin: 20px 0 10px;
+        text-transform: uppercase;
+        border-left: 3px solid #ff0000;
+        padding-left: 10px;
+    }
+</style>
+
+<div id="modal-information" class="modal fade">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+            <i class="fa-solid fa-file-shield me-2"></i> {{ title }}
+        </h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div style="font-family: 'Consolas', monospace; font-size: 10px; color: #444; margin-bottom: 20px;">
+            > STREAM_IDENTIFIER: DOC_{{ title|upper|replace({' ': '_'}) }}<br>
+            > ACCESS_LEVEL: PUBLIC_GRANTED
+        </div>
+
+        {{ description }}
+
+        <div class="mt-4 pt-3 border-top border-secondary text-end" style="opacity: 0.3; font-size: 9px; font-family: 'Consolas';">
+            END_OF_FILE // LAUNCH_PRO3_CORE
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

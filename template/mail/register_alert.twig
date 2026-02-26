@@ -1,14 +1,44 @@
-{{ text_signup }}<br/>
-<br/>
-{{ text_firstname }} {{ firstname }}<br/>
-{{ text_lastname }} {{ lastname }}<br/>
-{% if customer_group %}
-{{ text_customer_group }} {{ customer_group }}<br/>
-{% endif %}
-{{ text_email }} {{ email }}<br/>
-{% if telephone %}
-{{ text_telephone }} {{ telephone }}
-{% endif %}
-<br/>
-{{ store }}<br/>
-{{ store_url }}
+<div style="background-color: #050505; color: #aaaaaa; font-family: 'Courier New', Courier, monospace; padding: 30px; border: 1px solid #1a1a1a; max-width: 600px; margin: 0 auto;">
+
+  <div style="background-color: #ff0000; color: #000000; padding: 12px 20px; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; text-align: center;">
+    [!] {{ text_signup }}
+  </div>
+
+  <div style="background-color: #0a0a0a; border: 1px solid #222222; padding: 20px;">
+    <table width="100%" cellpadding="8" cellspacing="0" style="font-family: 'Courier New', Courier, monospace; font-size: 13px;">
+      <tr>
+        <td width="160" style="color: #444444; border-bottom: 1px solid #111;">{{ text_firstname }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #111; font-weight: bold;">{{ firstname }}</td>
+      </tr>
+      <tr>
+        <td style="color: #444444; border-bottom: 1px solid #111;">{{ text_lastname }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #111; font-weight: bold;">{{ lastname }}</td>
+      </tr>
+      {% if customer_group %}
+      <tr>
+        <td style="color: #444444; border-bottom: 1px solid #111;">{{ text_customer_group }}</td>
+        <td style="color: #ff0000; border-bottom: 1px solid #111;">{{ customer_group }}</td>
+      </tr>
+      {% endif %}
+      <tr>
+        <td style="color: #444444; border-bottom: 1px solid #111;">{{ text_email }}</td>
+        <td style="color: #00ff00; border-bottom: 1px solid #111;">{{ email }}</td>
+      </tr>
+      {% if telephone %}
+      <tr>
+        <td style="color: #444444; border-bottom: 1px solid #111;">{{ text_telephone }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #111;">{{ telephone }}</td>
+      </tr>
+      {% endif %}
+    </table>
+  </div>
+
+  <div style="margin-top: 30px; border-top: 1px solid #222222; padding-top: 15px; font-size: 12px;">
+    <span style="color: #ff0000; font-weight: bold; text-transform: uppercase;">{{ store }}</span><br/>
+    <a href="{{ store_url }}" style="color: #444444; font-size: 10px; text-decoration: none;">{{ store_url }}</a>
+  </div>
+
+  <div style="margin-top: 25px; text-align: center; font-size: 8px; color: #222222; letter-spacing: 4px; text-transform: uppercase;">
+    END_OF_DETECTION_LOG // LAUNCH_AUTO_ADMIN
+  </div>
+</div>

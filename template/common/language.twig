@@ -1,13 +1,86 @@
 {% if languages|length > 1 %}
-  <form id="form-language" action="{{ action }}" method="post" data-oc-toggle="ajax">
-    <div class="dropdown"><a href="#" data-bs-toggle="dropdown" class="dropdown-toggle"><img src="{{ image }}" alt="{{ name }}" title="{{ name }}"> <span class="d-none d-md-inline">{{ text_language }}</span> <i class="fa-solid fa-caret-down"></i></a>
-      <ul class="dropdown-menu">
-        {% for language in languages %}
-          <li><a href="{{ language.code }}" class="dropdown-item"><img src="{{ language.image }}" alt="{{ language.name }}" title="{{ language.name }}"/> {{ language.name }}</a></li>
-        {% endfor %}
-      </ul>
+<style>
+    /* 1. СТИЛЬ ТРИГЕРА (LANGUAGE_TRIGGER) */
+    #form-language .dropdown-toggle {
+        color: #888 !important;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        padding: 5px 12px;
+        border: 1px solid #1a1a1a;
+        background: #000;
+        display: flex;
+        align-items: center;
+        transition: 0.3s;
+    }
+    #form-language .dropdown-toggle:hover {
+        border-color: #ff0000;
+        color: #fff !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+    }
+    #form-language .dropdown-toggle img {
+        margin-right: 8px;
+        filter: grayscale(0.2);
+        border: 1px solid #333;
+    }
+
+    /* 2. СТИЛЬ МЕНЮ (LOCALIZATION_PANEL) */
+    #form-language .dropdown-menu {
+        background: rgba(5, 5, 5, 0.95) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid #ff0000 !important;
+        border-radius: 0 !important;
+        margin-top: 10px !important;
+        padding: 0 !important;
+        min-width: 180px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.9);
+    }
+
+    /* 3. ПУНКТИ МОВ (LANGUAGE_UNITS) */
+    #form-language .dropdown-item {
+        color: #aaa !important;
+        font-family: 'Consolas', monospace;
+        font-size: 12px;
+        padding: 12px 15px !important;
+        border-bottom: 1px solid #111;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+    }
+    #form-language .dropdown-item:last-child { border-bottom: none; }
+    #form-language .dropdown-item img {
+        margin-right: 12px;
+        border: 1px solid #222;
+    }
+    #form-language .dropdown-item:hover {
+        background: #ff0000 !important;
+        color: #000 !important;
+        font-weight: 700;
+    }
+</style>
+
+<form id="form-language" action="{{ action }}" method="post" data-oc-toggle="ajax">
+    <div class="dropdown">
+        <a href="#" data-bs-toggle="dropdown" class="dropdown-toggle">
+            <img src="{{ image }}" alt="{{ name }}" title="{{ name }}" width="16" height="11">
+            <span class="d-none d-md-inline">{{ name }}</span>
+            <i class="fa-solid fa-angle-down ms-2" style="font-size: 9px; color: #ff0000;"></i>
+        </a>
+        <ul class="dropdown-menu">
+            {% for language in languages %}
+                <li>
+                    <a href="{{ language.code }}" class="dropdown-item">
+                        <img src="{{ language.image }}" alt="{{ language.name }}" title="{{ language.name }}" width="16" height="11"/>
+                        {{ language.name }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
     <input type="hidden" name="code" value=""/>
     <input type="hidden" name="redirect" value="{{ redirect }}"/>
-  </form>
+</form>
 {% endif %}

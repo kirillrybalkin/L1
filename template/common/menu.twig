@@ -1,45 +1,125 @@
 {% if categories %}
-  <div class="container">
-    <nav id="menu" class="navbar navbar-expand-lg bg-primary">
-      <div id="category" class="d-block d-sm-block d-lg-none">{{ text_category }}</div>
-      <button type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" class="navbar-toggler d-lg-none"><i class="fa-solid fa-bars"></i></button>
-      <div id="navbar-menu" class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          {% for category in categories %}
-            {% if category.children %}
-              {% set total = category.children|length %}
-              {% if total > 20 %}
-                {% set batch = (total / 4)|round(0, 'ceil') %}
-                {% set column = 4 %}
-              {% else %}
-                {% set batch = 5 %}
-                {% set column = (total / 5)|round(0, 'ceil') %}
-              {% endif %}
-              <li class="nav-item dropdown"><a href="{{ category.href }}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{ category.name }}</a>
-                <div class="dropdown-menu dropdown-column-{{ column }}">
-                  <div class="dropdown-inner">
-                    {% for children in category.children|batch(batch) %}
-                      <ul class="list-unstyled">
-                        {% for child in children %}
-                          <li><a href="{{ child.href }}" class="dropdown-item">{{ child.name }}</a></li>
-                        {% endfor %}
-                      </ul>
-                    {% endfor %}
-                  </div>
-                  <ul class="list-unstyled">
-                    <li>
-                      <hr class="dropdown-divider">
-                    </li>
-                    <li><a href="{{ category.href }}" class="dropdown-item">{{ text_all }} {{ category.name }}</a></li>
-                  </ul>
+<style>
+    /* 1. ОСНОВНА ПАНЕЛЬ МЕНЮ */
+    #menu {
+        background: #000 !important;
+        border: 1px solid #1a1a1a;
+        border-top: none;
+        border-radius: 0;
+        min-height: 50px;
+        padding: 0;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    /* 2. ГОЛОВНІ ПОСИЛАННЯ (TOP_LEVEL_NODES) */
+    #menu .nav-link, #menu .dropdown-item {
+        color: #888 !important;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        padding: 15px 20px !important;
+        transition: 0.3s;
+        border-right: 1px solid #0a0a0a;
+    }
+
+    #menu .nav-item:hover > .nav-link {
+        color: #fff !important;
+        background: #050505;
+        box-shadow: inset 0 3px 0 #ff0000;
+    }
+
+    /* 3. ВИПАДАЮЧІ СПИСКИ (SUB_MODULES) */
+    #menu .dropdown-menu {
+        background: rgba(5, 5, 5, 0.98) !important;
+        backdrop-filter: blur(15px);
+        border: 1px solid #ff0000 !important;
+        border-radius: 0 !important;
+        padding: 20px !important;
+        margin-top: 0;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.8);
+    }
+
+    /* Стиль колонок у мега-меню */
+    .dropdown-inner {
+        display: flex;
+        gap: 30px;
+    }
+    .dropdown-inner ul {
+        min-width: 180px;
+    }
+    .dropdown-inner li a {
+        color: #666 !important;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        padding: 5px 0 !important;
+        border: none !important;
+        text-transform: none;
+        letter-spacing: 0;
+    }
+    .dropdown-inner li a:hover {
+        color: #ff0000 !important;
+        background: transparent !important;
+        padding-left: 5px !important;
+    }
+
+    /* 4. МОБІЛЬНА ВЕРСІЯ (HANDHELD_MODE) */
+    @media (max-width: 991px) {
+        #category {
+            color: #ff0000;
+            font-weight: 900;
+            padding: 12px;
+            text-transform: uppercase;
+        }
+        .navbar-toggler {
+            border: none;
+            color: #ff0000;
+            padding: 12px;
+        }
+        #menu .nav-link { border-right: none; border-bottom: 1px solid #111; }
+    }
+
+    /* Роздільник "Show All" */
+    .dropdown-divider { border-top: 1px solid #222; margin: 10px 0; }
+    .see-all { color: #fff !important; font-weight: 900; font-size: 10px !important; }
+</style>
+
+<div class="container">
+  <nav id="menu" class="navbar navbar-expand-lg">
+    <div id="category" class="d-block d-sm-block d-lg-none">{{ text_category }}</div>
+    <button type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu" class="navbar-toggler d-lg-none"><i class="fa-solid fa-bars-staggered"></i></button>
+
+    <div id="navbar-menu" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        {% for category in categories %}
+          {% if category.children %}
+            <li class="nav-item dropdown">
+              <a href="{{ category.href }}" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">{{ category.name }}</a>
+
+              {% set column_count = (category.children|length / 5)|round(0, 'ceil') %}
+              {% if column_count > 4 %}{% set column_count = 4 %}{% endif %}
+
+              <div class="dropdown-menu">
+                <div class="dropdown-inner">
+                  {% for children in category.children|batch((category.children|length / column_count)|round(0, 'ceil')) %}
+                    <ul class="list-unstyled">
+                      {% for child in children %}
+                        <li><a href="{{ child.href }}" class="dropdown-item">{{ child.name }}</a></li>
+                      {% endfor %}
+                    </ul>
+                  {% endfor %}
                 </div>
-              </li>
-            {% else %}
-              <li class="nav-item"><a href="{{ category.href }}" class="dropdown-item">{{ category.name }}</a></li>
-            {% endif %}
-          {% endfor %}
-        </ul>
-      </div>
-    </nav>
-  </div>
+                <hr class="dropdown-divider">
+                <a href="{{ category.href }}" class="dropdown-item see-all">> {{ text_all }} {{ category.name }}</a>
+              </div>
+            </li>
+          {% else %}
+            <li class="nav-item">
+                <a href="{{ category.href }}" class="nav-link">{{ category.name }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </nav>
+</div>
 {% endif %}

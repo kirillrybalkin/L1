@@ -1,0 +1,82 @@
+&lt;!DOCTYPE html&gt;
+&lt;html dir=&quot;{{ direction }}&quot; lang=&quot;{{ lang }}&quot;&gt;
+&lt;head&gt;
+  &lt;meta charset=&quot;UTF-8&quot;/&gt;
+  &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+  &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;
+  &lt;title&gt;{{ title }}&lt;/title&gt;
+  &lt;base href=&quot;{{ base }}&quot;/&gt;
+  &lt;script src=&quot;{{ jquery }}&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+  &lt;link href=&quot;{{ bootstrap }}&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot; media=&quot;screen&quot;/&gt;
+  &lt;link href=&quot;{{ icons }}&quot; rel=&quot;stylesheet&quot; type=&quot;text/css&quot;/&gt;
+  &lt;link href=&quot;{{ stylesheet }}&quot; type=&quot;text/css&quot; rel=&quot;stylesheet&quot;/&gt;
+  &lt;script src=&quot;catalog/view/javascript/common.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;
+
+  &lt;style&gt;
+    /* 1. БАЗА */
+    body { background-color: #0d0d0d; color: #eee; }
+    nav#top { background-color: #0a0a0a !important; border-bottom: 1px solid #222 !important; padding: 8px 0 !important; }
+    nav#top a, nav#top button { color: #888 !important; font-size: 11px !important; text-transform: uppercase; text-decoration: none !important; background: none; border: none; }
+    nav#top a:hover { color: #ff0000 !important; }
+
+    /* 2. ШАПКА (ВОЗВРАТ СТРУКТУРЫ) */
+    header { background-color: #121212 !important; padding: 20px 0 !important; border-bottom: 1px solid #222 !important; }
+    
+    /* Используем Flex вместо Grid для стабильности иконок */
+    .header-content { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    #logo img { max-height: 50px; width: auto; }
+
+    /* Поиск и Корзина */
+    .header-search { flex-grow: 1; max-width: 500px; }
+    .header-cart { min-width: 220px; }
+
+    /* КНОПКА КОРЗИНЫ (ФИКС ИКОНОК) */
+    header #cart .btn-dark {
+        background-color: #000 !important;
+        border: 2px solid #ff0000 !important;
+        color: #fff !important;
+        text-transform: uppercase;
+        font-weight: 800;
+        height: 46px;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        border-radius: 0;
+    }
+    header #cart i { color: #ff0000 !important; margin-right: 10px; font-size: 16px; }
+
+    /* ВЫПАДАЮЩЕЕ МЕНЮ КОРЗИНЫ */
+    #cart .dropdown-menu {
+        background-color: #1a1a1a !important;
+        border: 1px solid #ff0000 !important;
+        border-radius: 0 !important;
+        padding: 15px !important;
+        min-width: 350px;
+        right: 0;
+        left: auto;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        display: none; /* Скрыто по умолчанию */
+    }
+    #cart.show .dropdown-menu, #cart .dropdown-menu.show { display: block !important; }
+
+    /* 3. ГАРАЖНЫЙ TOAST */
+    .garage-toast {
+        position: fixed; top: 20px; right: 20px; width: 320px;
+        background: #111; border: 1px solid #ff0000; color: #fff;
+        z-index: 9999; display: none; font-family: 'Orbitron', sans-serif;
+        padding: 15px; box-shadow: 0 0 20px rgba(255,0,0,0.4);
+    }
+
+    /* ЯЗЫКИ (ДЛЯ CSS ПЕРЕВОДА) */
+    body[data-lang=&quot;ua&quot;] .lang-ua { display: inline-block !important; }
+    body[data-lang=&quot;pl&quot;] .lang-pl { display: inline-block !important; }
+  &lt;/style&gt;
+
+  &lt;script&gt;
+    $(document).ready(function() {
+        // Определение языка для CSS
+        const htmlLang = document.documentElement.lang.toLowerCase();
+        let currentLang = 'en';
+        if (htmlLang.includes('pl\

@@ -1,17 +1,83 @@
 {% if currencies|length > 1 %}
-  <form id="form-currency" action="{{ action }}" method="post" data-oc-toggle="ajax">
-    <div class="dropdown"><a href="#" data-bs-toggle="dropdown" class="dropdown-toggle">{% if symbol_left %}<strong>{{ symbol_left }}</strong>{% elseif symbol_right %}<strong>{{ symbol_right }}</strong>{% endif %} <span class="d-none d-md-inline">{{ text_currency }}</span> <i class="fa-solid fa-caret-down"></i></a>
-      <ul class="dropdown-menu">
-        {% for currency in currencies %}
-          {% if currency.symbol_left %}
-            <li><a href="{{ currency.code }}" class="dropdown-item">{{ currency.symbol_left }} {{ currency.title }}</a></li>
-          {% else %}
-            <li><a href="{{ currency.code }}" class="dropdown-item">{{ currency.symbol_right }} {{ currency.title }}</a></li>
-          {% endif %}
-        {% endfor %}
-      </ul>
+<style>
+    /* 1. СТИЛЬ ТРИГЕРА (SELECTOR_TRIGGER) */
+    #form-currency .dropdown-toggle {
+        color: #888 !important;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #1a1a1a;
+        background: #000;
+        transition: 0.3s;
+    }
+    #form-currency .dropdown-toggle:hover {
+        border-color: #ff0000;
+        color: #fff !important;
+    }
+    #form-currency .dropdown-toggle strong {
+        color: #ff0000;
+        font-family: 'Consolas', monospace;
+        font-size: 14px;
+        margin-right: 5px;
+    }
+
+    /* 2. СТИЛЬ ВИПАДАЮЧОГО МЕНЮ (PROTOCOL_MENU) */
+    #form-currency .dropdown-menu {
+        background: rgba(5, 5, 5, 0.95) !important;
+        backdrop-filter: blur(10px);
+        border: 1px solid #ff0000 !important;
+        border-radius: 0 !important;
+        margin-top: 10px !important;
+        padding: 0 !important;
+        min-width: 160px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.8);
+    }
+
+    /* 3. ПУНКТИ МЕНЮ (UNIT_LINES) */
+    #form-currency .dropdown-item {
+        color: #aaa !important;
+        font-family: 'Consolas', monospace;
+        font-size: 12px;
+        padding: 10px 15px !important;
+        border-bottom: 1px solid #111;
+        transition: 0.2s;
+    }
+    #form-currency .dropdown-item:last-child { border-bottom: none; }
+    #form-currency .dropdown-item:hover {
+        background: #ff0000 !important;
+        color: #000 !important;
+        font-weight: 700;
+    }
+</style>
+
+<form id="form-currency" action="{{ action }}" method="post" data-oc-toggle="ajax">
+    <div class="dropdown">
+        <a href="#" data-bs-toggle="dropdown" class="dropdown-toggle">
+            {% if symbol_left %}
+                <strong>{{ symbol_left }}</strong>
+            {% elseif symbol_right %}
+                <strong>{{ symbol_right }}</strong>
+            {% endif %}
+            <span class="d-none d-md-inline">{{ text_currency }}</span>
+            <i class="fa-solid fa-angle-down ms-1" style="font-size: 9px;"></i>
+        </a>
+        <ul class="dropdown-menu">
+            {% for currency in currencies %}
+                <li>
+                    <a href="{{ currency.code }}" class="dropdown-item">
+                        <span style="color: #ff0000; margin-right: 10px;">
+                            {{ currency.symbol_left ?: currency.symbol_right }}
+                        </span>
+                        {{ currency.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
     </div>
     <input type="hidden" name="code" value=""/>
     <input type="hidden" name="redirect" value="{{ redirect }}"/>
-  </form>
+</form>
 {% endif %}

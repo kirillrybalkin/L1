@@ -1,34 +1,51 @@
-<div style="width:570px; border: 1px solid #e1e1e1; margin-left: auto; margin-right: auto; border-radius: 4px; padding-top: 5px; padding-bottom: 15px; padding-left: 25px; padding-right: 25px;">
-  <table style="width:100%; font-size:16px; border:0;">
+<div style="width: 100%; max-width: 600px; background-color: #050505; border: 1px solid #1a1a1a; margin-left: auto; margin-right: auto; padding: 0; font-family: 'Courier New', Courier, monospace; position: relative;">
+  <table style="width: 100%; border-collapse: collapse; color: #eeeeee;">
     <thead>
       <tr>
-        <td style="text-align: center; border-bottom: 1px solid #ddd; padding-top: 15px; padding-bottom: 15px;">
+        <td style="text-align: center; border-bottom: 2px solid #ff8800; padding: 25px;">
           {% if logo %}
-            <a href="{{ store_url }}"><img src="{{ logo }}" alt="{{ store_name }}" title="{{ store_name }}" style="margin-left: auto; margin-right: auto;"/></a>
+            <a href="{{ store_url }}"><img src="{{ logo }}" alt="{{ store_name }}" title="{{ store_name }}" style="max-width: 180px; display: block; margin: 0 auto; filter: grayscale(1);"/></a>
           {% else %}
-            <a href="{{ store_url }}">{{ store_name }}</a>
-          {% endif %}</td>
+            <a href="{{ store_url }}" style="color: #ffffff; text-decoration: none; font-size: 20px; font-weight: bold; letter-spacing: 2px;">{{ store_name }}</a>
+          {% endif %}
+        </td>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td style="text-align: center; border-bottom: 1px solid #ddd;"><h1>{{ text_request }}</h1></td>
+        <td style="padding: 30px; text-align: center;">
+          <h1 style="color: #ff8800; font-family: Arial, sans-serif; font-size: 18px; text-transform: uppercase; letter-spacing: 3px; margin: 0;">
+            [ {{ text_request }} ]
+          </h1>
+        </td>
       </tr>
       <tr>
-        <td style="line-height: 1.8;">
-          <p>{{ text_hello }}</p>
-          <p>{{ text_delete }}</p>
-          <p>{{ text_contact }}</p>
-          <p>
-            <br/>
+        <td style="padding: 0 40px 40px 40px; line-height: 1.8; font-size: 14px;">
+
+          <div style="border-left: 2px solid #ff8800; padding-left: 20px; margin-bottom: 30px; color: #888888;">
+            <p style="color: #ffffff; font-weight: bold;">> {{ text_hello }}</p>
+            <p>> [STATUS]: {{ text_delete }}</p>
+            <p>> [NOTICE]: {{ text_contact }}</p>
+          </div>
+
+          <p style="text-align: center; margin: 40px 0;">
+            <a href="{{ contact }}" style="display: inline-block; color: #ffffff; text-decoration: none; border: 1px solid #ff8800; background-color: transparent; padding: 12px 25px; font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;">
+              {{ button_contact }}
+            </a>
           </p>
-          <p style="text-align: center;"><a href="{{ contact }}" style="border-radius: 4px; color: #fff; text-decoration: none; background-color: #01b3e8; padding-left: 18px; padding-right: 18px; padding-top: 10px; padding-bottom: 10px; font-size: 18px; font-weight: bold;">{{ button_contact }}</a></p>
-          <p>
-            {{ text_thanks }}
-            <br/>
-            <strong>{{ store_name }}</strong>
-          </p></td>
+
+          <div style="border-top: 1px solid #1a1a1a; padding-top: 20px; color: #444444; font-size: 12px;">
+            <p>
+              {{ text_thanks }}<br/>
+              <strong style="color: #ff8800; text-transform: uppercase;">{{ store_name }}</strong>
+            </p>
+          </div>
+        </td>
       </tr>
     </tbody>
   </table>
+
+  <div style="background-color: #1a0f00; padding: 10px; text-align: right; font-size: 8px; color: #ff8800; letter-spacing: 5px; opacity: 0.5;">
+    CRITICAL_DATA_PURGE_v4.2
+  </div>
 </div>

@@ -1,46 +1,137 @@
+<style>
+    /* 1. СТИЛЬ КОНТЕЙНЕРА КОМЕНТАРЯ */
+    .comment-item {
+        background: #050505 !important;
+        border: 1px solid #1a1a1a !important;
+        border-left: 3px solid #ff0000 !important;
+        margin-bottom: 20px;
+        position: relative;
+    }
+    .comment-header {
+        background: #000;
+        padding: 10px 15px;
+        border-bottom: 1px solid #111;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .comment-author {
+        color: #ff0000;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .comment-date {
+        color: #444;
+        font-family: 'Consolas', monospace;
+        font-size: 10px;
+    }
+    .comment-body {
+        padding: 15px;
+        color: #ccc;
+        font-family: 'Consolas', monospace;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    /* 2. КНОПКИ ДІЙ (IN-LOG ACTIONS) */
+    .comment-footer {
+        padding: 10px;
+        background: #000;
+        border-top: 1px solid #111;
+    }
+    .btn-log-action {
+        background: transparent !important;
+        border: 1px solid #222 !important;
+        color: #666 !important;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 9px;
+        text-transform: uppercase;
+        border-radius: 0 !important;
+        padding: 5px 10px !important;
+        transition: 0.3s;
+    }
+    .btn-log-action:hover {
+        border-color: #ff0000 !important;
+        color: #ff0000 !important;
+        background: rgba(255, 0, 0, 0.05) !important;
+    }
+    .btn-log-action i { font-size: 10px; }
+
+    /* 3. ВІДПОВІДІ (REPLY_NESTING) */
+    .reply-box {
+        margin-left: 20px;
+        border-left: 1px dashed #222;
+        padding-left: 10px;
+        background: rgba(255, 255, 255, 0.01);
+    }
+
+    /* 4. ПУСТИЙ СТАН ТА ПАГІНАЦІЯ */
+    .no-comments-msg {
+        color: #222;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+        font-size: 10px;
+        padding: 40px;
+    }
+</style>
+
 <div id="comment-0">
   {% if comments %}
     {% for comment in comments %}
-      <div id="comment-{{ comment.article_comment_id }}" class="border mb-3">
-        <div class="p-2">
-          <p>{{ text_by }} {{ comment.author }} - {{ comment.date_added }}</p>
-          <p>{{ comment.comment }}</p>
-          <div class="text-end">
-            {% if logged %}
-              <button type="button" value="{{ comment.like }}" data-bs-toggle="tooltip" title="{{ button_like }}" data-oc-toggle="rate" class="btn btn-secondary"><i class="fa fa-thumbs-up"></i></button>
-              <button type="button" value="{{ comment.dislike }}" data-bs-toggle="tooltip" title="{{ button_dislike }}" data-oc-toggle="rate" class="btn btn-secondary"><i class="fa fa-thumbs-down"></i></button>
-              <button type="button" value="{{ comment.reply_add }}" data-oc-toggle="comment" data-oc-target="#reply-{{ comment.article_comment_id }}" data-oc-trigger="#button-refresh-{{ comment.article_comment_id }}" class="btn btn-secondary">{{ button_reply }}</button>
-            {% else %}
-              <a href="{{ login }}" class="btn btn-secondary"><i class="fa fa-thumbs-up"></i></a>
-              <a href="{{ login }}" class="btn btn-secondary"><i class="fa fa-thumbs-down"></i></a>
-              <a href="{{ login }}" class="btn btn-secondary">{{ button_login_reply }}</a>
-            {% endif %}
-          </div>
+      <div id="comment-{{ comment.article_comment_id }}" class="comment-item">
+        <div class="comment-header">
+          <div class="comment-author"><i class="fa-solid fa-user-tag me-2"></i>{{ comment.author }}</div>
+          <div class="comment-date">[ {{ comment.date_added }} ]</div>
         </div>
-        <div id="reply-{{ comment.article_comment_id }}">
+
+        <div class="comment-body">
+          {{ comment.comment }}
+        </div>
+
+        <div class="comment-footer text-end">
+          {% if logged %}
+            <button type="button" value="{{ comment.like }}" data-bs-toggle="tooltip" title="{{ button_like }}" data-oc-toggle="rate" class="btn btn-log-action"><i class="fa-solid fa-arrow-up"></i></button>
+            <button type="button" value="{{ comment.dislike }}" data-bs-toggle="tooltip" title="{{ button_dislike }}" data-oc-toggle="rate" class="btn btn-log-action"><i class="fa-solid fa-arrow-down"></i></button>
+            <button type="button" value="{{ comment.reply_add }}" data-oc-toggle="comment" data-oc-target="#reply-{{ comment.article_comment_id }}" data-oc-trigger="#button-refresh-{{ comment.article_comment_id }}" class="btn btn-log-action ms-2">
+                <i class="fa-solid fa-reply"></i> {{ button_reply }}
+            </button>
+          {% else %}
+            <a href="{{ login }}" class="btn btn-log-action"><i class="fa-solid fa-arrow-up"></i></a>
+            <a href="{{ login }}" class="btn btn-log-action"><i class="fa-solid fa-arrow-down"></i></a>
+            <a href="{{ login }}" class="btn btn-log-action ms-2">{{ button_login_reply }}</a>
+          {% endif %}
+        </div>
+
+        <div id="reply-{{ comment.article_comment_id }}" class="reply-box">
           <div id="reply-{{ comment.article_comment_id }}-0"></div>
-          <div class="text-center p-2 border-top">
-            <button type="button" value="{{ comment.reply }}" id="button-refresh-{{ comment.article_comment_id }}" data-oc-toggle="refresh" data-oc-target="#reply-{{ comment.article_comment_id }}-0" class="btn btn-secondary d-none"><i class="fa fa-sync"></i></button>
+          <div class="text-center p-2">
+            <button type="button" value="{{ comment.reply }}" id="button-refresh-{{ comment.article_comment_id }}" data-oc-toggle="refresh" data-oc-target="#reply-{{ comment.article_comment_id }}-0" class="btn btn-log-action d-none"><i class="fa-solid fa-sync"></i></button>
             {% if comment.reply_total %}
-              <button type="button" value="{{ comment.reply }}" data-oc-toggle="next" class="btn btn-secondary">{{ button_replies }} ({{ comment.reply_total }})</button>
+              <button type="button" value="{{ comment.reply }}" data-oc-toggle="next" class="btn btn-log-action">
+                <i class="fa-solid fa-folder-tree me-2"></i> {{ button_replies }} ({{ comment.reply_total }})
+              </button>
             {% else %}
-              <button type="button" class="btn btn-secondary" disabled>{{ button_replies }}</button>
+              <button type="button" class="btn btn-log-action" style="opacity:0.3" disabled>{{ button_replies }}</button>
             {% endif %}
           </div>
         </div>
       </div>
     {% endfor %}
-    <div class="row">
+
+    <div class="row mt-4">
       <div class="col-sm-6 text-start">{{ pagination }}</div>
-      <div class="col-sm-6 text-end">{{ results }}</div>
+      <div class="col-sm-6 text-end" style="font-size: 9px; color: #333; text-transform: uppercase;">{{ results }}</div>
     </div>
   {% else %}
-    {{ text_no_results }}
+    <div class="text-center no-comments-msg">
+      <i class="fa-solid fa-comment-slash d-block mb-3" style="font-size: 24px;"></i>
+      {{ text_no_results }}
+    </div>
   {% endif %}
 </div>
+
 <div class="text-center p-2">
-  <button type="button" value="{{ refresh }}" id="button-refresh" data-oc-toggle="refresh" data-oc-target="#comment-0" class="btn btn-secondary d-none"><i class="fa fa-sync"></i></button>
+  <button type="button" value="{{ refresh }}" id="button-refresh" data-oc-toggle="refresh" data-oc-target="#comment-0" class="btn btn-log-action d-none"><i class="fa-solid fa-sync"></i> REFRESH_LOG</button>
 </div>
-
-
-

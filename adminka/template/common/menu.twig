@@ -1,0 +1,87 @@
+{% if categories %}
+  &lt;div class=&quot;container&quot;&gt;
+    &lt;nav id=&quot;menu&quot; class=&quot;navbar navbar-expand-lg&quot; style=&quot;background-color: #0a0a0a !important; border-bottom: 2px solid #ff0000 !important; border-radius: 0;&quot;&gt;
+
+      &lt;div id=&quot;category&quot; class=&quot;d-block d-sm-block d-lg-none&quot; style=&quot;color: #fff; text-transform: uppercase; font-weight: 800; padding-left: 15px;&quot;&gt;{{ text_category }}&lt;/div&gt;
+
+      &lt;button type=&quot;button&quot; data-bs-toggle=&quot;collapse&quot; data-bs-target=&quot;#navbar-menu&quot; class=&quot;navbar-toggler d-lg-none&quot; style=&quot;border-color: #ff0000; margin-right: 15px;&quot;&gt;
+        &lt;i class=&quot;fa-solid fa-bars&quot; style=&quot;color: #ff0000;&quot;&gt;&lt;/i&gt;
+      &lt;/button&gt;
+
+      &lt;div id=&quot;navbar-menu&quot; class=&quot;collapse navbar-collapse&quot;&gt;
+        &lt;ul class=&quot;nav navbar-nav&quot;&gt;
+
+          {# 1. КАТЕГОРИИ ИЗ БАЗЫ (Автомобили, Услуги) #}
+          {% for category in categories %}
+            {% if category.children %}
+              &lt;li class=&quot;nav-item dropdown&quot;&gt;
+                &lt;a href=&quot;{{ category.href }}&quot; class=&quot;nav-link dropdown-toggle&quot; style=&quot;color: #fff !important; font-family: 'Orbitron', sans-serif; text-transform: uppercase; font-weight: 800;&quot;&gt;{{ category.name }}&lt;/a&gt;
+                &lt;div class=&quot;dropdown-menu&quot;&gt;
+                  &lt;div class=&quot;dropdown-inner&quot;&gt;
+                    {% for children in category.children|batch(5) %}
+                      &lt;ul class=&quot;list-unstyled&quot;&gt;
+                        {% for child in children %}
+                          &lt;li&gt;&lt;a href=&quot;{{ child.href }}&quot; class=&quot;dropdown-item&quot;&gt;{{ child.name }}&lt;/a&gt;&lt;/li&gt;
+                        {% endfor %}
+                      &lt;/ul&gt;
+                    {% endfor %}
+                  &lt;/div&gt;
+                &lt;/div&gt;
+              &lt;/li&gt;
+            {% else %}
+              &lt;li class=&quot;nav-item&quot;&gt;&lt;a href=&quot;{{ category.href }}&quot; class=&quot;nav-link&quot; style=&quot;color: #fff !important; font-family: 'Orbitron', sans-serif; text-transform: uppercase; font-weight: 800;&quot;&gt;{{ category.name }}&lt;/a&gt;&lt;/li&gt;
+            {% endif %}
+          {% endfor %}
+
+          {# 2. КНОПКА КОНТАКТЫ #}
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a href=&quot;index.php?route=information/contact&quot; class=&quot;nav-link&quot; style=&quot;color: #fff !important; font-family: 'Orbitron', sans-serif; text-transform: uppercase; font-weight: 800;&quot;&gt;
+              &lt;span class=&quot;lang-block lang-en&quot;&gt;CONTACT&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-ua&quot;&gt;КОНТАКТИ&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-pl&quot;&gt;KONTAKT&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+
+          {# 3. КНОПКА O NAS #}
+          &lt;li class=&quot;nav-item&quot;&gt;
+            &lt;a href=&quot;index.php?route=information/information&amp;information_id=1&quot; class=&quot;nav-link&quot; style=&quot;color: #fff !important; font-family: 'Orbitron', sans-serif; text-transform: uppercase; font-weight: 800;&quot;&gt;
+              &lt;span class=&quot;lang-block lang-en&quot;&gt;ABOUT US&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-ua&quot;&gt;ПРО НАС&lt;/span&gt;
+              &lt;span class=&quot;lang-block lang-pl&quot;&gt;O NAS&lt;/span&gt;
+            &lt;/a&gt;
+          &lt;/li&gt;
+
+        &lt;/ul&gt;
+      &lt;/div&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+{% endif %}
+
+&lt;style&gt;
+  /* Скрываем все блоки перевода по умолчанию */
+  .lang-block {
+    display: none !important;
+  }
+
+  /* Магия CSS: показываем нужный язык на основе атрибута lang в &lt;html&gt; */
+  /* Польский (pl, pl-pl) */
+  html[lang*=&quot;pl&quot;] .lang-pl { display: inline-block !important; }
+  
+  /* Украинский (uk, ua, uk-ua) */
+  html[lang*=&quot;uk&quot;] .lang-ua { display: inline-block !important; }
+  html[lang*=&quot;ua&quot;] .lang-ua { display: inline-block !important; }
+  
+  /* Английский (en, en-gb) - показываем только если нет польского или украинского */
+  html[lang*=&quot;en&quot;] .lang-en { display: inline-block !important; }
+
+  /* Стили для красоты меню */
+  .nav-link:hover { background-color: #ff0000 !important; color: #000 !important; }
+  .dropdown-item:hover { background-color: #ff0000 !important; color: #fff !important; }
+&lt;/style&gt;
+
+&lt;script&gt;
+(function() {
+    function garagePowerTranslate() {
+        // 1. Пытаемся достать язык из куки (самый точный метод для OpenCart)
+        const getCookie = (name) =&gt; {
+            let matches = document.cookie.match(new RegExp(&quot;(?:^|; )&quot; + name.replace(/([\\.$?*|{}\\(\\)\\[\\]\\\\\\/\\+^])/g, '\\\\$1\

@@ -1,0 +1,232 @@
+{{ header }}
+<style>
+    /* 1. ЗАГОЛОВКИ ТА ШЛЯХ */
+    #information-contact h1 {
+        font-family: 'Orbitron', sans-serif;
+        color: #ff0000;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 30px;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+    }
+    #information-contact h3 {
+        font-family: 'Orbitron', sans-serif;
+        font-size: 14px;
+        color: #888;
+        text-transform: uppercase;
+        margin: 40px 0 20px;
+    }
+
+    /* 2. КАРТКА ЛОКАЦІЇ (BASE_STATION) */
+    .card-contact {
+        background: #050505 !important;
+        border: 1px solid #1a1a1a !important;
+        border-radius: 0 !important;
+        position: relative;
+    }
+    .card-contact strong { color: #ff0000; font-family: 'Orbitron'; font-size: 12px; }
+    .card-contact address, .card-contact div {
+        font-family: 'Consolas', monospace;
+        color: #aaa;
+        font-size: 13px;
+    }
+
+    /* 3. ФОРМА ЗВ'ЯЗКУ (COMMUNICATION_TERMINAL) */
+    #form-contact fieldset {
+        border: 1px solid #1a1a1a;
+        padding: 30px;
+        background: rgba(255,0,0,0.02);
+    }
+    #form-contact legend {
+        font-family: 'Orbitron';
+        color: #fff;
+        font-size: 16px;
+        text-transform: uppercase;
+        width: auto;
+        padding: 0 15px;
+        float: none;
+    }
+    .form-label {
+        font-family: 'Orbitron';
+        font-size: 10px;
+        color: #444;
+        text-transform: uppercase;
+    }
+    .form-control {
+        background: #000 !important;
+        border: 1px solid #222 !important;
+        color: #00ff00 !important;
+        font-family: 'Consolas', monospace;
+        border-radius: 0 !important;
+    }
+    .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: none !important;
+    }
+
+    /* 4. КНОПКИ (COMMAND_BUTTONS) */
+    .btn-map {
+        background: transparent !important;
+        border: 1px solid #333 !important;
+        color: #888 !important;
+        font-family: 'Orbitron';
+        font-size: 10px;
+        border-radius: 0;
+        text-transform: uppercase;
+    }
+    .btn-map:hover { border-color: #ff0000; color: #ff0000 !important; }
+
+    .btn-send-report {
+        background: #ff0000 !important;
+        color: #000 !important;
+        font-family: 'Orbitron';
+        font-weight: 900;
+        border-radius: 0;
+        border: none;
+        padding: 15px 40px !important;
+        text-transform: uppercase;
+    }
+    .btn-send-report:hover { background: #fff !important; box-shadow: 0 0 20px rgba(255,0,0,0.4); }
+
+    /* Accordion Fix */
+    .accordion-item { background: #000 !important; border: 1px solid #1a1a1a !important; border-radius: 0 !important; }
+    .accordion-button { background: #050505 !important; color: #fff !important; font-family: 'Orbitron'; font-size: 12px; }
+    .accordion-button:not(.collapsed) { color: #ff0000 !important; box-shadow: none; }
+</style>
+
+<div id="information-contact" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <div class="row">
+    {{ column_left }}
+
+    <div id="content" class="col">
+      {{ content_top }}
+
+      <h1><i class="fa-solid fa-headset me-3"></i>{{ heading_title }}</h1>
+
+      <h3><i class="fa-solid fa-location-crosshairs me-2"></i>{{ text_location }}</h3>
+
+      <div class="card card-contact mb-4">
+        <div class="card-body">
+          <div class="row">
+            {% if image %}
+              <div class="col-sm-3 mb-3"><img src="{{ image }}" alt="{{ store }}" title="{{ store }}" class="img-thumbnail" style="background:#000; border-color:#222;"/></div>
+            {% endif %}
+            <div class="col-sm-3"><strong>{{ store }}</strong>
+              <br/>
+              <address class="mt-2">{{ address }}</address>
+              {% if geocode %}
+                <a href="https://maps.google.com/maps?q={{ geocode|url_encode }}&hl={{ geocode_hl }}&t=m&z=15" target="_blank" class="btn btn-map mt-2"><i class="fa-solid fa-map-location-dot me-2"></i> {{ button_map }}</a>
+              {% endif %}
+            </div>
+            {% if telephone %}
+              <div class="col-sm-3"><strong>{{ text_telephone }}</strong>
+                <br/>
+                <div class="mt-2">{{ telephone }}</div>
+              </div>
+            {% endif %}
+            <div class="col-sm-3">
+              {% if open %}
+                <strong>{{ text_open }}</strong>
+                <br/>
+                <div class="mt-2">{{ open }}</div>
+              {% endif %}
+              {% if comment %}
+                <hr style="border-color:#222">
+                <small style="color:#444">{{ text_comment }}</small><br>
+                <div class="mt-1">{{ comment }}</div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% if locations %}
+        <h3>{{ text_store }}</h3>
+        <div id="accordion" class="accordion mb-4">
+          {% for location in locations %}
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#collapse-location-{{ location.location_id }}">
+                  <i class="fa-solid fa-network-wired me-2"></i> {{ location.name }}
+                </button>
+              </h2>
+              <div id="collapse-location-{{ location.location_id }}" class="accordion-collapse collapse" data-bs-parent="#accordion">
+                <div class="accordion-body">
+                  <div class="row">
+                    {% if location.image %}
+                      <div class="col-sm-3"><img src="{{ location.image }}" alt="{{ location.name }}" title="{{ location.name }}" class="img-thumbnail" style="background:#000; border-color:#222;"/></div>
+                    {% endif %}
+                    <div class="col-sm-3"><strong>{{ location.name }}</strong>
+                      <br/>
+                      <address class="mt-2">{{ location.address }}</address>
+                      {% if location.geocode %}
+                        <a href="https://maps.google.com/maps?q={{ location.geocode|url_encode }}&hl={{ geocode_hl }}&t=m&z=15" target="_blank" class="btn btn-map mt-2"><i class="fa-solid fa-location-dot"></i> {{ button_map }}</a>
+                      {% endif %}
+                    </div>
+                    <div class="col-sm-3"><strong>{{ text_telephone }}</strong>
+                      <br/>
+                      <div class="mt-2">{{ location.telephone }}</div>
+                    </div>
+                    <div class="col-sm-3">
+                      {% if location.open %}
+                        <strong>{{ text_open }}</strong><br/>
+                        <div class="mt-2">{{ location.open }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form id="form-contact" action="{{ send }}" method="post" data-oc-toggle="ajax">
+        <fieldset>
+          <legend><i class="fa-solid fa-satellite-dish me-2"></i> {{ text_contact }}</legend>
+          <div class="row mb-4 required">
+            <label for="input-name" class="col-sm-2 col-form-label">{{ entry_name }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="name" value="{{ name }}" id="input-name" class="form-control" placeholder="IDENT_OPERATOR"/>
+              <div id="error-name" class="invalid-feedback"></div>
+            </div>
+          </div>
+          <div class="row mb-4 required">
+            <label for="input-email" class="col-sm-2 col-form-label">{{ entry_email }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="email" value="{{ email }}" id="input-email" class="form-control" placeholder="PROTOCOL_MAIL@DOMAIN.COM"/>
+              <div id="error-email" class="invalid-feedback"></div>
+            </div>
+          </div>
+          <div class="row mb-4 required">
+            <label for="input-enquiry" class="col-sm-2 col-form-label">{{ entry_enquiry }}</label>
+            <div class="col-sm-10">
+              <textarea name="enquiry" rows="6" id="input-enquiry" class="form-control" placeholder="ENTER_TECHNICAL_ENQUIRY_DETAILS..."></textarea>
+              <div id="error-enquiry" class="invalid-feedback"></div>
+            </div>
+          </div>
+          {{ captcha }}
+        </fieldset>
+        <div class="text-end mt-4">
+          <button type="submit" class="btn btn-send-report">
+            <i class="fa-solid fa-paper-plane me-2"></i> INITIATE_TRANSFER
+          </button>
+        </div>
+      </form>
+
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+
+
+
+{{ footer }}

@@ -1,7 +1,49 @@
 {% if modules %}
+<style>
+    /* 1. СТИЛІЗАЦІЯ ПРАВОЇ ПАНЕЛІ (AUXILIARY PANEL) */
+    #column-right {
+        background: rgba(5, 5, 5, 0.3);
+        border-left: 1px solid #1a1a1a;
+        padding-left: 20px;
+        position: relative;
+        min-height: 100vh;
+    }
+
+    /* Декоративний індикатор активності зверху */
+    #column-right::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -2px;
+        width: 3px;
+        height: 150px;
+        background: #ff0000;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+    }
+
+    /* Вертикальний статус-текст */
+    #column-right::after {
+        content: "SYSTEM_STATUS_LOADED";
+        position: absolute;
+        top: 170px;
+        left: -12px;
+        font-size: 7px;
+        color: #333;
+        letter-spacing: 2px;
+        transform: rotate(90deg);
+        transform-origin: left top;
+        white-space: nowrap;
+    }
+
+    /* Відступи для модулів (Акції, Останні товари тощо) */
+    #column-right > div {
+        margin-bottom: 35px;
+    }
+</style>
+
 <aside id="column-right" class="col-3 d-none d-md-block">
   {% for module in modules %}
-  {{ module }}
+    {{ module }}
   {% endfor %}
 </aside>
 {% endif %}

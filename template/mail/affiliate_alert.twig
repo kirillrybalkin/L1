@@ -1,18 +1,60 @@
-{{ text_signup }}<br/>
-<br/>
-{% if company %}
-{{ text_company }} {{ company }}<br/>
-{% endif %}
-{% if website %}
-{{ text_website }} {{ website }}<br/>
-{% endif %}
-{{ text_firstname }} {{ firstname }}<br/>
-{{ text_lastname }} {{ lastname }}<br/>
-{% if customer_group %}
-{{ text_customer_group }} {{ customer_group }}<br/>
-{% endif %}
-{{ text_email }} {{ email }}<br/>
-{{ text_telephone }} {{ telephone }}<br/>
-<br/>
-{{ store }}<br/>
-{{ store_url }}
+<div style="background-color: #050505; color: #aaaaaa; font-family: 'Courier New', Courier, monospace; padding: 30px; border: 1px solid #1a1a1a;">
+  
+  <div style="background-color: #ff0000; color: #000000; padding: 10px 20px; font-weight: bold; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px;">
+    [!] {{ text_signup }}
+  </div>
+
+  <div style="border: 1px solid #222222; background-color: #0c0c0c; padding: 20px;">
+    <table width="100%" cellpadding="5" cellspacing="0">
+      {% if company %}
+      <tr>
+        <td width="150" style="color: #444444; font-size: 11px;">{{ text_company }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #1a1a1a;">{{ company }}</td>
+      </tr>
+      {% endif %}
+      
+      {% if website %}
+      <tr>
+        <td style="color: #444444; font-size: 11px;">{{ text_website }}</td>
+        <td style="color: #00ff00; border-bottom: 1px solid #1a1a1a;">{{ website }}</td>
+      </tr>
+      {% endif %}
+
+      <tr>
+        <td style="color: #444444; font-size: 11px;">{{ text_firstname }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #1a1a1a;">{{ firstname }}</td>
+      </tr>
+      
+      <tr>
+        <td style="color: #444444; font-size: 11px;">{{ text_lastname }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #1a1a1a;">{{ lastname }}</td>
+      </tr>
+
+      {% if customer_group %}
+      <tr>
+        <td style="color: #444444; font-size: 11px;">{{ text_customer_group }}</td>
+        <td style="color: #ff0000; border-bottom: 1px solid #1a1a1a;">{{ customer_group }}</td>
+      </tr>
+      {% endif %}
+
+      <tr>
+        <td style="color: #444444; font-size: 11px;">{{ text_email }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #1a1a1a;">{{ email }}</td>
+      </tr>
+
+      <tr>
+        <td style="color: #444444; font-size: 11px;">{{ text_telephone }}</td>
+        <td style="color: #ffffff; border-bottom: 1px solid #1a1a1a;">{{ telephone }}</td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="margin-top: 30px; border-top: 1px solid #222222; padding-top: 15px;">
+    <span style="color: #ff0000; font-weight: bold;">{{ store }}</span><br/>
+    <a href="{{ store_url }}" style="color: #444444; font-size: 10px; text-decoration: none;">{{ store_url }}</a>
+  </div>
+
+  <div style="margin-top: 20px; text-align: center; font-size: 9px; color: #222222; letter-spacing: 3px;">
+    END_OF_REPORT // LAUNCH_PRO3_ADMIN_NOTICE
+  </div>
+</div>

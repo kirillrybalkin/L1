@@ -1,8 +1,82 @@
+<style>
+    /* 1. КОНТЕЙНЕР COOKIE (SYSTEM_OVERLAY) */
+    #cookie {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(5, 5, 5, 0.95);
+        backdrop-filter: blur(10px);
+        border-top: 2px solid #ff0000;
+        z-index: 9999;
+        padding: 15px 0;
+        box-shadow: 0 -10px 30px rgba(0,0,0,0.5);
+    }
+
+    /* 2. ТЕКСТ (DATA_LOG) */
+    #cookie p {
+        color: #888;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        margin-bottom: 0;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    #cookie p::before {
+        content: "[SECURITY_INFO]: ";
+        color: #ff0000;
+        font-weight: 700;
+    }
+
+    /* 3. КНОПКИ (PROTOCOL_SWITCHES) */
+    .btn-cookie-agree {
+        background: #ff0000 !important;
+        border: none !important;
+        color: #000 !important;
+        font-family: 'Orbitron', sans-serif;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 11px;
+        padding: 8px 20px !important;
+        border-radius: 0 !important;
+        transition: 0.3s;
+    }
+    .btn-cookie-agree:hover {
+        background: #fff !important;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .btn-cookie-disagree {
+        background: transparent !important;
+        border: 1px solid #333 !important;
+        color: #555 !important;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 10px;
+        text-transform: uppercase;
+        border-radius: 0 !important;
+        padding: 8px 20px !important;
+        transition: 0.3s;
+    }
+    .btn-cookie-disagree:hover {
+        border-color: #ff0000 !important;
+        color: #ff0000 !important;
+    }
+</style>
+
 <div id="cookie">
   <div class="container">
-    <div class="row mt-2">
-      <div class="col-12 p-2 text-center"><p>{{ text_cookie }}</p>
-        <button type="button" value="{{ agree }}" class="btn bg-primary btn-block text-white">{{ button_agree }}</button>&nbsp;&nbsp;&nbsp;<button type="button" value="{{ disagree }}" class="btn btn-light btn-block">{{ button_disagree }}</button>
+    <div class="row align-items-center">
+      <div class="col-lg-8 text-center text-lg-start mb-3 mb-lg-0">
+        <p>{{ text_cookie }}</p>
+      </div>
+      <div class="col-lg-4 text-center text-lg-end">
+        <button type="button" value="{{ agree }}" class="btn btn-cookie-agree me-3">
+            <i class="fa-solid fa-check-shield me-2"></i>ACCEPT_PROTOCOL
+        </button>
+        <button type="button" value="{{ disagree }}" class="btn btn-cookie-disagree">
+            REJECT
+        </button>
       </div>
     </div>
   </div>

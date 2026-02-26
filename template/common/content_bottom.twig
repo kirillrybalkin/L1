@@ -1,3 +1,49 @@
-{% for module in modules %}
-{{ module }}
-{% endfor %}
+{% if modules %}
+<style>
+    /* 1. КОНТЕЙНЕР НИЖНІХ МОДУЛІВ */
+    #content-bottom {
+        margin-top: 60px;
+        padding-top: 40px;
+        border-top: 1px solid #1a1a1a;
+        position: relative;
+    }
+
+    /* Технічний індикатор завершення основного блоку */
+    #content-bottom::before {
+        content: "DATA_OUTPUT_END_LINE";
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #0a0a0a;
+        padding: 0 15px;
+        font-size: 8px;
+        color: #333;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+
+    /* Ефект підсвічування зони */
+    #content-bottom::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 10%;
+        width: 80%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #ff0000, transparent);
+        opacity: 0.3;
+    }
+
+    /* Відступи для модулів всередині */
+    #content-bottom > div {
+        margin-bottom: 50px;
+    }
+</style>
+
+<div id="content-bottom">
+  {% for module in modules %}
+    {{ module }}
+  {% endfor %}
+</div>
+{% endif %}

@@ -1,0 +1,152 @@
+{{ header }}
+<style>
+    /* 1. ЗАГОЛОВОК БРЕНДУ */
+    #product-manufacturer h1 {
+        font-family: 'Orbitron', sans-serif;
+        color: #ff0000;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 30px;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+    }
+
+    /* 2. ПАНЕЛЬ КЕРУВАННЯ (MANUFACTURER_CONTROLS) */
+    .control-panel-wrap {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        padding: 15px;
+        margin-bottom: 30px;
+    }
+    .control-panel-wrap .input-group-text {
+        background: transparent !important;
+        border: none !important;
+        color: #444;
+        font-family: 'Orbitron';
+        font-size: 10px;
+        text-transform: uppercase;
+    }
+    .control-panel-wrap .form-select {
+        background-color: #000 !important;
+        border: 1px solid #222 !important;
+        color: #eee !important;
+        font-family: 'Consolas';
+        font-size: 13px;
+        border-radius: 0;
+    }
+    .control-panel-wrap .form-select:focus {
+        border-color: #ff0000 !important;
+        box-shadow: none;
+    }
+
+    .btn-view-mode {
+        background: #111 !important;
+        border: 1px solid #222 !important;
+        color: #555 !important;
+        border-radius: 0 !important;
+    }
+    .btn-view-mode.active, .btn-view-mode:hover {
+        color: #ff0000 !important;
+        border-color: #ff0000 !important;
+    }
+
+    /* 3. КНОПКА ПОРІВНЯННЯ */
+    #compare-total {
+        background: transparent !important;
+        border: 1px solid #333 !important;
+        color: #888 !important;
+        font-family: 'Orbitron';
+        font-size: 11px;
+        text-transform: uppercase;
+        border-radius: 0;
+    }
+    #compare-total:hover {
+        border-color: #ff0000 !important;
+        color: #fff !important;
+    }
+</style>
+
+<div id="product-manufacturer" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <div class="row">
+    {{ column_left }}
+
+    <div id="content" class="col">
+      {{ content_top }}
+
+      <h1><i class="fa-solid fa-industry me-3"></i>{{ heading_title }}</h1>
+
+      {% if products %}
+        <div class="control-panel-wrap">
+          <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
+              <a href="{{ compare }}" id="compare-total" class="btn btn-primary d-block">
+                <i class="fa-solid fa-arrow-right-arrow-left me-2"></i> {{ text_compare }}
+              </a>
+            </div>
+
+            <div class="col-lg-1 d-none d-lg-block">
+              <div class="btn-group">
+                <button type="button" id="button-list" class="btn btn-view-mode" data-bs-toggle="tooltip" title="{{ button_list }}"><i class="fa-solid fa-table-list"></i></button>
+                <button type="button" id="button-grid" class="btn btn-view-mode" data-bs-toggle="tooltip" title="{{ button_grid }}"><i class="fa-solid fa-table-cells"></i></button>
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-md-4 col-6">
+              <div class="input-group">
+                <label for="input-sort" class="input-group-text d-none d-sm-block">{{ text_sort }}</label>
+                <select id="input-sort" class="form-select" onchange="location = this.value;">
+                  {% for sorts in sorts %}
+                    <option value="{{ sorts.href }}"{% if sorts.value == '%s-%s'|format(sort, order) %} selected{% endif %}>{{ sorts.text }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-6">
+              <div class="input-group">
+                <label for="input-limit" class="input-group-text d-none d-sm-block">{{ text_limit }}</label>
+                <select id="input-limit" class="form-select" onchange="location = this.value;">
+                  {% for limits in limits %}
+                    <option value="{{ limits.href }}"{% if limits.value == limit %} selected{% endif %}>{{ limits.text }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="product-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-3">
+          {% for product in products %}
+            <div class="col">{{ product }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="row mt-5 pt-4 border-top border-dark align-items-center">
+          <div class="col-sm-6 text-start" id="system-pagination">{{ pagination }}</div>
+          <div class="col-sm-6 text-end" style="font-family: 'Consolas'; font-size: 11px; color: #444;">{{ results }}</div>
+        </div>
+
+      {% else %}
+        <div class="category-info-wrap text-center py-5" style="background:#050505; border:1px solid #1a1a1a;">
+            <p style="font-family: 'Orbitron'; color: #ff0000; letter-spacing: 2px;">[ ERROR: NO_DATA_STREAM_FROM_MANUFACTURER ]</p>
+            <div class="mt-4">
+                <a href="{{ continue }}" class="btn btn-primary" style="background:#ff0000; border:none; border-radius:0; font-family:'Orbitron'; padding:10px 30px;">
+                    {{ button_continue }}
+                </a>
+            </div>
+        </div>
+      {% endif %}
+
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+
+{{ footer }}

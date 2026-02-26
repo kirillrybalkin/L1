@@ -1,0 +1,225 @@
+{{ header }}
+<style>
+    /* 1. ЗАГОЛОВОК (QUERY_IDENTIFIER) */
+    #product-search h1 {
+        font-family: 'Orbitron', sans-serif;
+        color: #ff0000;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        margin-bottom: 30px;
+        border-left: 5px solid #ff0000;
+        padding-left: 20px;
+    }
+
+    /* 2. БЛОК ПАРАМЕТРІВ (SCAN_PARAMETERS) */
+    .search-params-wrap {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        padding: 25px;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .search-params-wrap::before {
+        content: "[ SCAN_CONFIG ]";
+        position: absolute;
+        top: -10px;
+        left: 20px;
+        background: #000;
+        color: #ff0000;
+        font-size: 10px;
+        font-family: 'Orbitron';
+        padding: 0 10px;
+    }
+
+    .form-control, .form-select {
+        background-color: #000 !important;
+        border: 1px solid #222 !important;
+        color: #eee !important;
+        font-family: 'Consolas', monospace;
+        border-radius: 0;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+    }
+    .form-check-label {
+        font-family: 'Orbitron';
+        font-size: 10px;
+        color: #666;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+    .form-check-input {
+        background-color: #000;
+        border-color: #333;
+    }
+    .form-check-input:checked {
+        background-color: #ff0000;
+        border-color: #ff0000;
+    }
+
+    /* 3. КНОПКА ПОШУКУ (EXECUTE) */
+    #button-search {
+        background: #ff0000 !important;
+        border: none !important;
+        color: #000 !important;
+        font-family: 'Orbitron';
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        border-radius: 0;
+        padding: 12px 40px;
+        transition: 0.3s;
+    }
+    #button-search:hover {
+        background: #fff !important;
+        box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+    }
+
+    /* 4. ПАНЕЛЬ РЕЗУЛЬТАТІВ */
+    .control-panel-wrap {
+        background: #0a0a0a;
+        border: 1px solid #1a1a1a;
+        padding: 15px;
+        margin: 30px 0;
+    }
+    .btn-view-mode {
+        background: #111 !important;
+        border: 1px solid #222 !important;
+        color: #555 !important;
+        border-radius: 0 !important;
+    }
+    .btn-view-mode.active, .btn-view-mode:hover {
+        color: #ff0000 !important;
+        border-color: #ff0000 !important;
+    }
+</style>
+
+<div id="product-search" class="container">
+  <ul class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      <li class="breadcrumb-item"><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+    {% endfor %}
+  </ul>
+
+  <div class="row">
+    {{ column_left }}
+
+    <div id="content" class="col">
+      {{ content_top }}
+
+      <h1><i class="fa-solid fa-magnifying-glass-chart me-3"></i>{{ heading_title }}</h1>
+
+      <div class="search-params-wrap">
+        <div class="row align-items-end">
+          <div class="col-md-6 mb-3">
+            <label for="input-search" class="form-label text-muted small uppercase mb-2" style="font-family:'Orbitron';">{{ entry_search }}</label>
+            <input type="text" name="search" value="{{ search }}" placeholder="{{ text_keyword }}" id="input-search" class="form-control"/>
+            <div class="mt-2">
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="description" value="1" id="input-description" class="form-check-input"{% if description %} checked{% endif %}/>
+                    <label for="input-description" class="form-check-label">{{ entry_description }}</label>
+                </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 mb-3">
+            <label for="input-category" class="form-label text-muted small uppercase mb-2" style="font-family:'Orbitron';">Target Sector</label>
+            <select name="category_id" id="input-category" class="form-select">
+              <option value="0">{{ text_category }}</option>
+              {% for category_1 in categories %}
+                <option value="{{ category_1.category_id }}"{% if category_1.category_id == category_id %} selected{% endif %}>{{ category_1.name }}</option>
+                {% for category_2 in category_1.children %}
+                  <option value="{{ category_2.category_id }}"{% if category_2.category_id == category_id %} selected{% endif %}>&nbsp;&nbsp;&nbsp;{{ category_2.name }}</option>
+                {% endfor %}
+              {% endfor %}
+            </select>
+            <div class="mt-2">
+                <div class="form-check form-check-inline">
+                    <input type="checkbox" name="sub_category" value="1" id="input-sub-category" class="form-check-input"{% if sub_category %} checked{% endif %}/>
+                    <label for="input-sub-category" class="form-check-label">{{ text_sub_category }}</label>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-end mt-3">
+          <button type="button" id="button-search" class="btn btn-primary">
+              <i class="fa-solid fa-satellite-dish me-2"></i> START_SCAN
+          </button>
+        </div>
+      </div>
+
+      <hr class="border-secondary opacity-25"/>
+
+      <h2 style="font-family:'Orbitron'; font-size:14px; color:#444; margin:30px 0;">> [RESULTS_OUTPUT]:</h2>
+
+      {% if products %}
+        <div class="control-panel-wrap">
+          <div class="row align-items-center">
+            <div class="col-lg-3 col-md-4 mb-3 mb-md-0">
+              <a href="{{ compare }}" id="compare-total" class="btn btn-outline-secondary btn-sm w-100" style="border-radius:0; font-family:'Orbitron'; font-size:10px;">
+                <i class="fa-solid fa-code-compare me-2"></i> {{ text_compare }}
+              </a>
+            </div>
+
+            <div class="col-lg-1 d-none d-lg-block">
+              <div class="btn-group">
+                <button type="button" id="button-list" class="btn btn-view-mode btn-sm" data-bs-toggle="tooltip" title="{{ button_list }}"><i class="fa-solid fa-table-list"></i></button>
+                <button type="button" id="button-grid" class="btn btn-view-mode btn-sm" data-bs-toggle="tooltip" title="{{ button_grid }}"><i class="fa-solid fa-table-cells"></i></button>
+              </div>
+            </div>
+
+            <div class="col-lg-5 col-md-4 col-6">
+              <div class="input-group input-group-sm">
+                <label class="input-group-text bg-transparent border-0 text-muted uppercase small">{{ text_sort }}</label>
+                <select id="input-sort" class="form-select" onchange="location = this.value;">
+                  {% for sorts in sorts %}
+                    <option value="{{ sorts.href }}"{% if sorts.value == '%s-%s'|format(sort, order) %} selected{% endif %}>{{ sorts.text }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-4 col-6">
+              <div class="input-group input-group-sm">
+                <label class="input-group-text bg-transparent border-0 text-muted uppercase small">{{ text_limit }}</label>
+                <select id="input-limit" class="form-select" onchange="location = this.value;">
+                  {% for limits in limits %}
+                    <option value="{{ limits.href }}"{% if limits.value == limit %} selected{% endif %}>{{ limits.text }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="product-list" class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-4 g-3">
+          {% for product in products %}
+            <div class="col mb-3">{{ product }}</div>
+          {% endfor %}
+        </div>
+
+        <div class="row mt-4 pt-4 border-top border-dark">
+          <div class="col-sm-6 text-start">{{ pagination }}</div>
+          <div class="col-sm-6 text-end text-muted small" style="font-family:'Consolas';">{{ results }}</div>
+        </div>
+      {% else %}
+        <div class="alert" style="background:rgba(255,0,0,0.05); border:1px solid #ff0000; border-radius:0; padding:40px; text-align:center;">
+            <p style="font-family:'Orbitron'; color:#ff0000; font-size:16px; margin:0;">
+                [ SEARCH_FAILURE: NO_MATCHES_FOUND_IN_SECTOR ]
+            </p>
+            <p style="font-family:'Consolas'; color:#444; font-size:12px; margin-top:10px;">
+                Try different parameters or check database availability.
+            </p>
+        </div>
+      {% endif %}
+
+      {{ content_bottom }}
+    </div>
+    {{ column_right }}
+  </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

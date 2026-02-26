@@ -2,14 +2,50 @@
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>RESET_PROTOCOL</title>
 </head>
-<body>
-<p>{{ text_reset }}</p>
-<p>{{ text_link }}</p>
-<p><a href="{{ reset }}">{{ reset }}</a></p>
-<p>{{ text_ip }} {{ ip }}</p>
-<p>{{ text_regards }}
-  <br/>
-  {{ store }}</p>
+<body style="background-color: #050505; margin: 0; padding: 40px; font-family: 'Courier New', Courier, monospace;">
+
+  <div style="max-width: 600px; margin: 0 auto; background-color: #0a0a0a; border: 1px solid #1a1a1a; padding: 40px;">
+
+    <div style="border-bottom: 2px solid #ff0000; padding-bottom: 20px; margin-bottom: 30px;">
+      <span style="color: #ffffff; font-weight: bold; font-size: 18px; letter-spacing: 2px; text-transform: uppercase;">
+        [ PASSWORD_RESET_INITIATED ]
+      </span>
+    </div>
+
+    <div style="margin-bottom: 30px; color: #888888; font-size: 14px;">
+      <p style="color: #ff0000; font-weight: bold; margin-bottom: 10px;">> [ATTENTION]:</p>
+      <p style="line-height: 1.6;">{{ text_reset }}</p>
+      <p style="margin-top: 15px;">{{ text_link }}</p>
+    </div>
+
+    <div style="text-align: center; margin: 40px 0;">
+      <a href="{{ reset }}" style="background-color: #ff0000; color: #000000; padding: 18px 30px; text-decoration: none; font-family: Arial, sans-serif; font-weight: 900; font-size: 14px; letter-spacing: 2px; display: inline-block;">
+        RESET_CREDENTIALS_NOW
+      </a>
+      <p style="color: #333333; font-size: 10px; margin-top: 15px; text-transform: uppercase;">
+        SECURE_LINK_VALID_FOR_LIMITED_TIME
+      </p>
+    </div>
+
+    <div style="background-color: #111111; padding: 15px; border-left: 3px solid #ff0000; margin-bottom: 30px;">
+      <p style="color: #666666; font-size: 11px; margin: 0;">
+        <span style="color: #444444;">[CONNECTION_SOURCE]:</span> {{ text_ip }} <span style="color: #ffffff;">{{ ip }}</span>
+      </p>
+    </div>
+
+    <div style="border-top: 1px solid #1a1a1a; padding-top: 20px; color: #444444; font-size: 12px;">
+      <p style="margin: 0;">
+        {{ text_regards }}<br/>
+        <strong style="color: #ff0000; font-size: 14px;">{{ store }}</strong>
+      </p>
+    </div>
+
+    <div style="margin-top: 30px; opacity: 0.1; font-size: 8px; color: #ffffff; text-align: right; letter-spacing: 3px;">
+      LAUNCH_PRO3_SECURITY_SERVICE // REF:404-PWD
+    </div>
+
+  </div>
 </body>
 </html>

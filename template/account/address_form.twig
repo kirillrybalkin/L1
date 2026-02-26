@@ -1,0 +1,195 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНЫЙ КОНТЕЙНЕР */
+    #account-address {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* 3. СТИЛЬ ФОРМЫ (TERMINAL MODE) */
+    fieldset { border: none; padding: 0; margin-bottom: 30px; }
+
+    .col-form-label {
+        color: #888; font-size: 11px; text-transform: uppercase; letter-spacing: 1px;
+        display: flex; align-items: center;
+    }
+    .required .col-form-label::before {
+        content: "[!]"; color: #ff0000; margin-right: 8px; font-weight: 900;
+    }
+
+    /* ИНПУТЫ И СЕЛЕКТЫ */
+    .form-control, .form-select {
+        background-color: #000 !important;
+        border: 1px solid #333 !important;
+        border-radius: 0 !important;
+        color: #00ff00 !important; /* Зеленый текст как на старых мониторах */
+        font-family: 'Consolas', monospace;
+        padding: 12px 15px !important;
+        transition: 0.3s;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.2) !important;
+        background-color: #050505 !important;
+        outline: none;
+    }
+    .form-control::placeholder { color: #444; font-size: 10px; text-transform: uppercase; }
+
+    /* КАСТОМНЫЕ ПОЛЯ (RADIO/CHECKBOX) */
+    .form-check-input { background-color: #111; border-color: #444; }
+    .form-check-input:checked { background-color: #ff0000; border-color: #ff0000; }
+    .form-check-label { color: #ccc; font-size: 12px; }
+
+    /* 4. КНОПКИ */
+    .btn-garage-save {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 13px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+        transition: 0.3s; border-radius: 0;
+    }
+    .btn-garage-save:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,0,0,0.4); }
+
+    .btn-garage-cancel {
+        background: transparent; border: 1px solid #333; color: #666 !important;
+        padding: 15px 30px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        text-decoration: none; border-radius: 0; display: inline-block;
+    }
+    .btn-garage-cancel:hover { border-color: #ff0000; color: #fff !important; }
+
+    /* ОШИБКИ */
+    .invalid-feedback { color: #ff0000 !important; font-size: 9px !important; text-transform: uppercase; margin-top: 5px; letter-spacing: 1px; }
+</style>
+
+<div id="account-address" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+            <h1><i class="fa-solid fa-pen-to-square" style="color: #ff0000; margin-right: 15px;"></i> {{ text_address }}</h1>
+
+            <form id="form-address" action="{{ save }}" method="post" data-oc-toggle="ajax">
+                <fieldset>
+                    {# FIRSTNAME #}
+                    <div class="row mb-4 required">
+                        <label for="input-firstname" class="col-sm-3 col-form-label">{{ entry_firstname }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="firstname" value="{{ firstname }}" placeholder="DATA_INPUT_REQUIRED" id="input-firstname" class="form-control"/>
+                            <div id="error-firstname" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    {# LASTNAME #}
+                    <div class="row mb-4 required">
+                        <label for="input-lastname" class="col-sm-3 col-form-label">{{ entry_lastname }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="lastname" value="{{ lastname }}" placeholder="DATA_INPUT_REQUIRED" id="input-lastname" class="form-control"/>
+                            <div id="error-lastname" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    {# COMPANY #}
+                    <div class="row mb-4">
+                        <label for="input-company" class="col-sm-3 col-form-label">{{ entry_company }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="company" value="{{ company }}" placeholder="OPTIONAL_FIELD" id="input-company" class="form-control"/>
+                        </div>
+                    </div>
+
+                    {# ADDRESS 1 #}
+                    <div class="row mb-4 required">
+                        <label for="input-address-1" class="col-sm-3 col-form-label">{{ entry_address_1 }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="address_1" value="{{ address_1 }}" placeholder="STREET / BUILDING" id="input-address-1" class="form-control"/>
+                            <div id="error-address-1" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    {# CITY #}
+                    <div class="row mb-4 required">
+                        <label for="input-city" class="col-sm-3 col-form-label">{{ entry_city }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="city" value="{{ city }}" placeholder="CITY_LOCATION" id="input-city" class="form-control"/>
+                            <div id="error-city" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    {# POSTCODE #}
+                    <div class="row mb-4 required">
+                        <label for="input-postcode" class="col-sm-3 col-form-label">{{ entry_postcode }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="postcode" value="{{ postcode }}" placeholder="ZIP_CODE" id="input-postcode" class="form-control"/>
+                            <div id="error-postcode" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    {# COUNTRY #}
+                    <div class="row mb-4 required">
+                        <label for="input-country" class="col-sm-3 col-form-label">{{ entry_country }}</label>
+                        <div class="col-sm-9">
+                            <select name="country_id" id="input-country" class="form-select">
+                                <option value="0">{{ text_select }}</option>
+                                {% for country in countries %}
+                                    <option value="{{ country.country_id }}"{% if country.country_id == country_id %} selected{% endif %}>{{ country.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div id="error-country" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    {# ZONE #}
+                    <div class="row mb-4 required">
+                        <label for="input-zone" class="col-sm-3 col-form-label">{{ entry_zone }}</label>
+                        <div class="col-sm-9">
+                            <select name="zone_id" id="input-zone" class="form-select">
+                                <option value="">{{ text_select }}</option>
+                                {% for zone in zones %}
+                                    <option value="{{ zone.zone_id }}"{% if zone.zone_id == zone_id %} selected{% endif %}>{{ zone.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div id="error-zone" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    {# DEFAULT ADDRESS #}
+                    <div class="row mb-4">
+                        <label class="col-sm-3 col-form-label">{{ entry_default }}</label>
+                        <div class="col-sm-9 d-flex align-items-center">
+                            <div class="form-check form-check-inline me-4">
+                                <input type="radio" name="default" value="1" id="input-default-yes" class="form-check-input"{% if default %} checked{% endif %}/>
+                                <label for="input-default-yes" class="form-check-label">{{ text_yes }}</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="default" value="0" id="input-default-no" class="form-check-input"{% if not default %} checked{% endif %}/>
+                                <label for="input-default-no" class="form-check-label">{{ text_no }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="row mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                    <div class="col">
+                        <a href="{{ back }}" class="btn-garage-cancel"><i class="fa-solid fa-xmark"></i> {{ button_back }}</a>
+                    </div>
+                    <div class="col text-end">
+                        <button type="submit" class="btn-garage-save">
+                            <i class="fa-solid fa-server"></i> SAVE_CHANGES
+                        </button>
+                    </div>
+                </div>
+            </form>
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

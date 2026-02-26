@@ -1,0 +1,149 @@
+<style>
+    /* 1. КОНТЕЙНЕР ТЕРМІНАЛА */
+    fieldset { border: none; padding: 0; margin: 0; }
+    legend {
+        font-family: 'Orbitron', sans-serif; font-size: 14px; color: #ff0000;
+        text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; font-weight: 900;
+    }
+
+    /* 2. ПЕРЕМИКАЧ РЕЖИМІВ (EXISTING vs NEW) */
+    #payment-addresses {
+        background: #050505; border: 1px solid #1a1a1a; padding: 15px; margin-bottom: 25px;
+    }
+    .form-check-label { color: #888; font-family: 'Orbitron'; font-size: 11px; text-transform: uppercase; cursor: pointer; }
+    .form-check-input:checked + .form-check-label { color: #fff; }
+    .form-check-input:checked { background-color: #ff0000; border-color: #ff0000; }
+
+    /* 3. ПОЛЯ ВВОДУ ТА СЕЛЕКТИ */
+    .form-label { color: #444; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; margin-bottom: 5px; }
+    .required .form-label::before { content: "[!] "; color: #ff0000; }
+
+    .form-control, .form-select {
+        background: #000 !important; border: 1px solid #222 !important; border-radius: 0 !important;
+        color: #00ff00 !important; font-family: 'Consolas', monospace; font-size: 14px; padding: 12px !important;
+        transition: 0.3s;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #ff0000 !important; box-shadow: 0 0 10px rgba(255,0,0,0.1) !important;
+    }
+    .form-control::placeholder { color: #111; font-size: 10px; }
+
+    /* 4. ВАЛІДАЦІЯ ТА ПОМИЛКИ */
+    .invalid-feedback { color: #ff0000 !important; font-size: 9px !important; text-transform: uppercase; font-weight: 900; margin-top: 5px; }
+    .is-invalid { border-color: #ff0000 !important; }
+
+    /* 5. КНОПКА ПІДТВЕРДЖЕННЯ */
+    .btn-garage-primary {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 12px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+        transition: 0.3s; border-radius: 0;
+    }
+    .btn-garage-primary:hover { background: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+</style>
+
+<fieldset>
+  <legend><i class="fa-solid fa-id-card-clip me-2"></i> {{ heading_title }}</legend>
+
+  <div id="payment-addresses" style="display: {% if addresses %}block{% else %}none{% endif %};">
+    <div class="form-check mb-2">
+      <input type="radio" name="payment_existing" value="1" id="input-payment-existing" class="form-check-input"{% if addresses %} checked{% endif %}/>
+      <label for="input-payment-existing" class="form-check-label">{{ text_address_existing }}</label>
+    </div>
+    <div class="form-check">
+      <input type="radio" name="payment_existing" value="0" id="input-payment-new" class="form-check-input"{% if not addresses %} checked{% endif %}>
+      <label for="input-payment-new" class="form-check-label">{{ text_address_new }}</label>
+    </div>
+  </div>
+
+  <div id="payment-existing" style="display: {% if addresses %}block{% else %}none{% endif %};" class="mb-4">
+    <label class="form-label">SELECT_SAVED_IDENTITY</label>
+    <select name="address_id" id="input-payment-address" class="form-select">
+      <option value="">{{ text_select }}</option>
+      {% for address in addresses %}
+        <option value="{{ address.address_id }}"{% if address.address_id == address_id %} selected{% endif %}>{{ address.firstname }} {{ address.lastname }},{% if address.company %} {{ address.company }},{% endif %} {{ address.address_1 }}, {{ address.city }}, {{ address.zone }}, {{ address.country }}</option>
+      {% endfor %}
+    </select>
+    <div id="error-payment-address" class="invalid-feedback"></div>
+  </div>
+
+  <div id="payment-new" style="display: {% if not addresses %}block{% else %}none{% endif %};">
+    <form id="form-payment-address">
+      <div class="row">
+        <div class="col-md-6 mb-3 required">
+          <label for="input-payment-firstname" class="form-label">{{ entry_firstname }}</label>
+          <input type="text" name="firstname" value="" placeholder="REQUIRED" id="input-payment-firstname" class="form-control"/>
+          <div id="error-payment-firstname" class="invalid-feedback"></div>
+        </div>
+        <div class="col-md-6 mb-3 required">
+          <label for="input-payment-lastname" class="form-label">{{ entry_lastname }}</label>
+          <input type="text" name="lastname" value="" placeholder="REQUIRED" id="input-payment-lastname" class="form-control"/>
+          <div id="error-payment-lastname" class="invalid-feedback"></div>
+        </div>
+        <div class="col-md-12 mb-3">
+          <label for="input-payment-company" class="form-label">{{ entry_company }}</label>
+          <input type="text" name="company" value="" placeholder="OPTIONAL" id="input-payment-company" class="form-control"/>
+        </div>
+        <div class="col-md-8 mb-3 required">
+          <label for="input-payment-address-1" class="form-label">{{ entry_address_1 }}</label>
+          <input type="text" name="address_1" value="" placeholder="STREET, BUILDING" id="input-payment-address-1" class="form-control"/>
+          <div id="error-payment-address-1" class="invalid-feedback"></div>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label for="input-payment-address-2" class="form-label">{{ entry_address_2 }}</label>
+          <input type="text" name="address_2" value="" placeholder="APARTMENT/OFFICE" id="input-payment-address-2" class="form-control"/>
+        </div>
+        <div class="col-md-6 mb-3 required">
+          <label for="input-payment-city" class="form-label">{{ entry_city }}</label>
+          <input type="text" name="city" value="" placeholder="CITY" id="input-payment-city" class="form-control"/>
+          <div id="error-payment-city" class="invalid-feedback"></div>
+        </div>
+        <div class="col-md-6 mb-3 required">
+          <label for="input-payment-postcode" class="form-label">{{ entry_postcode }}</label>
+          <input type="text" name="postcode" value="" placeholder="ZIP_CODE" id="input-payment-postcode" class="form-control"/>
+          <div id="error-payment-postcode" class="invalid-feedback"></div>
+        </div>
+        <div class="col-md-6 mb-3 required">
+          <label for="input-payment-country" class="form-label">{{ entry_country }}</label>
+          <select name="country_id" id="input-payment-country" class="form-select">
+            <option value="0">{{ text_select }}</option>
+            {% for country in countries %}
+              <option value="{{ country.country_id }}"{% if country.country_id == country_id %} selected{% endif %}>{{ country.name }}</option>
+            {% endfor %}
+          </select>
+          <div id="error-payment-country" class="invalid-feedback"></div>
+        </div>
+        <div class="col-md-6 mb-3 required">
+          <label for="input-payment-zone" class="form-label">{{ entry_zone }}</label>
+          <select name="zone_id" id="input-payment-zone" class="form-select">
+            <option value="">{{ text_select }}</option>
+            {% for zone in zones %}
+              <option value="{{ zone.zone_id }}">{{ zone.name }}</option>
+            {% endfor %}
+          </select>
+          <div id="error-payment-zone" class="invalid-feedback"></div>
+        </div>
+
+        {# CUSTOM FIELDS RENDER #}
+        {% for custom_field in custom_fields %}
+          {% if custom_field.type == 'text' %}
+            <div class="col-md-6 mb-3{% if custom_field.required %} required{% endif %} custom-field custom-field-{{ custom_field.custom_field_id }}">
+              <label for="input-payment-custom-field-{{ custom_field.custom_field_id }}" class="form-label">{{ custom_field.name }}</label>
+              <input type="text" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" id="input-payment-custom-field-{{ custom_field.custom_field_id }}" class="form-control"/>
+              <div id="error-payment-custom-field-{{ custom_field.custom_field_id }}" class="invalid-feedback"></div>
+            </div>
+          {% endif %}
+          {# Тут можна додати інші типи custom fields за аналогією #}
+        {% endfor %}
+      </div>
+
+      <div class="text-end mt-4">
+        <button type="submit" id="button-payment-address" class="btn-garage-primary">
+          {{ button_continue }} <i class="fa-solid fa-chevron-right ms-2"></i>
+        </button>
+      </div>
+    </form>
+  </div>
+</fieldset>
+
+<script type="text/javascript"></script>

@@ -1,0 +1,125 @@
+<style>
+    /* 1. СЕТКА КАРТОЧЕК */
+    .address-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 10px;
+    }
+
+    /* 2. СТИЛЬ КАРТОЧКИ АДРЕСА */
+    .address-card {
+        background: #000;
+        border: 1px solid #222;
+        padding: 20px;
+        position: relative;
+        transition: 0.3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .address-card:hover {
+        border-color: #444;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.1);
+    }
+
+    /* ИНДИКАТОР DEFAULT */
+    .address-card.is-default {
+        border-left: 4px solid #00ff00;
+    }
+    .default-label {
+        font-size: 8px;
+        color: #00ff00;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    /* ТЕКСТ АДРЕСА */
+    .address-data {
+        color: #ccc;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    /* КНОПКИ УПРАВЛЕНИЯ ВНУТРИ КАРТОЧКИ */
+    .address-actions {
+        display: flex;
+        gap: 10px;
+        border-top: 1px solid #1a1a1a;
+        padding-top: 15px;
+    }
+    .btn-action-edit {
+        background: transparent;
+        border: 1px solid #333;
+        color: #888;
+        padding: 8px 12px;
+        font-size: 12px;
+        transition: 0.3s;
+    }
+    .btn-action-edit:hover {
+        border-color: #fff;
+        color: #fff;
+    }
+    .btn-action-delete {
+        background: transparent;
+        border: 1px solid #333;
+        color: #666;
+        padding: 8px 12px;
+        font-size: 12px;
+        transition: 0.3s;
+    }
+    .btn-action-delete:hover {
+        border-color: #ff0000;
+        color: #ff0000;
+    }
+
+    /* ПУСТОЙ ГАРАЖ */
+    .no-results {
+        color: #444;
+        text-align: center;
+        padding: 40px;
+        font-size: 10px;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+    }
+</style>
+
+{% if addresses %}
+  <div class="address-grid">
+    {% for address in addresses %}
+      <div class="address-card {% if address.default %}is-default{% endif %}">
+        <div class="card-top">
+          {% if address.default %}
+            <span class="default-label">
+                <i class="fa-solid fa-circle-check"></i> {{ text_default }}
+            </span>
+          {% else %}
+            <span class="default-label" style="color: #333;">LOCATION_ID: {{ loop.index }}</span>
+          {% endif %}
+
+          <div class="address-data">
+            {{ address.address|replace({',': '<br>'})|raw }}
+          </div>
+        </div>
+
+        <div class="address-actions">
+          <a href="{{ address.edit }}" class="btn-action-edit" title="{{ button_edit }}">
+            <i class="fa-solid fa-pencil"></i>
+          </a>
+          <a href="{{ address.delete }}" class="btn-action-delete btn-danger" title="{{ button_delete }}">
+            <i class="fa-solid fa-trash-can"></i>
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="no-results">
+    <i class="fa-solid fa-database" style="font-size: 20px; display: block; margin-bottom: 10px;"></i>
+    {{ text_no_results }}
+  </div>
+{% endif %}

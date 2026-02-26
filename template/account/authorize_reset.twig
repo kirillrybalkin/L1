@@ -1,0 +1,122 @@
+{{ header }}
+<style>
+    /* 1. КОНТЕЙНЕР ДЛЯ ЦЕНТРУВАННЯ */
+    #content {
+        background: #0a0a0a;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    /* 2. ТЕРМІНАЛ БЛОКУВАННЯ */
+    .lock-terminal {
+        background: #000;
+        border: 1px solid #333;
+        border-top: 5px solid #ff0000;
+        padding: 50px 40px;
+        text-align: center;
+        box-shadow: 0 0 40px rgba(255, 0, 0, 0.15);
+        position: relative;
+    }
+    .lock-terminal::before {
+        content: "SECURITY_LOCKED";
+        position: absolute;
+        top: 15px;
+        left: 20px;
+        font-size: 8px;
+        color: #ff0000;
+        letter-spacing: 2px;
+        animation: blink 1.5s infinite;
+    }
+
+    .card-header {
+        background: transparent !important;
+        border: none !important;
+        color: #fff !important;
+        font-size: 20px !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 4px !important;
+        margin-bottom: 20px !important;
+    }
+
+    .card-body p {
+        color: #888;
+        font-size: 12px;
+        text-transform: uppercase;
+        line-height: 1.8;
+        margin-bottom: 35px;
+    }
+
+    /* 3. КНОПКА UNLOCK */
+    .btn-unlock-system {
+        background: #ff0000 !important;
+        border: none !important;
+        color: #000 !important;
+        font-weight: 900 !important;
+        font-family: 'Orbitron' !important;
+        text-transform: uppercase !important;
+        letter-spacing: 2px !important;
+        padding: 20px !important;
+        font-size: 16px !important;
+        transition: 0.3s !important;
+        position: relative;
+        overflow: hidden;
+    }
+    .btn-unlock-system:hover {
+        background: #fff !important;
+        transform: scale(1.05);
+        box-shadow: 0 0 25px rgba(255, 255, 255, 0.3);
+    }
+    .btn-unlock-system i {
+        margin-right: 10px;
+    }
+
+    /* АЛЕРТИ */
+    .alert {
+        border-radius: 0;
+        font-size: 11px;
+        text-transform: uppercase;
+        border: none;
+        font-family: 'Consolas', monospace;
+    }
+    .alert-danger { background: #220000; color: #ff0000; border-left: 4px solid #ff0000; }
+    .alert-success { background: #002200; color: #00ff00; border-left: 4px solid #00ff00; }
+
+    @keyframes blink { 0% {opacity: 1;} 50% {opacity: 0.2;} 100% {opacity: 1;} }
+</style>
+
+<div id="content">
+  <div class="container">
+    <div id="alert"></div>
+    <div class="row justify-content-center">
+      <div class="col-sm-10 col-md-8 col-lg-5">
+
+        <div class="lock-terminal">
+          <div class="card-header">
+            <i class="fa-solid fa-triangle-exclamation" style="color:#ff0000;"></i> {{ text_locked }}
+          </div>
+
+          <div class="card-body">
+            <p>{{ text_reset }}</p>
+
+            <div class="d-grid">
+              <button type="button" id="button-reset" class="btn-unlock-system">
+                <i class="fa-solid fa-power-off"></i> UNLOCK_SYSTEM
+              </button>
+            </div>
+          </div>
+
+          <div style="margin-top: 30px; opacity: 0.3;">
+             <span style="font-size: 7px; color: #fff; letter-spacing: 3px;">BRUTE_FORCE_PROTECTION_ENABLED</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

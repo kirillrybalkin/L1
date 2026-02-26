@@ -1,0 +1,126 @@
+<style>
+    /* 1. КОНТЕЙНЕР ТАБЛИЦІ */
+    .renewal-log-wrap {
+        background: #000;
+        border: 1px solid #1a1a1a;
+        padding: 5px;
+        position: relative;
+        margin-top: 20px;
+    }
+    .renewal-log-wrap::after {
+        content: "LICENSE_TRANSACTION_LOG";
+        position: absolute;
+        top: -22px;
+        right: 0;
+        font-size: 8px;
+        color: #444;
+        letter-spacing: 2px;
+    }
+
+    /* 2. ТАБЛИЦЯ */
+    .table-renewal {
+        width: 100%;
+        margin-bottom: 0;
+        color: #888;
+        border-collapse: separate;
+        border-spacing: 0 2px;
+    }
+    .table-renewal thead th {
+        background: #050505;
+        color: #ff0000;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 12px 10px;
+        border-bottom: 2px solid #ff0000 !important;
+    }
+    .table-renewal tbody td {
+        background: #0a0a0a !important;
+        padding: 15px 10px;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        border: none;
+        color: #eee;
+        vertical-align: middle;
+    }
+
+    /* 3. ДЕТАЛІ */
+    .order-tag {
+        color: #ff0000 !important;
+        text-decoration: none;
+        font-weight: 900;
+        border: 1px solid #333;
+        padding: 2px 8px;
+        transition: 0.3s;
+    }
+    .order-tag:hover {
+        background: #ff0000;
+        color: #000 !important;
+        border-color: #ff0000;
+    }
+
+    .status-indicator {
+        color: #00ff00;
+        text-transform: uppercase;
+        font-weight: 900;
+        font-size: 11px;
+    }
+    .total-value {
+        color: #fff;
+        font-weight: 900;
+    }
+
+    /* 4. ПАГІНАЦІЯ */
+    .pagination-block { margin-top: 20px; }
+    .pagination { --bs-pagination-bg: #111; --bs-pagination-border-color: #222; --bs-pagination-color: #666; }
+    .page-link:hover { background: #ff0000; color: #000; border-color: #ff0000; }
+    .active > .page-link { background-color: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+
+    .results-text { font-size: 9px; color: #333; text-transform: uppercase; letter-spacing: 1px; }
+</style>
+
+<div class="renewal-log-wrap">
+  <div class="table-responsive">
+    <table class="table-renewal">
+      <thead>
+        <tr>
+          <th class="text-start" style="width: 150px;">[ ORDER_ID ]</th>
+          <th>[ CURRENT_STATUS ]</th>
+          <th class="text-end" style="width: 150px;">[ TOTAL_VAL ]</th>
+          <th class="text-end" style="width: 180px;">[ TIMESTAMP ]</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if orders %}
+          {% for order in orders %}
+            <tr>
+              <td class="text-start">
+                <a href="{{ order.view }}" target="_blank" class="order-tag">#{{ order.order_id }}</a>
+              </td>
+              <td>
+                <span class="status-indicator">{{ order.status }}</span>
+              </td>
+              <td class="text-end">
+                <span class="total-value">{{ order.total }}</span>
+              </td>
+              <td class="text-end" style="color: #444; font-size: 11px;">
+                {{ order.date_added }}
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="4" class="text-center" style="padding: 40px; color: #222; letter-spacing: 5px;">
+              NO_TRANSACTIONS_DETECTED
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row pagination-block align-items-center">
+  <div class="col-sm-6 text-start">{{ pagination }}</div>
+  <div class="col-sm-6 text-end results-text">{{ results }}</div>
+</div>

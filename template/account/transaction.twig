@@ -1,0 +1,118 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНИЙ СТИЛЬ БАЛАНСУ */
+    #account-transaction {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК ТА ПАНЕЛЬ БАЛАНСУ */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 30px;
+    }
+
+    .balance-terminal {
+        background: #000; border: 1px solid #1a1a1a; border-right: 4px solid #00ff00;
+        padding: 25px; margin-bottom: 40px; position: relative;
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .balance-terminal::before {
+        content: "FINANCIAL_STATUS_CHECK"; position: absolute; top: 5px; left: 25px;
+        font-size: 7px; color: #333; letter-spacing: 2px;
+    }
+    .balance-label { color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; }
+    .balance-value { color: #00ff00; font-size: 26px; font-weight: 900; text-shadow: 0 0 10px rgba(0, 255, 0, 0.2); }
+
+    /* 3. ТАБЛИЦЯ ТРАНЗАКЦІЙ (LEDGER) */
+    .table-ledger {
+        width: 100%; background: #000; border-collapse: separate; border-spacing: 0;
+        border: 1px solid #1a1a1a; margin-bottom: 25px;
+    }
+    .table-ledger thead th {
+        background: #050505; color: #ff0000; font-size: 9px; text-transform: uppercase;
+        letter-spacing: 2px; padding: 15px 10px; border-bottom: 2px solid #ff0000;
+    }
+    .table-ledger tbody td {
+        padding: 15px 10px; background: #0a0a0a; color: #eee;
+        font-family: 'Consolas', monospace; font-size: 13px; border-bottom: 1px solid #111;
+    }
+    .amount-cell { font-weight: 900; color: #fff; }
+
+    /* 4. ПАГІНАЦІЯ */
+    .pagination { --bs-pagination-bg: #111; --bs-pagination-border-color: #222; --bs-pagination-color: #666; }
+    .page-link:hover { background: #ff0000; color: #000; border-color: #ff0000; }
+    .active > .page-link { background-color: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+    .results-info { font-size: 9px; color: #333; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+
+    /* 5. КНОПКА ПОВЕРНЕННЯ */
+    .btn-garage-close {
+        background: transparent; border: 1px solid #333; color: #666 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        text-decoration: none; display: inline-block; border-radius: 0;
+    }
+    .btn-garage-close:hover { border-color: #ff0000; color: #fff !important; }
+</style>
+
+<div id="account-transaction" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-cash-register" style="color: #ff0000; margin-right: 15px;"></i> {{ heading_title }}</h1>
+
+            <div class="balance-terminal">
+                <div class="balance-label">> {{ text_total|replace({':': ''}) }}</div>
+                <div class="balance-value">{{ total }}</div>
+            </div>
+
+            <div class="table-responsive mb-4">
+                <table class="table-ledger">
+                    <thead>
+                        <tr>
+                            <th style="width: 200px;">[ TIMESTAMP ]</th>
+                            <th>[ OPERATION_DESCRIPTION ]</th>
+                            <th class="text-end" style="width: 150px;">[ AMOUNT_VAL ]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if transactions %}
+                            {% for transaction in transactions %}
+                                <tr>
+                                    <td style="color: #444;">{{ transaction.date_added }}</td>
+                                    <td>{{ transaction.description }}</td>
+                                    <td class="text-end amount-cell">{{ transaction.amount }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3" class="text-center" style="padding: 50px; color: #222; letter-spacing: 5px;">
+                                    NO_FINANCIAL_RECORDS_DETECTED
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row align-items-center mb-5">
+                <div class="col-sm-6 text-start">{{ pagination }}</div>
+                <div class="col-sm-6 text-end results-info">{{ results }}</div>
+            </div>
+
+            <div class="text-end pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ continue }}" class="btn-garage-close">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span data-lang-en="CLOSE_SESSION" data-lang-ua="ЗАКРИТИ СЕСІЮ" data-lang-pl="ZAMKNIJ SESJĘ"></span>
+                </a>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

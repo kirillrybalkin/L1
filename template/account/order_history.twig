@@ -1,0 +1,125 @@
+<style>
+    /* 1. КОНТЕЙНЕР І ТАБЛИЦЯ */
+    .history-log-wrap {
+        background: #000;
+        border: 1px solid #1a1a1a;
+        padding: 5px;
+        position: relative;
+    }
+    .history-log-wrap::after {
+        content: "EVENT_HISTORY_LOG";
+        position: absolute;
+        top: -22px;
+        right: 0;
+        font-size: 8px;
+        color: #444;
+        letter-spacing: 2px;
+    }
+
+    .table-history {
+        width: 100%;
+        margin-bottom: 0;
+        color: #888;
+        border-collapse: separate;
+        border-spacing: 0 2px;
+    }
+
+    /* 2. ЗАГОЛОВКИ */
+    .table-history thead th {
+        background: #050505;
+        color: #ff0000;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 12px 10px;
+        border-bottom: 2px solid #ff0000;
+    }
+
+    /* 3. РЯДКИ ЛОГУ */
+    .table-history tbody td {
+        background: #0a0a0a;
+        padding: 15px 10px;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        border: none;
+        color: #eee;
+    }
+
+    /* СТИЛІЗАЦІЯ СТАТУСУ */
+    .status-badge {
+        color: #00ff00;
+        text-transform: uppercase;
+        font-weight: 900;
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+
+    .date-added {
+        color: #444;
+        font-size: 11px;
+    }
+
+    .comment-text {
+        color: #ccc;
+        border-left: 2px solid #222;
+        padding-left: 10px;
+    }
+
+    /* 4. ПАГІНАЦІЯ */
+    .pagination-wrap {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .pagination { --bs-pagination-bg: #111; --bs-pagination-border-color: #222; --bs-pagination-color: #666; }
+    .page-link:hover { background: #ff0000; color: #000; border-color: #ff0000; }
+    .active > .page-link { background-color: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+
+    .results-info { font-size: 9px; color: #333; text-transform: uppercase; letter-spacing: 1px; }
+</style>
+
+<div class="history-log-wrap">
+  <div class="table-responsive">
+    <table class="table-history">
+      <thead>
+        <tr>
+          <th style="width: 180px;">[ TIMESTAMP ]</th>
+          <th>[ SYSTEM_COMMENT ]</th>
+          <th class="text-end" style="width: 150px;">[ STATUS ]</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if histories %}
+          {% for history in histories %}
+            <tr>
+              <td class="date-added">{{ history.date_added }}</td>
+              <td class="comment-text">{{ history.comment }}</td>
+              <td class="text-end">
+                <span class="status-badge">{{ history.status }}</span>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td class="text-center" colspan="3" style="padding: 40px; color: #222; letter-spacing: 5px;">
+                NO_LOG_ENTRIES_DETECTED
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="pagination-wrap">
+  <div class="pagination-block">{{ pagination }}</div>
+  <div class="results-info">{{ results }}</div>
+</div>
+
+
+
+### Що далі?
+Це був файл підшаблону для історії. Наступним за логікою має бути **`order_list.twig`** (основний список замовлень) або **`order_info.twig`** (детальна інформація про замовлення, де буде видно VIN-код та обраний час).
+
+Чекаю на наступний файл! Нагадую, я пам'ятаю про всі три мови та наш фірмовий стиль Launch. Що скинеш?

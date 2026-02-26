@@ -1,0 +1,193 @@
+{{ header }}
+<style>
+    /* 1. БАЗОВИЙ СТИЛЬ ГАРАЖА */
+    #account-affiliate {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК СТОРІНКИ */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* 3. ДИЗАЙН БЛОКІВ (FIELDSET) */
+    fieldset { border: 1px solid #1a1a1a; padding: 25px; margin-bottom: 30px; background: #000; }
+    legend {
+        float: none; width: auto; padding: 0 15px; font-size: 12px;
+        color: #ff0000; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;
+    }
+
+    /* 4. ЕЛЕМЕНТИ ФОРМИ */
+    .col-form-label { color: #888; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+    .form-control, .form-select {
+        background-color: #050505 !important;
+        border: 1px solid #333 !important;
+        border-radius: 0 !important;
+        color: #00ff00 !important; /* Зелений колір даних */
+        font-family: 'Consolas', monospace;
+        padding: 12px !important;
+    }
+    .form-control:focus { border-color: #ff0000 !important; box-shadow: 0 0 10px rgba(255,0,0,0.2) !important; }
+
+    /* Радіо-кнопки вибору оплати */
+    .form-check { margin-bottom: 10px; }
+    .form-check-input { background-color: #111; border-color: #444; }
+    .form-check-input:checked { background-color: #ff0000; border-color: #ff0000; }
+    .form-check-label { color: #ccc; font-size: 12px; text-transform: uppercase; }
+
+    /* 5. КНОПКИ ТА ПЕРЕМИКАЧІ */
+    .btn-garage-continue {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 13px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+        transition: 0.3s;
+    }
+    .btn-garage-continue:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,0,0,0.4); }
+
+    /* Стилізація Agree Switch */
+    .form-switch .form-check-input { width: 3em !important; cursor: pointer; }
+    .form-switch .form-check-input:checked { background-color: #00ff00; border-color: #00ff00; }
+    .form-check-label a { color: #ff0000; text-decoration: none; border-bottom: 1px dashed #ff0000; }
+
+    .invalid-feedback { color: #ff0000 !important; font-size: 9px !important; text-transform: uppercase; }
+</style>
+
+<div id="account-affiliate" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+            <h1><i class="fa-solid fa-briefcase" style="color: #ff0000; margin-right: 15px;"></i> {{ heading_title }}</h1>
+
+            <form id="form-affiliate" action="{{ save }}" method="post" data-oc-toggle="ajax">
+
+                <fieldset>
+                    <legend><i class="fa-solid fa-address-card"></i> {{ text_my_affiliate }}</legend>
+                    <div class="row mb-3">
+                        <label for="input-company" class="col-sm-3 col-form-label">{{ entry_company }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="company" value="{{ company }}" placeholder="COMPANY_NAME" id="input-company" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="input-website" class="col-sm-3 col-form-label">{{ entry_website }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="website" value="{{ website }}" placeholder="HTTP://YOUR-WEBSITE.COM" id="input-website" class="form-control"/>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend><i class="fa-solid fa-money-bill-transfer"></i> {{ text_payment }}</legend>
+
+                    <div class="row mb-4">
+                        <label for="input-tax" class="col-sm-3 col-form-label">{{ entry_tax }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="tax" value="{{ tax }}" placeholder="TAX_ID_NUMBER" id="input-tax" class="form-control"/>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <label class="col-sm-3 col-form-label">{{ entry_payment_method }}</label>
+                        <div class="col-sm-9">
+                            <div class="form-check">
+                                <input type="radio" name="payment_method" value="cheque" id="input-payment-cheque" class="form-check-input"{% if payment_method == 'cheque' %} checked{% endif %}/>
+                                <label for="input-payment-cheque" class="form-check-label">{{ text_cheque }}</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="payment_method" value="paypal" id="input-payment-paypal" class="form-check-input"{% if payment_method == 'paypal' %} checked{% endif %}/>
+                                <label for="input-payment-paypal" class="form-check-label">{{ text_paypal }}</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" name="payment_method" value="bank" id="input-payment-bank" class="form-check-input"{% if payment_method == 'bank' %} checked{% endif %}/>
+                                <label for="input-payment-bank" class="form-check-label">{{ text_bank }}</label>
+                            </div>
+                            <div id="error-payment-method" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    {# СЕКЦІЇ ОПЛАТИ #}
+                    <div class="payment-methods-wrap" style="background: #050505; padding: 15px; border: 1px solid #111;">
+
+                        <div class="row mb-3 required payment" id="payment-cheque">
+                            <label for="input-cheque" class="col-sm-3 col-form-label">{{ entry_cheque }}</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="cheque" value="{{ cheque }}" placeholder="PAYEE_NAME" id="input-cheque" class="form-control"/>
+                                <div id="error-cheque" class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3 required payment" id="payment-paypal">
+                            <label for="input-paypal" class="col-sm-3 col-form-label">{{ entry_paypal }}</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="paypal" value="{{ paypal }}" placeholder="PAYPAL_EMAIL_ADDRESS" id="input-paypal" class="form-control"/>
+                                <div id="error-paypal" class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <div id="payment-bank" class="payment">
+                            <div class="row mb-3">
+                                <label for="input-bank-name" class="col-sm-3 col-form-label">{{ entry_bank_name }}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="bank_name" value="{{ bank_name }}" placeholder="BANK_NAME" id="input-bank-name" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="input-bank-branch-number" class="col-sm-3 col-form-label">{{ entry_bank_branch_number }}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="bank_branch_number" value="{{ bank_branch_number }}" placeholder="ABA/BSB_NUMBER" id="input-bank-branch-number" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="input-bank-swift-code" class="col-sm-3 col-form-label">{{ entry_bank_swift_code }}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="bank_swift_code" value="{{ bank_swift_code }}" placeholder="SWIFT_CODE" id="input-bank-swift-code" class="form-control"/>
+                                </div>
+                            </div>
+                            <div class="row mb-3 required">
+                                <label for="input-bank-account-name" class="col-sm-3 col-form-label">{{ entry_bank_account_name }}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="bank_account_name" value="{{ bank_account_name }}" placeholder="ACCOUNT_NAME" id="input-bank-account-name" class="form-control"/>
+                                    <div id="error-bank-account-name" class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 required">
+                                <label for="input-bank-account-number" class="col-sm-3 col-form-label">{{ entry_bank_account_number }}</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="bank_account_number" value="{{ bank_account_number }}" placeholder="ACCOUNT_NUMBER / IBAN" id="input-bank-account-number" class="form-control"/>
+                                    <div id="error-bank-account-number" class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="row align-items-center mt-5">
+                    <div class="col-md-8 text-start">
+                        {% if text_agree %}
+                            <div class="form-check form-switch form-switch-lg">
+                                <input type="hidden" name="agree" value="0"/>
+                                <input type="checkbox" name="agree" value="1" id="input-agree" class="form-check-input" style="float:none; margin-right:15px;"/>
+                                <label class="form-check-label" for="input-agree">{{ text_agree }}</label>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <button type="submit" class="btn-garage-continue">
+                            <i class="fa-solid fa-check-double"></i> CONTINUE
+                        </button>
+                    </div>
+                </div>
+            </form>
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

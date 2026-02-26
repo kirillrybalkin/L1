@@ -1,0 +1,126 @@
+<style>
+    /* 1. ТАБЛИЦЯ СПИСКУ БАЖАНЬ */
+    .wishlist-table {
+        width: 100%; border-collapse: separate; border-spacing: 0 5px;
+        background: transparent; color: #eee;
+    }
+    .wishlist-table thead th {
+        background: #050505; color: #ff0000; font-size: 10px;
+        text-transform: uppercase; letter-spacing: 2px;
+        padding: 15px 10px; border-bottom: 2px solid #ff0000 !important;
+    }
+    .wishlist-table tbody td {
+        background: #0a0a0a !important; padding: 15px 10px;
+        border: none; vertical-align: middle;
+        font-family: 'Consolas', monospace; font-size: 13px;
+    }
+
+    /* 2. ЗОБРАЖЕННЯ ТОВАРУ */
+    .wish-img-wrap {
+        width: 80px; height: 80px; background: #000;
+        border: 1px solid #222; padding: 5px; overflow: hidden;
+        display: flex; align-items: center; justify-content: center;
+        transition: 0.3s;
+    }
+    .wish-img-wrap:hover { border-color: #ff0000; box-shadow: 0 0 10px rgba(255,0,0,0.2); }
+    .wish-img-wrap img { max-width: 100%; height: auto; filter: grayscale(0.3); transition: 0.3s; }
+    .wish-img-wrap:hover img { filter: grayscale(0); transform: scale(1.05); }
+
+    /* 3. НАЗВА ТА ЦІНА */
+    .wish-name { 
+        color: #fff !important; font-family: 'Orbitron'; font-weight: 700; 
+        text-decoration: none; font-size: 14px; display: block; margin-bottom: 5px;
+    }
+    .wish-name:hover { color: #ff0000 !important; }
+    
+    .price-wrap { font-size: 15px; font-weight: 900; }
+    .price-new { color: #00ff00 !important; }
+    .price-old { color: #444; text-decoration: line-through; font-size: 11px; margin-left: 8px; }
+
+    /* 4. КНОПКИ КЕРУВАННЯ */
+    .btn-wish-cart {
+        background: #ff0000 !important; border: none !important;
+        color: #000 !important; font-family: 'Orbitron'; font-weight: 900;
+        font-size: 10px; letter-spacing: 1px; border-radius: 0 !important;
+        padding: 8px 15px !important; text-transform: uppercase;
+    }
+    .btn-wish-remove {
+        background: transparent !important; border: 1px solid #333 !important;
+        color: #666 !important; font-size: 12px; border-radius: 0 !important;
+        padding: 8px 12px !important; transition: 0.3s; margin-top: 5px;
+    }
+    .btn-wish-remove:hover { border-color: #ff0000 !important; color: #ff0000 !important; }
+
+    /* СТАТУС СКЛАДУ */
+    .stock-status { font-size: 11px; color: #888; text-transform: uppercase; }
+</style>
+
+{% if products %}
+  <div class="table-responsive" style="border: none;">
+    <table class="wishlist-table">
+      <thead>
+        <tr>
+          <th class="text-center" style="width: 100px;">[IMG]</th>
+          <th>[DEVICE_NAME]</th>
+          <th>[MODEL_ID]</th>
+          <th class="text-end">[AVAILABILITY]</th>
+          <th class="text-end">[VAL_RATE]</th>
+          <th class="text-end" style="width: 150px;">ACTION</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% set product_row = 0 %}
+        {% for product in products %}
+          <tr>
+            <td class="text-center">
+              {% if product.thumb %}
+                <div class="wish-img-wrap">
+                  <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}"/></a>
+                </div>
+              {% endif %}
+            </td>
+            <td>
+              <a href="{{ product.href }}" class="wish-name">{{ product.name }}</a>
+              <form id="form-product-{{ product_row }}" action="{{ cart_add }}" method="post" data-oc-toggle="ajax" data-oc-load="{{ cart }}" data-oc-target="#cart">
+                <input type="hidden" name="product_id" value="{{ product.product_id }}"/>
+                <input type="hidden" name="quantity" value="{{ product.minimum }}"/>
+              </form>
+            </td>
+            <td style="color: #666;">{{ product.model }}</td>
+            <td class="text-end">
+              <span class="stock-status">{{ product.stock }}</span>
+            </td>
+            <td class="text-end text-nowrap">
+              {% if product.price %}
+                <div class="price-wrap">
+                  {% if not product.special %}
+                    <span style="color: #eee;">{{ product.price }}</span>
+                  {% else %}
+                    <span class="price-new">{{ product.special }}</span>
+                    <span class="price-old">{{ product.price }}</span>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </td>
+            <td class="text-end text-nowrap">
+              <div class="d-grid">
+                <button type="submit" form="form-product-{{ product_row }}" class="btn-wish-cart">
+                    <i class="fa-solid fa-cart-plus"></i> <span data-lang-en="ADD_TO_CART" data-lang-ua="В КОШИК" data-lang-pl="DO KOSZYKA"></span>
+                </button>
+                <a href="{{ product.remove }}" class="btn-wish-remove" title="{{ button_remove }}">
+                    <i class="fa-solid fa-trash-can"></i> REMOVE_RECORD
+                </a>
+              </div>
+            </td>
+          </tr>
+          {% set product_row = product_row + 1 %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% else %}
+  <div style="background: #000; border: 1px dashed #222; padding: 60px; text-align: center;">
+    <i class="fa-solid fa-folder-open" style="font-size: 30px; color: #222; margin-bottom: 20px; display: block;"></i>
+    <p style="color: #444; font-size: 11px; text-transform: uppercase; letter-spacing: 3px;">{{ text_no_results }}</p>
+  </div>
+{% endif %}

@@ -1,0 +1,164 @@
+<style>
+    /* 1. ЗАГОЛОВОК И ОБЩИЙ ВИД */
+    h1 { font-size: 22px; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 15px; margin-bottom: 30px; }
+    
+    /* 2. ТАБЛИЦА СБОРКИ (STAGING TABLE) */
+    #output-cart { background: #000; border: 1px solid #1a1a1a; padding: 10px; }
+    .table { color: #888 !important; border-color: #1a1a1a !important; margin-bottom: 0; vertical-align: middle; }
+    .table thead th { 
+        color: #ff0000; font-size: 10px; text-transform: uppercase; 
+        letter-spacing: 2px; border-bottom: 2px solid #ff0000 !important;
+        padding: 15px 10px;
+    }
+    .table tbody td { 
+        background: #050505 !important; color: #eee !important; 
+        padding: 15px 10px; border-color: #111 !important;
+        font-family: 'Consolas', monospace; font-size: 13px;
+    }
+
+    /* Изображение товара */
+    .img-thumbnail { background: #000; border: 1px solid #333; border-radius: 0; padding: 2px; max-width: 60px; }
+
+    /* 3. УПРАВЛЕНИЕ КОЛИЧЕСТВОМ (UNIT_CONTROL) */
+    .input-group .form-control { 
+        background: #111 !important; color: #00ff00 !important; 
+        border: 1px solid #333 !important; text-align: center; font-weight: 900;
+        border-radius: 0 !important;
+    }
+    .btn-primary { background: #333 !important; border: none !important; color: #fff !important; border-radius: 0 !important; }
+    .btn-primary:hover { background: #ff0000 !important; color: #000 !important; }
+    .btn-danger { background: transparent !important; border: 1px solid #220000 !important; color: #550000 !important; border-radius: 0 !important; }
+    .btn-danger:hover { background: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+
+    /* 4. ИТОГИ (TOTALS_SUMMARY) */
+    #checkout-total tr td:last-child { color: #00ff00; font-size: 18px; font-weight: 900; text-shadow: 0 0 10px rgba(0,255,0,0.2); }
+    #checkout-total strong { color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* 5. МОДУЛИ (ACCORDION) */
+    .accordion-item { background: #000 !important; border: 1px solid #1a1a1a !important; border-radius: 0 !important; margin-bottom: 5px; }
+    .accordion-button { 
+        background: #050505 !important; color: #ff0000 !important; 
+        font-family: 'Orbitron'; font-size: 12px; text-transform: uppercase;
+        box-shadow: none !important; border-radius: 0 !important;
+    }
+    .accordion-button:not(.collapsed) { background: #111 !important; }
+    .accordion-button::after { filter: invert(1); }
+
+    /* 6. КНОПКИ ДЕЙСТВИЯ */
+    .btn-garage-outline {
+        background: transparent; border: 1px solid #333; color: #666 !important;
+        padding: 15px 30px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        text-decoration: none; display: inline-block; border-radius: 0;
+    }
+    .btn-garage-outline:hover { border-color: #ff0000; color: #fff !important; }
+
+    .btn-garage-action {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 14px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+        transition: 0.3s; border-radius: 0; text-decoration: none; display: inline-block;
+    }
+    .btn-garage-action:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,0,0,0.4); }
+</style>
+
+{% if products %}
+  <h1>
+    <i class="fa-solid fa-list-check" style="color: #ff0000; margin-right: 15px;"></i> 
+    {{ heading_title }}{% if weight %} <small style="font-size: 10px; color: #444;">[W: {{ weight }}]</small>{% endif %}
+  </h1>
+
+  <div id="output-cart" class="table-responsive mb-5">
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="text-center" style="width: 80px;">[IMG]</th>
+          <th>[STAGING_UNIT]</th>
+          <th style="width: 180px;">[QTY_CONTROL]</th>
+          <th class="text-end" style="width: 150px;">UNIT_PRICE</th>
+          <th class="text-end" style="width: 150px;">SUBTOTAL</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+          <tr>
+            <td class="text-center">
+              {% if product.thumb %}
+                <a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" class="img-thumbnail"/></a>
+              {% endif %}
+            </td>
+            <td class="text-start">
+              <a href="{{ product.href }}" style="color: #fff; text-decoration: none; font-weight: 700; font-family: 'Orbitron';">{{ product.name }}</a>
+              {% if not product.stock %} <span style="color: #ff0000; font-weight: 900;">[!] OUT_OF_RESOURCES</span>{% endif %}
+              <div class="small" style="color: #444; font-size: 10px; margin-top: 5px;">
+                {{ text_model }}: {{ product.model }}
+                {% for option in product.option %}
+                  <br/>• {{ option.name }}: {{ option.value }}
+                {% endfor %}
+                {% if product.subscription %}
+                  <br/><span style="color: #ffaa00;">• {{ text_subscription }}: {{ product.subscription }}</span>
+                {% endif %}
+              </div>
+            </td>
+            <td>
+              <form method="post" data-oc-target="#shopping-cart">
+                <div class="input-group input-group-sm">
+                  <input type="text" name="quantity" value="{{ product.quantity }}" size="1" class="form-control{% if product.minimum %} is-invalid{% endif %}"/>
+                  <input type="hidden" name="key" value="{{ product.cart_id }}"/>
+                  <button type="submit" formaction="{{ edit }}" data-bs-toggle="tooltip" title="{{ button_update }}" class="btn btn-primary"><i class="fa-solid fa-sync"></i></button>
+                  <a href="{{ product.remove }}" data-bs-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa-solid fa-xmark"></i></a>
+                </div>
+              </form>
+              {% if product.minimum %}
+                <div style="font-size: 8px; color: #ff0000; margin-top: 5px;">MIN_REQ: {{ product.minimum }}</div>
+              {% endif %}
+            </td>
+            <td class="text-end">{{ product.price }}</td>
+            <td class="text-end" style="font-weight: 900; color: #fff;">{{ product.total }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot id="checkout-total">
+        {% for total in totals %}
+          <tr>
+            <td colspan="4" class="text-end"><strong>{{ total.title }}</strong></td>
+            <td class="text-end">{{ total.text }}</td>
+          </tr>
+        {% endfor %}
+      </tfoot>
+    </table>
+  </div>
+
+  {% if modules %}
+    <h2 style="font-size: 14px; color: #666; text-transform: uppercase; margin-bottom: 20px;">[ {{ text_next }} ]</h2>
+    <div id="accordion" class="accordion mb-5">
+      {% for module in modules %}
+        {{ module }}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <div class="row pt-4" style="border-top: 1px solid #1a1a1a;">
+    <div class="col">
+      <a href="{{ continue }}" class="btn-garage-outline">
+        <i class="fa-solid fa-chevron-left"></i> 
+        <span data-lang-en="CONTINUE_SCAN" data-lang-ua="ПРОДОВЖИТИ ПІДБІР" data-lang-pl="KONTYNUUJ WYBÓR"></span>
+      </a>
+    </div>
+    <div class="col text-end">
+      <a href="{{ checkout }}" class="btn-garage-action">
+        <i class="fa-solid fa-shield-check"></i> 
+        <span data-lang-en="PROCEED_TO_ACTIVATION" data-lang-ua="ОФОРМИТИ ЗАМОВЛЕННЯ" data-lang-pl="PRZEJDŹ DO ZAMÓWIENIA"></span>
+      </a>
+    </div>
+  </div>
+
+{% else %}
+  <div style="text-align: center; padding: 80px 0;">
+    <i class="fa-solid fa-cart-flatbed" style="font-size: 50px; color: #1a1a1a; margin-bottom: 30px; display: block;"></i>
+    <p style="color: #444; font-size: 12px; letter-spacing: 5px; text-transform: uppercase;">{{ text_no_results }}</p>
+    <div class="mt-5">
+        <a href="{{ continue }}" class="btn-garage-action">{{ button_continue }}</a>
+    </div>
+  </div>
+{% endif %}

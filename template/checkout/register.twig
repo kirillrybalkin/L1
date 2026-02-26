@@ -1,0 +1,180 @@
+<style>
+    /* 1. ЗАГАЛЬНИЙ ВИГЛЯД ФОРМИ */
+    #form-register { background: #000; padding: 10px; }
+    .text-login-link { color: #666; font-size: 11px; text-transform: uppercase; margin-bottom: 25px; display: block; }
+    .text-login-link a { color: #ff0000; text-decoration: none; border-bottom: 1px dashed; }
+
+    /* 2. МОДУЛЬНІ БЛОКИ (FIELDSETS) */
+    fieldset { border: 1px solid #1a1a1a; padding: 20px; margin-bottom: 30px; position: relative; background: #050505; }
+    legend {
+        float: none; width: auto; padding: 0 15px; font-family: 'Orbitron', sans-serif;
+        font-size: 12px; color: #ff0000; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;
+    }
+    fieldset::after {
+        content: "PROTOCOL_DATA_INPUT"; position: absolute; top: 10px; right: 15px;
+        font-size: 7px; color: #222; letter-spacing: 2px;
+    }
+
+    /* 3. ІНПУТИ ТА СЕЛЕКТИ */
+    .form-label { color: #555; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; font-weight: 900; margin-bottom: 5px; }
+    .required .form-label::before { content: "[!] "; color: #ff0000; }
+
+    .form-control, .form-select {
+        background: #000 !important; border: 1px solid #222 !important; border-radius: 0 !important;
+        color: #00ff00 !important; font-family: 'Consolas', monospace; font-size: 14px; padding: 10px !important;
+        transition: 0.3s;
+    }
+    .form-control:focus, .form-select:focus {
+        border-color: #ff0000 !important; box-shadow: 0 0 10px rgba(255,0,0,0.1) !important;
+    }
+
+    /* 4. ТУМБЛЕРИ (SWITCHES) */
+    .form-switch .form-check-input { background-color: #222; border-color: #444; width: 3em !important; cursor: pointer; height: 1.5em !important; }
+    .form-switch .form-check-input:checked { background-color: #00ff00 !important; border-color: #00ff00 !important; box-shadow: 0 0 10px rgba(0,255,0,0.3); }
+    .form-check-label { color: #888; font-family: 'Orbitron'; font-size: 10px; text-transform: uppercase; cursor: pointer; padding-top: 5px; }
+
+    /* 5. КНОПКА АКТИВАЦІЇ */
+    .btn-garage-register {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 12px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+        transition: 0.3s; border-radius: 0; width: 100%;
+    }
+    .btn-garage-register:hover { background: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.2); }
+
+    .invalid-feedback { color: #ff0000 !important; font-size: 9px !important; text-transform: uppercase; font-weight: 900; margin-top: 5px; }
+</style>
+
+<form id="form-register">
+  <span class="text-login-link">> {{ text_login }}</span>
+
+  <fieldset>
+    <legend>[ {{ heading_title }} ]</legend>
+    <div class="row">
+      {% if config_checkout_guest %}
+        <div class="col-12 mb-4 required d-flex gap-4">
+          <div class="form-check">
+            <input type="radio" name="account" value="1" id="input-register" class="form-check-input"{% if account %} checked{% endif %}/>
+            <label for="input-register" class="form-check-label">{{ text_register }}</label>
+          </div>
+          <div class="form-check">
+            <input type="radio" name="account" value="0" id="input-guest" class="form-check-input"{% if not account %} checked{% endif %}/>
+            <label for="input-guest" class="form-check-label">{{ text_guest }}</label>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="col-12 mb-3{% if customer_groups|length <= 1 %} d-none{% endif %}">
+        <label class="form-label">{{ entry_customer_group }}</label>
+        <select name="customer_group_id" id="input-customer-group" class="form-select">
+          {% for customer_group in customer_groups %}
+            <option value="{{ customer_group.customer_group_id }}"{% if customer_group.customer_group_id == customer_group_id %} selected{% endif %}>{{ customer_group.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2">
+      <div class="col mb-3 required">
+        <label for="input-firstname" class="form-label">{{ entry_firstname }}</label>
+        <input type="text" name="firstname" value="{{ firstname }}" placeholder="OPERATOR_NAME" id="input-firstname" class="form-control"/>
+        <div id="error-firstname" class="invalid-feedback"></div>
+      </div>
+      <div class="col mb-3 required">
+        <label for="input-lastname" class="form-label">{{ entry_lastname }}</label>
+        <input type="text" name="lastname" value="{{ lastname }}" placeholder="SURNAME" id="input-lastname" class="form-control"/>
+        <div id="error-lastname" class="invalid-feedback"></div>
+      </div>
+      <div class="col mb-3 required">
+        <label for="input-email" class="form-label">{{ entry_email }}</label>
+        <input type="text" name="email" value="{{ email }}" placeholder="EMAIL_ADDRESS" id="input-email" class="form-control"/>
+        <div id="error-email" class="invalid-feedback"></div>
+      </div>
+      {% if config_telephone_display %}
+        <div class="col mb-3{% if config_telephone_required %} required{% endif %}">
+          <label for="input-telephone" class="form-label">{{ entry_telephone }}</label>
+          <input type="text" name="telephone" value="{{ telephone }}" placeholder="+38 / +48 ..." id="input-telephone" class="form-control"/>
+          <div id="error-telephone" class="invalid-feedback"></div>
+        </div>
+      {% endif %}
+    </div>
+  </fieldset>
+
+  {% if config_checkout_payment_address %}
+    <fieldset>
+      <legend>[ {{ text_payment_address }} ]</legend>
+      <div class="row row-cols-1 row-cols-md-2">
+        <div class="col mb-3">
+          <label for="input-payment-company" class="form-label">{{ entry_company }}</label>
+          <input type="text" name="payment_company" value="{{ payment_company }}" placeholder="OPTIONAL" id="input-payment-company" class="form-control"/>
+        </div>
+        <div class="col mb-3 required">
+          <label for="input-payment-address-1" class="form-label">{{ entry_address_1 }}</label>
+          <input type="text" name="payment_address_1" value="{{ payment_address_1 }}" placeholder="STREET / BUILDING" id="input-payment-address-1" class="form-control"/>
+          <div id="error-payment-address-1" class="invalid-feedback"></div>
+        </div>
+        <div class="col mb-3 required">
+          <label for="input-payment-city" class="form-label">{{ entry_city }}</label>
+          <input type="text" name="payment_city" value="{{ payment_city }}" placeholder="CITY" id="input-payment-city" class="form-control"/>
+          <div id="error-payment-city" class="invalid-feedback"></div>
+        </div>
+        <div class="col mb-3 required">
+          <label for="input-payment-postcode" class="form-label">{{ entry_postcode }}</label>
+          <input type="text" name="payment_postcode" value="{{ payment_postcode }}" placeholder="ZIP" id="input-payment-postcode" class="form-control"/>
+          <div id="error-payment-postcode" class="invalid-feedback"></div>
+        </div>
+        <div class="col mb-3 required">
+          <label for="input-payment-country" class="form-label">{{ entry_country }}</label>
+          <select name="payment_country_id" id="input-payment-country" class="form-select">
+            <option value="">{{ text_select }}</option>
+            {% for country in countries %}
+              <option value="{{ country.country_id }}"{% if country.country_id == payment_country_id %} selected{% endif %}>{{ country.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col mb-3 required">
+          <label for="input-payment-zone" class="form-label">{{ entry_zone }}</label>
+          <select name="payment_zone_id" id="input-payment-zone" class="form-select" data-oc-value="{{ payment_zone_id }}"></select>
+        </div>
+      </div>
+
+      {% if shipping_required %}
+        <div class="col-12 mt-3">
+          <div class="form-check form-switch form-switch-lg">
+            <input type="checkbox" name="address_match" value="1" id="input-address-match" class="form-check-input" checked/>
+            <label for="input-address-match" class="form-check-label">{{ entry_match }}</label>
+          </div>
+        </div>
+      {% endif %}
+    </fieldset>
+  {% endif %}
+
+  <div class="row row-cols-1 row-cols-md-2">
+    <div id="password" class="col mb-3 required">
+      <fieldset>
+        <legend>[ SECURITY_KEY ]</legend>
+        <label for="input-password" class="form-label">{{ entry_password }}</label>
+        <input type="password" name="password" value="" placeholder="••••••••" id="input-password" class="form-control"/>
+        <div id="error-password" class="invalid-feedback"></div>
+      </fieldset>
+    </div>
+    <div class="col mb-3 required">{{ captcha }}</div>
+  </div>
+
+  <fieldset style="background: transparent; border: none; padding: 0;">
+    <div class="form-check form-switch form-switch-lg mb-3">
+      <input type="checkbox" name="newsletter" value="1" id="input-newsletter" class="form-check-input"/>
+      <label for="input-newsletter" class="form-check-label">{{ entry_newsletter }}</label>
+    </div>
+    {% if text_agree %}
+      <div id="register-agree" class="form-check form-switch form-switch-lg mb-4">
+        <input type="checkbox" name="agree" value="1" id="input-register-agree" class="form-check-input"{% if agree %} checked{% endif %}/>
+        <label for="input-register-agree" class="form-check-label">{{ text_agree }}</label>
+      </div>
+    {% endif %}
+
+    <button type="submit" id="button-register" class="btn-garage-register">
+       <i class="fa-solid fa-bolt me-2"></i> {{ button_continue }}
+    </button>
+  </fieldset>
+</form>

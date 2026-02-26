@@ -1,0 +1,88 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНЫЙ СТИЛЬ ГАРАЖА */
+    #account-address {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; color: #fff; margin-bottom: 35px;
+        border-left: 5px solid #ff0000; padding-left: 20px;
+    }
+
+    /* 3. КОНТЕЙНЕР СПИСКА */
+    #address {
+        background: #000; border: 1px solid #1a1a1a;
+        padding: 5px; margin-bottom: 30px;
+        position: relative;
+    }
+    #address::before {
+        content: "DATABASE_ADDRESS_QUERY"; position: absolute; top: -20px; right: 0;
+        font-size: 8px; color: #444; letter-spacing: 1px;
+    }
+
+    /* 4. КНОПКИ УПРАВЛЕНИЯ */
+    .btn-garage-back {
+        background: transparent; border: 1px solid #333; color: #888;
+        padding: 12px 25px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        text-decoration: none; display: inline-block;
+    }
+    .btn-garage-back:hover { border-color: #ff0000; color: #fff; }
+
+    .btn-garage-add {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 12px 30px; font-family: 'Orbitron'; font-size: 12px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 1px;
+        transition: 0.3s; text-decoration: none; display: inline-block;
+    }
+    .btn-garage-add:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(255,0,0,0.3); }
+
+    /* АЛЕРТЫ */
+    .alert {
+        border-radius: 0; border: none; font-size: 12px; text-transform: uppercase;
+        padding: 15px; margin-bottom: 20px; font-family: 'Consolas', monospace;
+    }
+    .alert-success { background: #002200; border-left: 4px solid #00ff00; color: #00ff00; }
+    .alert-danger { background: #220000; border-left: 4px solid #ff0000; color: #ff0000; }
+</style>
+
+<div id="account-address" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <div id="notification-zone">
+                {% if success %}
+                    <div class="alert alert-success alert-dismissible"><i class="fa-solid fa-circle-check"></i> {{ success }}</div>
+                {% endif %}
+            </div>
+
+            <h1><i class="fa-solid fa-map-location-dot" style="color: #ff0000; margin-right: 15px;"></i> {{ text_address_book }}</h1>
+
+            <div id="address">
+                {{ list }}
+            </div>
+
+            <div class="row mt-4">
+                <div class="col">
+                    <a href="{{ back }}" class="btn-garage-back"><i class="fa-solid fa-chevron-left"></i> {{ button_back }}</a>
+                </div>
+                <div class="col text-end">
+                    <a href="{{ add }}" class="btn-garage-add"><i class="fa-solid fa-plus"></i> {{ button_new_address }}</a>
+                </div>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

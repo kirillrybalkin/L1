@@ -1,0 +1,71 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНИЙ СТИЛЬ СПИСКУ БАЖАНЬ */
+    #account-wishlist {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* 3. КОНТЕЙНЕР СПИСКУ (WATCHLIST_BUFFER) */
+    #wishlist {
+        background: #000; border: 1px solid #1a1a1a;
+        min-height: 200px; padding: 10px; position: relative;
+    }
+    #wishlist::before {
+        content: "WATCHLIST_BUFFER_v1.0"; position: absolute; top: -22px; right: 0;
+        font-size: 8px; color: #444; letter-spacing: 2px;
+    }
+
+    /* 4. КНОПКА ПОВЕРНЕННЯ */
+    .btn-garage-back {
+        background: transparent; border: 1px solid #333; color: #888 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        text-decoration: none; display: inline-block; border-radius: 0;
+    }
+    .btn-garage-back:hover { border-color: #ff0000; color: #fff !important; }
+
+    /* АЛЕРТИ */
+    .alert { border-radius: 0; border: none; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; }
+    .alert-success { background: #002200; color: #00ff00; border-left: 4px solid #00ff00; }
+    .alert-danger { background: #220000; color: #ff0000; border-left: 4px solid #ff0000; }
+</style>
+
+<div id="account-wishlist" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-heart-pulse" style="color: #ff0000; margin-right: 15px;"></i> {{ heading_title }}</h1>
+
+            <div id="wishlist">
+                {{ list }}
+            </div>
+
+            <div class="text-end mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ continue }}" class="btn-garage-back">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span data-lang-en="RETURN_TO_MAIN_MENU" data-lang-ua="В ГОЛОВНЕ МЕНЮ" data-lang-pl="WRÓĆ DO MENU"></span>
+                </a>
+            </div>
+
+            <div style="margin-top: 60px; text-align: center; opacity: 0.05;">
+                <span style="font-size: 8px; letter-spacing: 12px;">HARDWARE_WATCHLIST_SUBMODULE</span>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

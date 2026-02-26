@@ -1,0 +1,79 @@
+<style>
+    /* 1. СЕТКА МЕТОДОВ */
+    .payment-methods-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 15px;
+        padding: 10px;
+    }
+
+    /* 2. КАРТОЧКА ШЛЮЗА */
+    .payment-method-item {
+        background: #050505;
+        border: 1px solid #222;
+        padding: 20px;
+        position: relative;
+        transition: 0.3s;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 80px;
+    }
+    .payment-method-item:hover {
+        border-color: #00ff00; /* Зеленый для подтверждения безопасности */
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.1);
+        transform: translateY(-2px);
+    }
+
+    /* ДИЗАЙН ТЕКСТА ВНУТРИ */
+    .payment-method-item .text-start {
+        color: #eee !important;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* ИКОНКА СТАТУСА */
+    .payment-method-item::before {
+        content: "GATEWAY_ACTIVE";
+        position: absolute;
+        top: 8px;
+        right: 12px;
+        font-size: 7px;
+        color: #00ff00;
+        letter-spacing: 1px;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    /* 3. ЕСЛИ НЕТ ДАННЫХ */
+    .no-payments {
+        padding: 40px;
+        text-align: center;
+        color: #444;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 10px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        border: 1px dashed #1a1a1a;
+    }
+</style>
+
+{% if payment_methods %}
+  <div class="payment-methods-grid">
+    {% for payment_method in payment_methods %}
+      <div class="payment-method-item">
+        <div class="text-start">
+            <i class="fa-solid fa-shield-check" style="color: #00ff00; margin-right: 10px;"></i>
+            {{ payment_method }}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="no-payments">
+    <i class="fa-solid fa-ban" style="display:block; font-size: 24px; margin-bottom: 15px; color: #222;"></i>
+    {{ text_no_results }}
+    <div style="margin-top: 5px; opacity: 0.5;">NO_ACTIVE_GATEWAYS_FOUND</div>
+  </div>
+{% endif %}

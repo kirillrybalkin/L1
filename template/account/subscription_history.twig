@@ -1,0 +1,107 @@
+<style>
+    /* 1. КОНТЕЙНЕР ЛОГУ ТРАНЗАКЦІЙ */
+    .transaction-log-wrap {
+        background: #000;
+        border: 1px solid #1a1a1a;
+        padding: 5px;
+        position: relative;
+    }
+    .transaction-log-wrap::after {
+        content: "FINANCIAL_TRANSACTION_LOG";
+        position: absolute;
+        top: -22px;
+        right: 0;
+        font-size: 8px;
+        color: #444;
+        letter-spacing: 2px;
+    }
+
+    /* 2. ТАБЛИЦЯ ТЕРМІНАЛУ */
+    .table-ledger {
+        width: 100%;
+        margin-bottom: 0;
+        color: #888;
+        border-collapse: separate;
+        border-spacing: 0 2px;
+    }
+    .table-ledger thead th {
+        background: #050505;
+        color: #ff0000;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 12px 10px;
+        border-bottom: 2px solid #ff0000 !important;
+    }
+    .table-ledger tbody td {
+        background: #0a0a0a !important;
+        padding: 15px 10px;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        border: none;
+        color: #eee;
+        vertical-align: middle;
+    }
+
+    /* 3. ДЕТАЛІ ОПЕРАЦІЙ */
+    .ledger-status {
+        color: #00ff00;
+        font-weight: 900;
+        text-transform: uppercase;
+        font-size: 11px;
+        letter-spacing: 1px;
+    }
+    .ledger-date { color: #444; font-size: 11px; }
+    .ledger-comment { color: #ccc; border-left: 2px solid #222; padding-left: 12px; }
+
+    /* 4. ПАГІНАЦІЯ (LAUNCH STYLE) */
+    .pagination-block { margin-top: 20px; }
+    .pagination { --bs-pagination-bg: #111; --bs-pagination-border-color: #222; --bs-pagination-color: #666; }
+    .page-link:hover { background: #ff0000; color: #000; border-color: #ff0000; }
+    .active > .page-link { background-color: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+
+    .results-info {
+        font-size: 9px;
+        color: #333;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+</style>
+
+<div class="transaction-log-wrap">
+  <div class="table-responsive">
+    <table class="table-ledger">
+      <thead>
+        <tr>
+          <th style="width: 180px;">[ TIMESTAMP ]</th>
+          <th>[ TRANSACTION_DETAILS ]</th>
+          <th class="text-end" style="width: 150px;">[ STATUS ]</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if histories %}
+          {% for history in histories %}
+            <tr>
+              <td class="ledger-date">{{ history.date_added }}</td>
+              <td class="ledger-comment">{{ history.comment }}</td>
+              <td class="text-end">
+                <span class="ledger-status">{{ history.status }}</span>
+              </td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td class="text-center" colspan="3" style="padding: 40px; color: #222; letter-spacing: 5px;">
+                DATABASE_EMPTY_NO_RECORDS
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row pagination-block align-items-center">
+  <div class="col-sm-6 text-start">{{ pagination }}</div>
+  <div class="col-sm-6 text-end results-info">{{ results }}</div>
+</div>

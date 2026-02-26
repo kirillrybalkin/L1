@@ -1,0 +1,217 @@
+{{ header }}
+<style>
+    /* 1. БАЗОВИЙ СТИЛЬ ЛІЦЕНЗІЙ */
+    #account-subscription {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВКИ ТА ТЕХ-ЯЧЕЙКИ */
+    h1, h2 {
+        font-size: 20px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 15px; margin-bottom: 30px;
+    }
+
+    .tech-cell {
+        background: #000; border: 1px solid #1a1a1a; border-left: 3px solid #ff0000;
+        padding: 15px; margin-bottom: 20px; height: 100%; transition: 0.3s;
+    }
+    .tech-cell:hover { border-color: #333; background: #050505; }
+    .tech-cell strong { color: #ff0000; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 8px; }
+    .tech-cell span, .tech-cell a { color: #eee; font-family: 'Consolas', monospace; font-size: 14px; text-decoration: none; }
+    .tech-cell a:hover { color: #ff0000; }
+
+    /* 3. ТАБЛИЦЯ СПЕЦИФІКАЦІЙ */
+    .table-spec {
+        width: 100%; border: 1px solid #1a1a1a; background: #000; margin-bottom: 30px;
+    }
+    .table-spec th {
+        background: #050505; color: #ff0000; font-size: 10px; text-transform: uppercase;
+        letter-spacing: 2px; padding: 15px; border-bottom: 2px solid #ff0000;
+    }
+    .table-spec td {
+        padding: 15px; color: #eee; font-family: 'Consolas', monospace; font-size: 13px;
+        border-bottom: 1px solid #111; vertical-align: middle;
+    }
+    .table-spec a { color: #fff; font-weight: 700; text-decoration: none; }
+    .table-spec a:hover { color: #ff0000; }
+
+    /* 4. ПЛАН ПІДПИСКИ (MAIN PROTOCOL) */
+    .plan-box {
+        background: #050505; border: 1px dashed #333; padding: 20px; margin-bottom: 30px;
+    }
+    .plan-box strong { color: #00ff00; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; }
+    .plan-box .plan-desc { color: #ccc; font-family: 'Consolas', monospace; font-size: 15px; margin-top: 10px; }
+
+    /* 5. КНОПКИ */
+    .btn-garage-danger {
+        background: transparent; border: 1px solid #ff0000; color: #ff0000 !important;
+        padding: 12px 30px; font-family: 'Orbitron'; font-size: 11px; font-weight: 900;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; border-radius: 0;
+    }
+    .btn-garage-danger:hover { background: #ff0000; color: #000 !important; box-shadow: 0 0 20px rgba(255,0,0,0.4); }
+
+    .btn-garage-continue {
+        background: transparent; border: 1px solid #333; color: #888 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        text-decoration: none; display: inline-block; border-radius: 0;
+    }
+    .btn-garage-continue:hover { border-color: #ff0000; color: #fff !important; }
+</style>
+
+<div id="account-subscription" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-file-shield" style="color: #ff0000; margin-right: 15px;"></i> {{ heading_title }}</h1>
+
+            <div class="row mb-2">
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_subscription_id }}</strong>
+                        <span>#{{ subscription_id }}</span>
+                    </div>
+                </div>
+                {% if order_id %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_order_id }} / MAIN_LINK</strong>
+                        <a href="{{ order_link }}" target="_blank">ORDER_REF_#{{ order_id }}</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if payment_address or shipping_address %}
+            <div class="row mb-2">
+                {% if payment_address %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_payment_address }}</strong>
+                        <span>{{ payment_address }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                {% if shipping_address %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_shipping_address }}</strong>
+                        <span>{{ shipping_address }}</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="row mb-4">
+                {% if shipping_method %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_shipping_method }}</strong>
+                        <span>{{ shipping_method }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_payment_method }}</strong>
+                        <span>{{ payment_method }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table-spec">
+                    <thead>
+                        <tr>
+                            <th>[ PROTOCOL_NAME ]</th>
+                            <th class="text-end" style="width: 80px;">QTY</th>
+                            <th class="text-end" style="width: 150px;">TRIAL_RATE</th>
+                            <th class="text-end" style="width: 150px;">STANDARD_RATE</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if products %}
+                            {% for product in products %}
+                            <tr>
+                                <td>
+                                    <a href="{{ product.product_edit }}" target="_blank">{{ product.name }}</a>
+                                    <div style="font-size: 10px; color: #555;">{{ text_model }}: {{ product.model }}</div>
+                                    {% for option in product.option %}
+                                        <div style="font-size: 9px; color: #ff0000;">• {{ option.name }}: {{ option.value }}</div>
+                                    {% endfor %}
+                                </td>
+                                <td class="text-end">{{ product.quantity }}</td>
+                                <td class="text-end">{{ product.trial_price }}</td>
+                                <td class="text-end" style="color: #00ff00; font-weight: 900;">{{ product.price }}</td>
+                            </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center" style="padding: 40px; color: #222;">NO_PRODUCTS_LINKED</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="plan-box">
+                <strong>{{ text_subscription_plan }} / STATUS_ACTIVE</strong>
+                <div class="plan-desc">{{ description }}</div>
+            </div>
+
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell" style="border-left-color: #00ff00;">
+                        <strong>{{ text_date_next }}</strong>
+                        <span style="color: #00ff00;">{{ date_next }}</span>
+                    </div>
+                </div>
+                {% if duration %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell" style="border-left-color: #ffaa00;">
+                        <strong>{{ text_remaining }}</strong>
+                        <span style="color: #ffaa00;">{{ remaining }}</span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="text-end mb-5">
+                <button type="button" id="button-cancel" class="btn-garage-danger">
+                    <i class="fa-solid fa-ban"></i>
+                    <span data-lang-en="TERMINATE_LICENSE" data-lang-ua="ПРИПИНИТИ ЛІЦЕНЗІЮ" data-lang-pl="ZAKOŃCZ LICENCJĘ"></span>
+                </button>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h2><i class="fa-solid fa-clock-rotate-left"></i> {{ text_history }}</h2>
+                    <div id="history" class="mb-5">{{ history }}</div>
+
+                    <h2><i class="fa-solid fa-list-check"></i> {{ text_order }}</h2>
+                    <div id="order" class="mb-5">{{ order }}</div>
+                </div>
+            </div>
+
+            <div class="text-end mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ continue }}" class="btn-garage-continue">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span data-lang-en="BACK_TO_PROTOCOLS" data-lang-ua="ДО СПИСКУ ЛІЦЕНЗІЙ" data-lang-pl="DO LISTY LICENCJI"></span>
+                </a>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+
+
+<script type="text/javascript"></script>
+{{ footer }}

@@ -1,0 +1,76 @@
+{{ header }}
+<style>
+    /* 1. БАЗОВЫЙ СТИЛЬ */
+    #account-payment-method {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* 3. КОНТЕЙНЕР ШЛЮЗОВ (PAYMENT LIST) */
+    #payment-method {
+        background: #000; border: 1px solid #1a1a1a;
+        padding: 10px; margin-bottom: 35px;
+        position: relative;
+        min-height: 150px;
+    }
+    #payment-method::before {
+        content: "SECURE_GATEWAY_v2.1"; position: absolute; top: -20px; right: 0;
+        font-size: 8px; color: #444; letter-spacing: 2px;
+    }
+    #payment-method::after {
+        content: "SSL_ENCRYPTED_CONNECTION_ACTIVE"; position: absolute; bottom: -20px; left: 0;
+        font-size: 7px; color: #00ff00; letter-spacing: 1px; opacity: 0.5;
+    }
+
+    /* 4. КНОПКА НАЗАД */
+    .btn-garage-back {
+        background: transparent; border: 1px solid #333; color: #666 !important;
+        padding: 15px 35px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        text-decoration: none; display: inline-block; border-radius: 0;
+    }
+    .btn-garage-back:hover {
+        border-color: #ff0000; color: #fff !important;
+        box-shadow: 0 0 15px rgba(255,0,0,0.1);
+    }
+</style>
+
+<div id="account-payment-method" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1>
+                <i class="fa-solid fa-credit-card" style="color: #ff0000; margin-right: 15px;"></i>
+                {{ heading_title }}
+            </h1>
+
+            <div id="payment-method">
+                {{ list }}
+            </div>
+
+            <div class="mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ back }}" class="btn-garage-back">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span data-lang-en="RETURN_TO_BASE" data-lang-ua="В ГОЛОВНЕ МЕНЮ" data-lang-pl="WRÓĆ DO MENU"></span>
+                </a>
+            </div>
+
+            <div style="margin-top: 60px; text-align: center; opacity: 0.05;">
+                <span style="font-size: 8px; letter-spacing: 10px;">FINANCIAL_DATA_PROTECTED</span>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

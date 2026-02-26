@@ -1,0 +1,193 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНЫЙ СТИЛЬ РЕГИСТРАЦИИ */
+    #account-register {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК И ТЕКСТ */
+    h1 {
+        font-size: 26px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 15px;
+    }
+    .text-account-already { color: #666; font-size: 11px; text-transform: uppercase; margin-bottom: 35px; display: block; }
+    .text-account-already a { color: #ff0000; text-decoration: none; border-bottom: 1px dashed; }
+
+    /* 3. ОФОРМЛЕНИЕ ГРУПП (FIELDSET) */
+    fieldset { border: 1px solid #1a1a1a; padding: 25px; background: #000; margin-bottom: 30px; position: relative; }
+    legend {
+        float: none; width: auto; padding: 0 15px; font-size: 11px;
+        color: #ff0000; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;
+    }
+    fieldset::after {
+        content: "REG_MODULE_ACTIVE"; position: absolute; top: 10px; right: 15px;
+        font-size: 7px; color: #222; letter-spacing: 2px;
+    }
+
+    /* 4. ИНПУТЫ И МЕТКИ */
+    .col-form-label { color: #888; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .required .col-form-label::before { content: "[!] "; color: #ff0000; font-weight: 900; }
+
+    .form-control, .form-select {
+        background-color: #050505 !important;
+        border: 1px solid #333 !important;
+        border-radius: 0 !important;
+        color: #00ff00 !important;
+        font-family: 'Consolas', monospace;
+        padding: 12px !important;
+        transition: 0.3s;
+    }
+    .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 10px rgba(255,0,0,0.2) !important;
+    }
+
+    /* 5. ТУМБЛЕРЫ И КНОПКА */
+    .form-switch .form-check-input {
+        background-color: #222; border-color: #444; width: 3em !important; cursor: pointer;
+    }
+    .form-switch .form-check-input:checked {
+        background-color: #00ff00 !important; border-color: #00ff00 !important;
+        box-shadow: 0 0 10px rgba(0, 255, 0, 0.4);
+    }
+
+    .btn-garage-activate {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 18px 50px; font-family: 'Orbitron'; font-size: 14px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 3px;
+        transition: 0.3s; border-radius: 0; width: 100%; margin-top: 20px;
+    }
+    .btn-garage-activate:hover { background: #fff; box-shadow: 0 0 25px rgba(255,0,0,0.5); transform: translateY(-2px); }
+
+    .invalid-feedback { color: #ff0000 !important; font-size: 9px !important; text-transform: uppercase; margin-top: 5px; }
+</style>
+
+<div id="account-register" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-user-plus" style="color:#ff0000; margin-right:15px;"></i> {{ heading_title }}</h1>
+            <span class="text-account-already">> {{ text_account_already }}</span>
+
+            <form id="form-register" action="{{ register }}" method="post" data-oc-toggle="ajax">
+                <fieldset id="account">
+                    <legend>[ {{ text_your_details }} ]</legend>
+
+                    {% if customer_groups|length > 1 %}
+                    <div class="row mb-4 required">
+                        <label class="col-sm-3 col-form-label">{{ entry_customer_group }}</label>
+                        <div class="col-sm-9">
+                            <select name="customer_group_id" id="input-customer-group" class="form-select">
+                                {% for customer_group in customer_groups %}
+                                    <option value="{{ customer_group.customer_group_id }}"{% if customer_group.customer_group_id == customer_group_id %} selected{% endif %}>{{ customer_group.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="row mb-4 required">
+                        <label for="input-firstname" class="col-sm-3 col-form-label">{{ entry_firstname }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="firstname" value="" placeholder="REQUIRED_FIELD" id="input-firstname" class="form-control"/>
+                            <div id="error-firstname" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4 required">
+                        <label for="input-lastname" class="col-sm-3 col-form-label">{{ entry_lastname }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="lastname" value="" placeholder="REQUIRED_FIELD" id="input-lastname" class="form-control"/>
+                            <div id="error-lastname" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4 required">
+                        <label for="input-email" class="col-sm-3 col-form-label">{{ entry_email }}</label>
+                        <div class="col-sm-9">
+                            <input type="email" name="email" value="" placeholder="OPERATOR@SYSTEM.COM" id="input-email" class="form-control"/>
+                            <div id="error-email" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    {% if config_telephone_display %}
+                    <div class="row mb-4{% if config_telephone_required %} required{% endif %}">
+                        <label for="input-telephone" class="col-sm-3 col-form-label">{{ entry_telephone }}</label>
+                        <div class="col-sm-9">
+                            <input type="tel" name="telephone" value="" placeholder="+380 / +48 ..." id="input-telephone" class="form-control"/>
+                            <div id="error-telephone" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {# ГЕНЕРАЦИЯ КАСТОМНЫХ ПОЛЕЙ (ДЛЯ VIN И Т.Д.) #}
+                    {% for custom_field in custom_fields %}
+                        {% if custom_field.type == 'text' %}
+                        <div class="row mb-4 custom-field custom-field-{{ custom_field.custom_field_id }}">
+                            <label for="input-custom-field-{{ custom_field.custom_field_id }}" class="col-sm-3 col-form-label">{{ custom_field.name }}</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="custom_field[{{ custom_field.custom_field_id }}]" value="{{ custom_field.value }}" placeholder="{{ custom_field.name }}" id="input-custom-field-{{ custom_field.custom_field_id }}" class="form-control"/>
+                                <div id="error-custom-field-{{ custom_field.custom_field_id }}" class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+                </fieldset>
+
+                <fieldset>
+                    <legend>[ SECURITY_AUTHENTICATION ]</legend>
+                    <div class="row mb-4 required">
+                        <label for="input-password" class="col-sm-3 col-form-label">{{ entry_password }}</label>
+                        <div class="col-sm-9">
+                            <input type="password" name="password" value="" placeholder="••••••••" id="input-password" class="form-control"/>
+                            <div id="error-password" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>[ DATA_BROADCAST ]</legend>
+                    <div class="row align-items-center">
+                        <label class="col-sm-3 col-form-label">{{ entry_newsletter }}</label>
+                        <div class="col-sm-9">
+                            <div class="form-check form-switch form-switch-lg">
+                                <input type="hidden" name="newsletter" value="0"/>
+                                <input type="checkbox" name="newsletter" value="1" id="input-newsletter" class="form-check-input"/>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                {{ captcha }}
+
+                <div class="mt-5 text-center">
+                    {% if text_agree %}
+                        <div class="form-check form-switch form-switch-lg d-inline-block mb-4">
+                            <label class="form-check-label me-3" style="font-size: 11px; text-transform: uppercase;">{{ text_agree }}</label>
+                            <input type="checkbox" name="agree" value="1" class="form-check-input" style="float: none; vertical-align: middle;"/>
+                        </div>
+                    {% endif %}
+
+                    <button type="submit" class="btn-garage-activate">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span data-lang-en="ACTIVATE_SYSTEM_ID" data-lang-ua="АКТИВУВАТИ ID СИСТЕМИ" data-lang-pl="AKTYWUJ ID SYSTEMU"></span>
+                    </button>
+                </div>
+            </form>
+
+            <div style="margin-top: 50px; text-align: center; opacity: 0.1;">
+                <span style="font-size: 8px; letter-spacing: 10px;">ENCRYPTED_USER_PROVISIONING_v4.2</span>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

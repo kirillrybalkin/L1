@@ -1,0 +1,117 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНИЙ СТИЛЬ */
+    #account-newsletter {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* 3. МОДУЛЬ ПЕРЕМИКАЧА (TERMINAL BLOCK) */
+    fieldset {
+        border: 1px solid #1a1a1a; padding: 40px; background: #000;
+        margin-bottom: 40px; position: relative;
+    }
+    fieldset::before {
+        content: "COMMUNICATION_PROTOCOL"; position: absolute; top: 10px; right: 15px;
+        font-size: 8px; color: #333; letter-spacing: 2px;
+    }
+
+    .col-form-label {
+        color: #eee; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;
+        display: flex; align-items: center;
+    }
+
+    /* Стилізація Switch */
+    .form-switch .form-check-input {
+        width: 60px !important; height: 30px !important;
+        background-color: #222 !important; border-color: #333 !important;
+        cursor: pointer; transition: 0.3s;
+    }
+    .form-switch .form-check-input:checked {
+        background-color: #00ff00 !important; border-color: #00ff00 !important;
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+    }
+    .form-switch .form-check-input:focus {
+        box-shadow: none !important; border-color: #ff0000 !important;
+    }
+
+    /* 4. МУЛЬТИЯЗИЧНІ СТАТУСИ */
+    .status-indicator { font-size: 10px; margin-top: 10px; letter-spacing: 2px; display: block; }
+    .status-indicator::after { content: "STATUS: DISCONNECTED"; color: #444; }
+    input:checked ~ .status-indicator::after { content: "STATUS: BROADCAST_ACTIVE"; color: #00ff00; }
+
+    body[data-lang="ua"] input:checked ~ .status-indicator::after { content: "СТАТУС: ПІДПИСКУ АКТИВОВАНО"; }
+    body[data-lang="ua"] .status-indicator::after { content: "СТАТУС: ВІДКЛЮЧЕНО"; }
+
+    body[data-lang="pl"] input:checked ~ .status-indicator::after { content: "STATUS: SUBSKRYPCJA AKTYWNA"; }
+    body[data-lang="pl"] .status-indicator::after { content: "STATUS: ROZŁĄCZONY"; }
+
+    /* 5. КНОПКИ */
+    .btn-garage-save {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 13px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+        transition: 0.3s;
+    }
+    .btn-garage-save:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,0,0,0.4); }
+
+    .btn-garage-back {
+        background: transparent; border: 1px solid #333; color: #666 !important;
+        padding: 15px 30px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        text-decoration: none; display: inline-block;
+    }
+    .btn-garage-back:hover { border-color: #ff0000; color: #fff !important; }
+</style>
+
+<div id="account-newsletter" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-tower-broadcast" style="color:#ff0000; margin-right:15px;"></i> {{ heading_title }}</h1>
+
+            <form id="form-newsletter" action="{{ save }}" method="post" data-oc-toggle="ajax">
+                <fieldset>
+                    <div class="row align-items-center">
+                        <label class="col-md-6 col-form-label">{{ entry_newsletter }}</label>
+                        <div class="col-md-6 text-md-end">
+                            <div class="form-check form-switch form-switch-lg d-inline-block">
+                                <input type="hidden" name="newsletter" value="0"/>
+                                <input type="checkbox" name="newsletter" value="1" id="input-newsletter" class="form-check-input"{% if newsletter %} checked{% endif %}/>
+                                <span class="status-indicator"></span>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="row mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                    <div class="col">
+                        <a href="{{ back }}" class="btn-garage-back"><i class="fa-solid fa-chevron-left"></i> BACK_TO_GARAGE</a>
+                    </div>
+                    <div class="col text-end">
+                        <button type="submit" class="btn-garage-save">
+                            <i class="fa-solid fa-sync"></i> UPDATE_PROTOCOL
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div style="margin-top: 50px; text-align: center; opacity: 0.1;">
+                <span style="font-size: 8px; letter-spacing: 6px;">SUBSCRIPTION_SERVICE_v2.0</span>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

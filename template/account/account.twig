@@ -1,0 +1,162 @@
+{{ header }}
+<style>
+    /* ГЛОБАЛЬНЫЙ СТИЛЬ ГАРАЖА */
+    #account-account {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* ЗАГОЛОВКИ МОДУЛЕЙ */
+    h1, h2 {
+        font-size: 20px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; color: #fff; margin-bottom: 25px;
+        border-left: 4px solid #ff0000; padding-left: 15px;
+    }
+    h2 { font-size: 16px; margin-top: 40px; border-left-color: #444; }
+
+    /* СЕТКА ПЛИТОК (LAUNCH MENU) */
+    .garage-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 15px; margin-bottom: 30px;
+    }
+
+    .garage-tile {
+        background: #111; border: 1px solid #222;
+        padding: 20px; display: flex; align-items: center;
+        text-decoration: none !important; transition: 0.3s;
+        position: relative; overflow: hidden;
+    }
+    .garage-tile:hover {
+        background: #1a1a1a; border-color: #ff0000;
+        transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255,0,0,0.2);
+    }
+    .garage-tile i {
+        font-size: 24px; color: #ff0000; margin-right: 20px; width: 30px; text-align: center;
+    }
+    .garage-tile span {
+        color: #eee; font-size: 13px; text-transform: uppercase; font-weight: 600;
+    }
+    .garage-tile::after {
+        content: "READY"; position: absolute; top: 5px; right: 8px;
+        font-size: 8px; color: #333; letter-spacing: 1px;
+    }
+    .garage-tile:hover::after { color: #00ff00; content: "ACCESS_GRANTED"; }
+
+    /* СТАТУС-БАР */
+    .account-status {
+        background: #000; border: 1px solid #ff0000;
+        padding: 15px 25px; margin-bottom: 40px;
+        display: flex; justify-content: space-between; align-items: center;
+    }
+    .status-info { font-size: 10px; color: #666; letter-spacing: 2px; }
+    .status-info b { color: #00ff00; }
+
+    @media (max-width: 768px) {
+        .garage-grid { grid-template-columns: 1fr; }
+    }
+</style>
+
+<div id="account-account" class="container">
+    {% if success %}
+        <div class="alert alert-success alert-dismissible" style="background: #002200; border-color: #00ff00; color: #00ff00; border-radius: 0;">
+            <i class="fa-solid fa-circle-check"></i> {{ success }}
+        </div>
+    {% endif %}
+
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <div class="account-status">
+                <div class="status-info">SYSTEM_STATUS: <b>ONLINE</b></div>
+                <div class="status-info">DATA_ENCRYPTION: <b>AES_256</b></div>
+            </div>
+
+            <h1><i class="fa-solid fa-id-card-toggle"></i> {{ text_my_account }}</h1>
+
+            <div class="garage-grid">
+                <a href="{{ edit }}" class="garage-tile">
+                    <i class="fa-solid fa-user-gear"></i>
+                    <span>{{ text_edit }}</span>
+                </a>
+                <a href="{{ password }}" class="garage-tile">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>{{ text_password }}</span>
+                </a>
+                <a href="{{ address }}" class="garage-tile">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>{{ text_address }}</span>
+                </a>
+                <a href="{{ wishlist }}" class="garage-tile">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                    <span>{{ text_wishlist }}</span>
+                </a>
+                <a href="{{ payment_method }}" class="garage-tile">
+                    <i class="fa-solid fa-credit-card"></i>
+                    <span>{{ text_payment_method }}</span>
+                </a>
+            </div>
+
+            <h2><i class="fa-solid fa-clock-history"></i> {{ text_my_orders }}</h2>
+            <div class="garage-grid">
+                <a href="{{ order }}" class="garage-tile">
+                    <i class="fa-solid fa-file-invoice"></i>
+                    <span>{{ text_order }}</span>
+                </a>
+                <a href="{{ subscription }}" class="garage-tile">
+                    <i class="fa-solid fa-calendar-check"></i>
+                    <span>{{ text_subscription }}</span>
+                </a>
+                <a href="{{ transaction }}" class="garage-tile">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>{{ text_transaction }}</span>
+                </a>
+                <a href="{{ return }}" class="garage-tile">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                    <span>{{ text_return }}</span>
+                </a>
+                <a href="{{ download }}" class="garage-tile">
+                    <i class="fa-solid fa-download"></i>
+                    <span>{{ text_download }}</span>
+                </a>
+                {% if reward %}
+                <a href="{{ reward }}" class="garage-tile">
+                    <i class="fa-solid fa-award"></i>
+                    <span>{{ text_reward }}</span>
+                </a>
+                {% endif %}
+            </div>
+
+            {% if affiliate %}
+                <h2><i class="fa-solid fa-handshake"></i> {{ text_my_affiliate }}</h2>
+                <div class="garage-grid">
+                    <a href="{{ affiliate }}" class="garage-tile">
+                        <i class="fa-solid fa-users-gear"></i>
+                        <span>{% if not tracking %}{{ text_affiliate_add }}{% else %}{{ text_affiliate_edit }}{% endif %}</span>
+                    </a>
+                    {% if tracking %}
+                    <a href="{{ tracking }}" class="garage-tile">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>{{ text_tracking }}</span>
+                    </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <h2><i class="fa-solid fa-envelope-open-text"></i> {{ text_my_newsletter }}</h2>
+            <div class="garage-grid">
+                <a href="{{ newsletter }}" class="garage-tile">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <span>{{ text_newsletter }}</span>
+                </a>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

@@ -1,0 +1,47 @@
+<style>
+    /* 1. СТИЛЬ МОДУЛЯ ДОСТАВКИ */
+    fieldset { border: none; padding: 0; margin: 0; position: relative; }
+    legend {
+        font-family: 'Orbitron', sans-serif; font-size: 14px; color: #ff0000;
+        text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-weight: 900;
+    }
+
+    /* 2. ПОЛЕ СТАТУСУ КАНАЛУ */
+    .input-group-text { background: #111 !important; border: 1px solid #333 !important; color: #ff0000 !important; border-radius: 0 !important; }
+    #input-shipping-method {
+        background: #050505 !important; color: #00ff00 !important; border: 1px solid #333 !important;
+        font-family: 'Consolas', monospace; text-transform: uppercase; cursor: default;
+    }
+    .btn-choose-channel {
+        background: #333 !important; border: 1px solid #444 !important; color: #fff !important;
+        font-family: 'Orbitron'; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; border-radius: 0 !important;
+    }
+    .btn-choose-channel:hover { background: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+
+    /* 3. КІБЕР-МОДАЛКА ДОСТАВКИ (JS-Generated) */
+    .modal-content { background: #0a0a0a !important; border: 1px solid #ff0000 !important; border-radius: 0 !important; }
+    .modal-header { border-bottom: 1px solid #1a1a1a !important; }
+    .modal-title { color: #ff0000 !important; font-family: 'Orbitron' !important; font-size: 14px !important; text-transform: uppercase !important; }
+    .modal-body { color: #eee !important; font-family: 'Consolas', monospace !important; }
+
+    .shipping-option-row { background: #000; border: 1px solid #111; padding: 12px; margin-bottom: 10px; transition: 0.3s; cursor: pointer; }
+    .shipping-option-row:hover { border-color: #ff0000; background: #050505; }
+    .shipping-option-row .form-check-input:checked + label { color: #ff0000; font-weight: 900; }
+
+    .btn-close { filter: invert(1) grayscale(1) brightness(2); }
+</style>
+
+<fieldset>
+  <legend><i class="fa-solid fa-truck-ramp-box me-2"></i> {{ heading_title }}</legend>
+  <div class="input-group">
+    <span class="input-group-text"><i class="fa-solid fa-route"></i></span>
+    <input type="text" name="shipping_method" value="{{ shipping_method }}" placeholder="AWAITING_CHANNEL_SELECTION" id="input-shipping-method" class="form-control" readonly/>
+    <button type="button" id="button-shipping-methods" class="btn btn-choose-channel">
+        <span data-lang-en="CHOOSE_CHANNEL" data-lang-ua="ОБРАТИ КАНАЛ" data-lang-pl="WYBIERZ KANAŁ"></span>
+    </button>
+  </div>
+  <input type="hidden" name="code" value="{{ code }}" id="input-shipping-code"/>
+  <div id="error-shipping-method" class="invalid-feedback"></div>
+</fieldset>
+
+<script type="text/javascript"></script>

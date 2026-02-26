@@ -1,0 +1,95 @@
+<style>
+    /* 1. КОНТЕЙНЕР ТАБЛИЦЫ ЛОГОВ */
+    .return-history-wrap {
+        background: #000;
+        border: 1px solid #1a1a1a;
+        padding: 5px;
+        position: relative;
+    }
+    .return-history-wrap::after {
+        content: "FAULT_RESOLUTION_LOG";
+        position: absolute;
+        top: -22px;
+        right: 0;
+        font-size: 8px;
+        color: #444;
+        letter-spacing: 2px;
+    }
+
+    /* 2. ТАБЛИЦА */
+    .table-history {
+        width: 100%;
+        margin-bottom: 0;
+        color: #888;
+    }
+    .table-history thead th {
+        background: #050505;
+        color: #ff0000;
+        font-size: 9px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 12px 10px;
+        border-bottom: 2px solid #ff0000 !important;
+    }
+    .table-history tbody td {
+        background: #0a0a0a !important;
+        padding: 15px 10px;
+        font-family: 'Consolas', monospace;
+        font-size: 13px;
+        border-color: #111 !important;
+        color: #eee;
+        vertical-align: middle;
+    }
+
+    /* 3. СТАТУСЫ */
+    .status-text {
+        color: #00ff00;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    /* 4. ПАГИНАЦИЯ */
+    .pagination-wrap { margin-top: 20px; }
+    .pagination { --bs-pagination-bg: #111; --bs-pagination-border-color: #222; --bs-pagination-color: #666; }
+    .page-link:hover { background: #ff0000; color: #000; border-color: #ff0000; }
+    .active > .page-link { background-color: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+
+    .results-text { font-size: 9px; color: #333; text-transform: uppercase; letter-spacing: 1px; }
+</style>
+
+<div class="return-history-wrap">
+  <div class="table-responsive">
+    <table class="table table-history">
+      <thead>
+        <tr>
+          <th style="width: 180px;">[ TIMESTAMP ]</th>
+          <th style="width: 150px;">[ STATUS ]</th>
+          <th>[ RESOLUTION_COMMENT ]</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if histories %}
+          {% for history in histories %}
+            <tr>
+              <td style="color: #666;">{{ history.date_added }}</td>
+              <td><span class="status-text">{{ history.status }}</span></td>
+              <td style="color: #ccc; border-left: 1px solid #1a1a1a;">{{ history.comment }}</td>
+            </tr>
+          {% endfor %}
+        {% else %}
+          <tr>
+            <td colspan="3" class="text-center" style="padding: 40px; color: #222; letter-spacing: 5px;">
+                NO_HISTORY_LOG_FOUND
+            </td>
+          </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="row pagination-wrap">
+  <div class="col-sm-6 text-start">{{ pagination }}</div>
+  <div class="col-sm-6 text-end results-text">{{ results }}</div>
+</div>

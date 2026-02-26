@@ -1,0 +1,70 @@
+<style>
+    /* 1. ОБЩИЙ СТИЛЬ МОДУЛЯ */
+    fieldset { border: none; padding: 0; margin: 0; position: relative; }
+    legend {
+        font-family: 'Orbitron', sans-serif; font-size: 14px; color: #ff0000;
+        text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-weight: 900;
+    }
+
+    /* 2. ИНПУТ ВЫБОРА МЕТОДА */
+    .input-group-text { background: #111 !important; border: 1px solid #333 !important; color: #ff0000 !important; border-radius: 0 !important; }
+    #input-payment-method {
+        background: #050505 !important; color: #00ff00 !important; border: 1px solid #333 !important;
+        font-family: 'Consolas', monospace; text-transform: uppercase; cursor: default;
+    }
+    .btn-choose-gateway {
+        background: #333 !important; border: 1px solid #444 !important; color: #fff !important;
+        font-family: 'Orbitron'; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; border-radius: 0 !important;
+    }
+    .btn-choose-gateway:hover { background: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+
+    /* 3. КОММЕНТАРИЙ (SYSTEM_LOG) */
+    .form-label strong { color: #666; font-size: 9px; text-transform: uppercase; letter-spacing: 1px; }
+    #input-comment {
+        background: #000 !important; border: 1px solid #1a1a1a !important; border-radius: 0 !important;
+        color: #00ff00 !important; font-family: 'Consolas', monospace; font-size: 13px; padding: 15px !important;
+    }
+
+    /* 4. СОГЛАШЕНИЕ (NEON SWITCH) */
+    .form-check-label { color: #888; font-family: 'Orbitron'; font-size: 10px; text-transform: uppercase; cursor: pointer; }
+    .form-switch .form-check-input { background-color: #222; border-color: #444; cursor: pointer; height: 1.5em !important; width: 3em !important; }
+    .form-switch .form-check-input:checked { background-color: #ff0000 !important; border-color: #ff0000 !important; box-shadow: 0 0 10px rgba(255,0,0,0.5); }
+
+    /* 5. КИБЕР-МОДАЛКА (Стили для JS-генерации) */
+    .modal-content { background: #0a0a0a !important; border: 1px solid #ff0000 !important; border-radius: 0 !important; box-shadow: 0 0 30px rgba(255,0,0,0.2) !important; }
+    .modal-header { border-bottom: 1px solid #1a1a1a !important; }
+    .modal-title { color: #ff0000 !important; font-family: 'Orbitron' !important; font-size: 14px !important; text-transform: uppercase !important; }
+    .modal-body { color: #eee !important; font-family: 'Consolas', monospace !important; }
+    .btn-close { filter: invert(1) grayscale(1) brightness(2); }
+
+    .payment-option-row { background: #000; border: 1px solid #111; padding: 12px; margin-bottom: 10px; transition: 0.3s; cursor: pointer; }
+    .payment-option-row:hover { border-color: #ff0000; background: #050505; }
+    .payment-option-row .form-check-input:checked + label { color: #ff0000; font-weight: 900; }
+</style>
+
+<fieldset>
+  <legend><i class="fa-solid fa-microchip me-2"></i> {{ heading_title }}</legend>
+  <div class="input-group">
+    <span class="input-group-text"><i class="fa-solid fa-shield-halved"></i></span>
+    <input type="text" name="payment_method" value="{{ payment_method }}" placeholder="SELECT_GATEWAY" id="input-payment-method" class="form-control" readonly/>
+    <button type="button" id="button-payment-methods" class="btn btn-choose-gateway">
+        <span data-lang-en="CHOOSE_GATEWAY" data-lang-ua="ОБРАТИ ШЛЮЗ" data-lang-pl="WYBIERZ BRAMKĘ"></span>
+    </button>
+  </div>
+  <input type="hidden" name="code" value="{{ code }}" id="input-payment-code"/>
+  <div id="error-payment-method" class="invalid-feedback"></div>
+</fieldset>
+
+<div class="mt-4 mb-2">
+  <label for="input-comment" class="form-label"><strong>[ SESSION_NOTES / {{ text_comments }} ]</strong></label>
+  <textarea name="comment" rows="4" id="input-comment" placeholder="ENTER_ADDITIONAL_DATA..." class="form-control">{{ comment }}</textarea>
+</div>
+
+{% if text_agree %}
+  <div class="form-check form-switch form-switch-lg form-check-reverse mt-4 p-3" style="background: #050505; border: 1px solid #111;">
+    <label for="input-checkout-agree" class="form-check-label">{{ text_agree }}</label>
+    <input type="checkbox" name="agree" value="1" id="input-checkout-agree" class="form-check-input"{% if agree %} checked{% endif %}/>
+  </div>
+{% endif %}
+
+<script type="text/javascript"></script>

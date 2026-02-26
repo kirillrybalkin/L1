@@ -1,0 +1,126 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНЫЙ СТИЛЬ БОНУСОВ */
+    #account-reward {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК И БАЛАНС */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 25px;
+    }
+
+    .balance-panel {
+        background: #000; border: 1px solid #1a1a1a; border-right: 4px solid #00ff00;
+        padding: 20px; margin-bottom: 40px; display: flex; justify-content: space-between; align-items: center;
+    }
+    .balance-label { color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; }
+    .balance-value { color: #00ff00; font-size: 24px; font-weight: 900; text-shadow: 0 0 10px rgba(0, 255, 0, 0.3); }
+
+    /* 3. ТАБЛИЦА ТРАНЗАКЦИЙ (ASSET_LOG) */
+    .table-responsive { background: #000; border: 1px solid #1a1a1a; padding: 10px; position: relative; }
+    .table-responsive::before {
+        content: "REWARD_ASSETS_LOG_v1.0"; position: absolute; top: -20px; right: 10px;
+        font-size: 8px; color: #444; letter-spacing: 2px;
+    }
+
+    .table { color: #888 !important; border-color: #1a1a1a !important; margin-bottom: 0; }
+    .table thead th {
+        color: #ff0000; font-size: 10px; text-transform: uppercase;
+        letter-spacing: 2px; border-bottom: 2px solid #ff0000 !important; padding: 15px 10px;
+    }
+    .table tbody td {
+        background: #050505 !important; color: #eee !important;
+        vertical-align: middle; padding: 15px 10px; border-color: #111 !important;
+        font-family: 'Consolas', monospace; font-size: 13px;
+    }
+    .table tbody td a { color: #ff0000; text-decoration: none; border-bottom: 1px dashed transparent; }
+    .table tbody td a:hover { border-bottom-color: #ff0000; }
+
+    .points-positive { color: #00ff00 !important; font-weight: 900; }
+
+    /* 4. ПАГИНАЦИЯ */
+    .pagination { --bs-pagination-bg: #111; --bs-pagination-border-color: #222; --bs-pagination-color: #666; margin-top: 20px; }
+    .page-link:hover { background: #ff0000; color: #000; border-color: #ff0000; }
+    .active > .page-link { background-color: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+    .results-info { font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+
+    /* 5. КНОПКА CONTINUE */
+    .btn-garage-back {
+        background: transparent; border: 1px solid #333; color: #888 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        text-decoration: none; display: inline-block;
+    }
+    .btn-garage-back:hover { border-color: #ff0000; color: #fff !important; }
+</style>
+
+<div id="account-reward" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-award" style="color: #ff0000; margin-right: 15px;"></i> {{ heading_title }}</h1>
+
+            <div class="balance-panel">
+                <div class="balance-label">> CURRENT_TECH_POINTS_AVAILABLE:</div>
+                <div class="balance-value">{{ total }}</div>
+            </div>
+
+            {% if rewards %}
+                <div class="table-responsive mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 200px;">[ TIMESTAMP ]</th>
+                                <th>[ TRANSACTION_DETAILS ]</th>
+                                <th class="text-end" style="width: 150px;">[ ASSET_VAL ]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for reward in rewards %}
+                                <tr>
+                                    <td style="color: #666;">{{ reward.date_added }}</td>
+                                    <td>
+                                        {% if reward.order_id %}
+                                            <i class="fa-solid fa-cart-shopping" style="font-size: 10px; margin-right: 8px; color: #333;"></i>
+                                            <a href="{{ reward.href }}">{{ reward.description }}</a>
+                                        {% else %}
+                                            {{ reward.description }}
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end"><span class="points-positive">+{{ reward.points }}</span></td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row align-items-center mb-5">
+                    <div class="col-sm-6 text-start">{{ pagination }}</div>
+                    <div class="col-sm-6 text-end results-info">{{ results }}</div>
+                </div>
+            {% else %}
+                <div style="background: #000; border: 1px dashed #222; padding: 60px; text-align: center; margin-bottom: 30px;">
+                    <i class="fa-solid fa-coins" style="font-size: 40px; color: #222; display: block; margin-bottom: 20px;"></i>
+                    <p style="color: #444; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">{{ text_no_results }}</p>
+                </div>
+            {% endif %}
+
+            <div class="text-end pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ continue }}" class="btn-garage-back">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span data-lang-en="RETURN_TO_GARAGE" data-lang-ua="В ГОЛОВНЕ МЕНЮ" data-lang-pl="WRÓĆ DO DASHBOARDU"></span>
+                </a>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

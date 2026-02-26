@@ -1,0 +1,119 @@
+{{ header }}
+<style>
+    /* 1. БАЗОВИЙ СТИЛЬ АРХІВУ */
+    #account-download {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* 3. ТАБЛИЦЯ ДАНИХ */
+    .table-responsive {
+        background: #000; border: 1px solid #1a1a1a; padding: 10px;
+    }
+    .table { color: #888 !important; border-color: #1a1a1a !important; margin-bottom: 0; }
+    .table thead th {
+        color: #ff0000; font-size: 10px; text-transform: uppercase;
+        letter-spacing: 2px; border-bottom: 2px solid #ff0000 !important;
+        padding: 15px 10px;
+    }
+    .table tbody td {
+        background: #050505 !important; color: #eee !important;
+        vertical-align: middle; padding: 15px 10px; border-color: #111 !important;
+        font-family: 'Consolas', monospace; font-size: 13px;
+    }
+    .table tbody tr:hover td { background: #0a0a0a !important; color: #00ff00 !important; }
+
+    /* 4. КНОПКА ЗАВАНТАЖЕННЯ */
+    .btn-download-file {
+        background: transparent !important; border: 1px solid #333 !important;
+        color: #ff0000 !important; transition: 0.3s; padding: 8px 15px !important;
+        border-radius: 0 !important;
+    }
+    .btn-download-file:hover {
+        background: #ff0000 !important; color: #000 !important;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+    }
+
+    /* 5. ПАГІНАЦІЯ ТА РЕЗУЛЬТАТИ */
+    .pagination { --bs-pagination-bg: #111; --bs-pagination-border-color: #222; --bs-pagination-color: #888; }
+    .page-link:hover { background: #ff0000; color: #000; border-color: #ff0000; }
+    .active > .page-link { background-color: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+    .results-text { font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* 6. КНОПКА ПРОДОВЖИТИ */
+    .btn-garage-continue {
+        background: transparent; border: 1px solid #333; color: #888 !important;
+        padding: 12px 30px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        text-decoration: none; display: inline-block; border-radius: 0;
+    }
+    .btn-garage-continue:hover { border-color: #ff0000; color: #fff !important; }
+</style>
+
+<div id="account-download" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+            <h1><i class="fa-solid fa-folder-open" style="color: #ff0000; margin-right: 15px;"></i> {{ heading_title }}</h1>
+
+            {% if downloads %}
+                <div class="table-responsive mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 100px;">[ID_ORDER]</th>
+                                <th>[FILE_NAME]</th>
+                                <th style="width: 120px;">[SIZE]</th>
+                                <th style="width: 180px;">[TIMESTAMP]</th>
+                                <th class="text-end" style="width: 80px;">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for download in downloads %}
+                                <tr>
+                                    <td class="text-start">#{{ download.order_id }}</td>
+                                    <td><i class="fa-solid fa-file-code" style="color: #444; margin-right: 10px;"></i> {{ download.name }}</td>
+                                    <td>{{ download.size }}</td>
+                                    <td>{{ download.date_added }}</td>
+                                    <td class="text-end">
+                                        <a href="{{ download.href }}" data-bs-toggle="tooltip" title="{{ button_download }}" class="btn-download-file">
+                                            <i class="fa-solid fa-download"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row align-items-center mb-5">
+                    <div class="col-sm-6 text-start">{{ pagination }}</div>
+                    <div class="col-sm-6 text-end results-text">{{ results }}</div>
+                </div>
+            {% else %}
+                <div style="background: #000; border: 1px dashed #222; padding: 60px; text-align: center; margin-bottom: 30px;">
+                    <i class="fa-solid fa-box-open" style="font-size: 40px; color: #222; display: block; margin-bottom: 20px;"></i>
+                    <p style="color: #444; font-size: 12px; letter-spacing: 3px; text-transform: uppercase;">{{ text_no_results }}</p>
+                </div>
+            {% endif %}
+
+            <div class="text-end pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ continue }}" class="btn-garage-continue">
+                    <i class="fa-solid fa-chevron-left"></i> RETURN_TO_DASHBOARD
+                </a>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

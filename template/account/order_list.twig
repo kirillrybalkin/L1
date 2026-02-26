@@ -1,0 +1,137 @@
+{{ header }}
+<style>
+    /* 1. БАЗОВЫЙ СТИЛЬ СПИСКА */
+    #account-order {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* 3. ТАБЛИЦА ПРОТОКОЛОВ (DATABASE VIEW) */
+    .table-responsive {
+        background: #000; border: 1px solid #1a1a1a; padding: 10px;
+        position: relative;
+    }
+    .table-responsive::before {
+        content: "ORDER_DATABASE_v2.0"; position: absolute; top: -20px; right: 10px;
+        font-size: 8px; color: #444; letter-spacing: 2px;
+    }
+
+    .table { color: #888 !important; border-color: #1a1a1a !important; margin-bottom: 0; }
+    .table thead th {
+        color: #ff0000; font-size: 10px; text-transform: uppercase;
+        letter-spacing: 2px; border-bottom: 2px solid #ff0000 !important;
+        padding: 15px 10px; background: #000;
+    }
+    .table tbody td {
+        background: #050505 !important; color: #eee !important;
+        vertical-align: middle; padding: 15px 10px; border-color: #111 !important;
+        font-family: 'Consolas', monospace; font-size: 13px;
+    }
+    .table tbody tr:hover td {
+        background: #0a0a0a !important;
+        color: #fff !important;
+        box-shadow: inset 4px 0 0 #ff0000;
+    }
+
+    /* 4. КНОПКА ПРОСМОТРА */
+    .btn-view-order {
+        background: transparent !important; border: 1px solid #333 !important;
+        color: #ff0000 !important; transition: 0.3s; padding: 10px 15px !important;
+        border-radius: 0 !important; display: inline-block; text-decoration: none;
+    }
+    .btn-view-order:hover {
+        background: #ff0000 !important; color: #000 !important;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+    }
+
+    /* 5. СТАТУСЫ И ЦЕНЫ */
+    .order-status { color: #00ff00; font-weight: 800; text-transform: uppercase; font-size: 11px; }
+    .order-total { color: #fff; font-weight: 900; font-size: 15px; }
+
+    /* 6. ПАГИНАЦИЯ (LAUNCH STYLE) */
+    .pagination { --bs-pagination-bg: #111; --bs-pagination-border-color: #222; --bs-pagination-color: #888; margin-top: 20px; }
+    .page-link:hover { background: #ff0000; color: #000; border-color: #ff0000; }
+    .active > .page-link { background-color: #ff0000 !important; border-color: #ff0000 !important; color: #000 !important; }
+    .results-info { font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: 1px; margin-top: 10px; }
+
+    /* 7. КНОПКА CONTINUE */
+    .btn-garage-back {
+        background: transparent; border: 1px solid #333; color: #888 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        text-decoration: none; display: inline-block; border-radius: 0;
+    }
+    .btn-garage-back:hover { border-color: #ff0000; color: #fff !important; }
+</style>
+
+<div id="account-order" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-list-ul" style="color: #ff0000; margin-right: 15px;"></i> {{ heading_title }}</h1>
+
+            {% if orders %}
+                <div class="table-responsive mb-4">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-start" style="width: 120px;">[ID_ORDER]</th>
+                                <th class="text-start">[SESSION_QTY]</th>
+                                <th>[CURRENT_STATUS]</th>
+                                <th class="text-end">[TOTAL_VAL]</th>
+                                <th class="text-center">[DATE_ADDED]</th>
+                                <th class="text-end" style="width: 80px;">ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for order in orders %}
+                                <tr>
+                                    <td class="text-start">#{{ order.order_id }}</td>
+                                    <td class="text-start">{{ order.product_total }}</td>
+                                    <td><span class="order-status">{{ order.status }}</span></td>
+                                    <td class="text-end"><span class="order-total">{{ order.total }}</span></td>
+                                    <td class="text-center" style="color: #666; font-size: 11px;">{{ order.date_added }}</td>
+                                    <td class="text-end">
+                                        <a href="{{ order.view }}" data-bs-toggle="tooltip" title="{{ button_view }}" class="btn-view-order">
+                                            <i class="fa-solid fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row align-items-center mb-5">
+                    <div class="col-sm-6 text-start">{{ pagination }}</div>
+                    <div class="col-sm-6 text-end results-info">{{ results }}</div>
+                </div>
+            {% else %}
+                <div style="background: #000; border: 1px dashed #222; padding: 80px; text-align: center; margin-bottom: 30px;">
+                    <i class="fa-solid fa-database" style="font-size: 40px; color: #222; display: block; margin-bottom: 20px;"></i>
+                    <p style="color: #444; font-size: 12px; letter-spacing: 4px; text-transform: uppercase;">{{ text_no_results }}</p>
+                </div>
+            {% endif %}
+
+            <div class="text-end pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ continue }}" class="btn-garage-back">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span data-lang-en="RETURN_TO_DASHBOARD" data-lang-ua="В ГОЛОВНЕ МЕНЮ" data-lang-pl="WRÓĆ DO DASHBOARDU"></span>
+                </a>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

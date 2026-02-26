@@ -1,0 +1,108 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНЫЙ СТИЛЬ CHECKOUT */
+    #checkout-checkout {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК СЕССИИ */
+    h1 {
+        font-size: 26px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 3px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* 3. МОДУЛЬНЫЕ КОНТЕЙНЕРЫ (TERMINAL BOXES) */
+    [id^="checkout-"] {
+        background: #000; border: 1px solid #1a1a1a;
+        padding: 25px; margin-bottom: 25px; position: relative;
+        transition: 0.3s;
+    }
+    [id^="checkout-"]:hover { border-color: #333; box-shadow: 0 0 20px rgba(255, 0, 0, 0.05); }
+
+    /* Идентификаторы модулей */
+    #checkout-register::before { content: "[ MODULE: USER_REGISTRATION ]"; }
+    #checkout-payment-address::before { content: "[ MODULE: BILLING_IDENTITY ]"; }
+    #checkout-shipping-address::before { content: "[ MODULE: DESTINATION_POINT ]"; }
+    #checkout-shipping-method::before { content: "[ MODULE: LOGISTICS_CHANNEL ]"; }
+    #checkout-payment-method::before { content: "[ MODULE: FINANCIAL_GATEWAY ]"; }
+    #checkout-confirm::before { content: "[ MODULE: FINAL_EXECUTION ]"; }
+
+    [id^="checkout-"]::before {
+        position: absolute; top: -12px; left: 15px; background: #0a0a0a;
+        padding: 0 10px; font-size: 9px; color: #ff0000; letter-spacing: 2px;
+    }
+
+    /* 4. СПЕЦИАЛЬНЫЙ СТИЛЬ ДЛЯ ПОДТВЕРЖДЕНИЯ */
+    #checkout-confirm {
+        border-top: 3px solid #ff0000; background: #050505;
+    }
+
+    /* 5. АДАПТИВНОСТЬ */
+    @media (max-width: 768px) {
+        .col-md-7 { margin-bottom: 0 !important; }
+    }
+</style>
+
+<div id="checkout-checkout" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1>
+                <i class="fa-solid fa-shield-halved" style="color: #ff0000; margin-right: 15px;"></i>
+                {{ heading_title }}
+            </h1>
+
+            <div class="row">
+                {# ЛЕВАЯ ПАНЕЛЬ: ДАННЫЕ КЛИЕНТА #}
+                {% if register or payment_address or shipping_address %}
+                    <div class="col-md-7 mb-3">
+                        {% if register %}
+                            <div id="checkout-register">{{ register }}</div>
+                        {% endif %}
+                        {% if payment_address %}
+                            <div id="checkout-payment-address">{{ payment_address }}</div>
+                        {% endif %}
+                        {% if shipping_address %}
+                            <div id="checkout-shipping-address">{{ shipping_address }}</div>
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+                {# ПРАВАЯ ПАНЕЛЬ: МЕТОДЫ И ПОДТВЕРЖДЕНИЕ #}
+                <div class="col">
+                    {% if shipping_method %}
+                        <div id="checkout-shipping-method" class="mb-3">{{ shipping_method }}</div>
+                    {% endif %}
+
+                    <div id="checkout-payment-method" class="mb-4">
+                        {{ payment_method }}
+                    </div>
+
+                    <div id="checkout-confirm">
+                        <div class="text-center py-4" style="opacity: 0.3;">
+                            <i class="fa-solid fa-spinner fa-spin me-2"></i>
+                            <span style="font-size: 10px; letter-spacing: 2px;">AWAITING_DATA_INPUT...</span>
+                        </div>
+                        {{ confirm }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-5 text-center" style="opacity: 0.1;">
+                <span style="font-size: 8px; letter-spacing: 15px;">SECURE_TRANSACTION_ID: {{ _token|slice(0, 16) }}</span>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+
+
+{# СКРИПТОВУЮ ЧАСТЬ ОСТАВЛЯЕМ БАЗОВУЮ ИЛИ ПЕРЕНОСИМ ИЗ КОНТРОЛЛЕРА #}
+{{ footer }}

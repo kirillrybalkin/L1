@@ -1,0 +1,145 @@
+{{ header }}
+<style>
+    /* 1. БАЗОВИЙ КОНТЕЙНЕР БЕЗПЕКИ */
+    #content {
+        background: #0a0a0a;
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        font-family: 'Orbitron', sans-serif;
+    }
+
+    /* 2. ТЕРМІНАЛ АВТОРИЗАЦІЇ */
+    .auth-terminal {
+        background: #000;
+        border: 1px solid #222;
+        border-top: 4px solid #ff0000;
+        padding: 40px;
+        box-shadow: 0 0 30px rgba(255, 0, 0, 0.1);
+        position: relative;
+    }
+    .auth-terminal::after {
+        content: "SECURITY_LEVEL_4";
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 8px;
+        color: #444;
+        letter-spacing: 2px;
+    }
+
+    .card-header {
+        background: transparent !important;
+        border: none !important;
+        color: #ff0000 !important;
+        font-size: 18px !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 3px !important;
+        padding: 0 0 25px 0 !important;
+        text-align: center;
+    }
+
+    /* 3. ТЕКСТ ТА ЛОГИ */
+    p { color: #888; font-size: 12px; line-height: 1.6; text-transform: uppercase; }
+    .form-label { color: #ff0000; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+
+    /* 4. ПОЛЕ ВВОДУ КОДУ */
+    .form-control {
+        background-color: #050505 !important;
+        border: 1px solid #333 !important;
+        border-radius: 0 !important;
+        color: #00ff00 !important;
+        font-family: 'Consolas', monospace;
+        font-size: 20px !important;
+        letter-spacing: 5px;
+        text-align: center;
+        padding: 12px !important;
+    }
+    .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.2) !important;
+    }
+
+    /* 5. КНОПКИ */
+    .btn-send-code {
+        background: #222 !important;
+        border: 1px solid #333 !important;
+        color: #fff !important;
+        border-radius: 0 !important;
+        font-size: 11px !important;
+        text-transform: uppercase;
+        font-family: 'Orbitron';
+        padding: 0 20px !important;
+    }
+    .btn-send-code:hover { background: #333 !important; color: #ff0000 !important; }
+
+    .btn-access-confirm {
+        background: #ff0000 !important;
+        border: none !important;
+        color: #000 !important;
+        font-weight: 900 !important;
+        text-transform: uppercase !important;
+        letter-spacing: 2px !important;
+        padding: 15px 40px !important;
+        width: 100%;
+        margin-top: 20px;
+        transition: 0.3s;
+    }
+    .btn-access-confirm:hover {
+        background: #fff !important;
+        box-shadow: 0 5px 20px rgba(255, 0, 0, 0.4) !important;
+        transform: translateY(-2px);
+    }
+
+    /* АЛЕРТИ */
+    .alert { border-radius: 0; font-size: 11px; text-transform: uppercase; border: none; }
+    .alert-danger { background: #220000; color: #ff0000; border-left: 4px solid #ff0000; }
+    .alert-success { background: #002200; color: #00ff00; border-left: 4px solid #00ff00; }
+</style>
+
+<div id="content">
+  <div class="container">
+    <div id="alert"></div>
+    <div class="row justify-content-center">
+      <div class="col-sm-10 col-md-8 col-lg-5">
+        <div class="auth-terminal">
+          <div class="card-header"><i class="fa-solid fa-shield-lock"></i> {{ heading_title }}</div>
+
+          <form id="form-authorize" action="{{ action }}" method="post" data-oc-toggle="ajax">
+            <p><i class="fa-solid fa-triangle-exclamation" style="color:#ff0000"></i> {{ text_security }}</p>
+            <p style="font-size: 10px; color: #444;">{{ text_code }}</p>
+
+            <div class="mb-4">
+              <label for="input-code" class="form-label">{{ entry_code }}</label>
+              <div class="input-group">
+                <input type="text" name="code" value="" placeholder="000000" id="input-code" class="form-control" autocomplete="one-time-code"/>
+                <button type="button" id="button-send" class="btn-send-code">
+                   <span class="d-none d-md-inline">{{ button_send }}</span> <i class="fa-solid fa-paper-plane"></i>
+                </button>
+              </div>
+              <div id="error-code" class="invalid-feedback"></div>
+            </div>
+
+            <div class="text-center">
+              <button type="submit" class="btn-access-confirm">
+                <i class="fa-solid fa-key"></i> ACCESS_CONFIRM
+              </button>
+            </div>
+
+            {% if redirect %}
+              <input type="hidden" name="redirect" value="{{ redirect }}"/>
+            {% endif %}
+          </form>
+
+          <div style="margin-top: 25px; text-align: center;">
+             <span style="font-size: 7px; color: #222; letter-spacing: 5px;">ENCRYPTION_ACTIVE_RSA_4096</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

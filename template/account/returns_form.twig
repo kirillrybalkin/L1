@@ -1,0 +1,208 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНЫЙ СТИЛЬ */
+    #account-return {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 20px;
+    }
+    .return-desc { color: #666; font-size: 11px; text-transform: uppercase; margin-bottom: 35px; display: block; }
+
+    /* 3. ОФОРМЛЕНИЕ БЛОКОВ (FIELDSET) */
+    fieldset { border: 1px solid #1a1a1a; padding: 25px; background: #000; margin-bottom: 30px; position: relative; }
+    legend {
+        float: none; width: auto; padding: 0 15px; font-size: 11px;
+        color: #ff0000; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;
+    }
+    fieldset::after {
+        content: "FAULT_DIAGNOSTICS_MODE"; position: absolute; top: 10px; right: 15px;
+        font-size: 7px; color: #222; letter-spacing: 2px;
+    }
+
+    /* 4. ИНПУТЫ И МЕТКИ */
+    .col-form-label { color: #888; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+    .required .col-form-label::before { content: "[!] "; color: #ff0000; font-weight: 900; }
+
+    .form-control, .form-select {
+        background-color: #050505 !important;
+        border: 1px solid #333 !important;
+        border-radius: 0 !important;
+        color: #00ff00 !important;
+        font-family: 'Consolas', monospace;
+        padding: 12px !important;
+        transition: 0.3s;
+    }
+    .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 10px rgba(255,0,0,0.2) !important;
+    }
+
+    /* 5. RADIO BUTTONS */
+    .form-check-input { background-color: #111; border-color: #444; cursor: pointer; }
+    .form-check-input:checked { background-color: #ff0000; border-color: #ff0000; }
+    .form-check-label { color: #ccc; font-size: 12px; text-transform: uppercase; cursor: pointer; }
+
+    /* 6. КНОПКИ */
+    .btn-garage-submit {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 13px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+        transition: 0.3s; border-radius: 0;
+    }
+    .btn-garage-submit:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 0 20px rgba(255,0,0,0.4); }
+
+    .btn-garage-back {
+        background: transparent; border: 1px solid #333; color: #666 !important;
+        padding: 15px 30px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        text-decoration: none; border-radius: 0; display: inline-block;
+    }
+    .btn-garage-back:hover { border-color: #ff0000; color: #fff !important; }
+
+    .invalid-feedback { color: #ff0000 !important; font-size: 9px !important; text-transform: uppercase; margin-top: 5px; }
+
+    /* СВИТЧ (AGREE) */
+    .form-switch .form-check-input:checked { background-color: #ff0000 !important; border-color: #ff0000 !important; }
+</style>
+
+<div id="account-return" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa- screwdriver-wrench" style="color:#ff0000; margin-right:15px;"></i> {{ heading_title }}</h1>
+            <span class="return-desc">> {{ text_description }}</span>
+
+            <form id="form-return" action="{{ save }}" method="post" data-oc-toggle="ajax">
+                <fieldset>
+                    <legend>[ {{ text_order }} ]</legend>
+                    <div class="row mb-4 required">
+                        <label for="input-order-id" class="col-sm-3 col-form-label">{{ entry_order_id }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="order_id" value="{{ order_id }}" placeholder="ORDER_ID_REF" id="input-order-id" class="form-control"/>
+                            <div id="error-order-id" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <label for="input-date-ordered" class="col-sm-3 col-form-label">{{ entry_date_ordered }}</label>
+                        <div class="col-sm-9 col-md-5">
+                            <input type="date" name="date_ordered" value="{{ date_ordered }}" id="input-date-ordered" class="form-control"/>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>[ {{ text_customer }} ]</legend>
+                    <div class="row mb-4 required">
+                        <label for="input-firstname" class="col-sm-3 col-form-label">{{ entry_firstname }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="firstname" value="{{ firstname }}" id="input-firstname" class="form-control"/>
+                            <div id="error-firstname" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="row mb-4 required">
+                        <label for="input-lastname" class="col-sm-3 col-form-label">{{ entry_lastname }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="lastname" value="{{ lastname }}" id="input-lastname" class="form-control"/>
+                            <div id="error-lastname" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="row mb-4 required">
+                        <label for="input-email" class="col-sm-3 col-form-label">{{ entry_email }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="email" value="{{ email }}" placeholder="OPERATOR@SYSTEM.COM" id="input-email" class="form-control"/>
+                            <div id="error-email" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>[ {{ text_product }} ]</legend>
+                    <div class="row mb-4 required">
+                        <label for="input-product" class="col-sm-3 col-form-label">{{ entry_product }}</label>
+                        <div class="col-sm-9">
+                            <input type="hidden" name="product_id" value="{{ product_id }}"/>
+                            <input type="text" name="product" value="{{ product }}" id="input-product" class="form-control"/>
+                            <div id="error-product" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                    <div class="row mb-4 required">
+                        <label for="input-model" class="col-sm-3 col-form-label">{{ entry_model }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="model" value="{{ model }}" id="input-model" class="form-control"/>
+                            <div id="error-model" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4 required">
+                        <label class="col-sm-3 col-form-label">{{ entry_reason }}</label>
+                        <div class="col-sm-9">
+                            <div id="input-reason">
+                                {% for return_reason in return_reasons %}
+                                    <div class="form-check mb-2">
+                                        <input type="radio" name="return_reason_id" value="{{ return_reason.return_reason_id }}" id="input-return-reason-{{ return_reason.return_reason_id }}" class="form-check-input"/>
+                                        <label for="input-return-reason-{{ return_reason.return_reason_id }}" class="form-check-label">{{ return_reason.name }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            <div id="error-reason" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <label class="col-sm-3 col-form-label">{{ entry_opened }}</label>
+                        <div class="col-sm-9">
+                            <div class="form-check form-check-inline me-4">
+                                <input type="radio" name="opened" value="1" id="input-opened-yes" class="form-check-input" checked/>
+                                <label for="input-opened-yes" class="form-check-label">{{ text_yes }}</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" name="opened" value="0" id="input-opened-no" class="form-check-input"/>
+                                <label for="input-opened-no" class="form-check-label">{{ text_no }}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <label for="input-comment" class="col-sm-3 col-form-label">{{ entry_fault_detail }}</label>
+                        <div class="col-sm-9">
+                            <textarea name="comment" rows="5" placeholder="PROVIDE_SYSTEM_FAULT_DETAILS_HERE" id="input-comment" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    {{ captcha }}
+                </fieldset>
+
+                <div class="row mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                    <div class="col-sm-4">
+                        <a href="{{ back }}" class="btn-garage-back">
+                            <i class="fa-solid fa-chevron-left"></i> <span data-lang-en="ABORT" data-lang-ua="СКАСУВАТИ" data-lang-pl="ANULUJ"></span>
+                        </a>
+                    </div>
+                    <div class="col-sm-8 text-end">
+                        {% if text_agree %}
+                        <div class="form-check form-switch form-switch-lg d-inline-block align-middle me-4">
+                            <label class="form-check-label me-2" style="font-size: 10px; color: #666;">{{ text_agree }}</label>
+                            <input type="checkbox" name="agree" value="1" id="input-agree" class="form-check-input" style="float:none; vertical-align: middle;"/>
+                        </div>
+                        {% endif %}
+                        <button type="submit" class="btn-garage-submit">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span data-lang-en="SUBMIT_REPORT" data-lang-ua="НАДІСЛАТИ ЗАПИТ" data-lang-pl="WYŚLIJ ZGŁOSZENIE"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

@@ -1,0 +1,142 @@
+<style>
+    /* 1. КОНТЕЙНЕР ПІДТВЕРДЖЕННЯ */
+    .table-confirm {
+        width: 100%;
+        background: #000;
+        border: 1px solid #1a1a1a;
+        margin-bottom: 25px;
+        color: #eee;
+    }
+    .table-confirm thead th {
+        background: #050505;
+        color: #ff0000;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        padding: 15px;
+        border-bottom: 2px solid #ff0000 !important;
+    }
+    .table-confirm tbody td {
+        padding: 15px;
+        border-bottom: 1px solid #111;
+        font-family: 'Consolas', monospace;
+        vertical-align: top;
+    }
+
+    /* 2. СТИЛЬ ТОВАРУ */
+    .confirm-product-link {
+        color: #fff !important;
+        text-decoration: none;
+        font-weight: 700;
+        font-family: 'Orbitron', sans-serif;
+        font-size: 13px;
+    }
+    .confirm-product-link:hover { color: #ff0000 !important; }
+
+    .confirm-qty {
+        color: #ff0000;
+        font-weight: 900;
+        margin-right: 5px;
+    }
+
+    /* 3. ПІДСУМКИ (TOTALS) */
+    .table-confirm tfoot td {
+        padding: 10px 15px;
+        background: #050505;
+        border: none;
+    }
+    .total-title {
+        color: #666;
+        text-transform: uppercase;
+        font-size: 10px;
+        letter-spacing: 1px;
+    }
+    .total-amount {
+        color: #00ff00;
+        font-weight: 900;
+        font-size: 16px;
+        text-shadow: 0 0 10px rgba(0,255,0,0.2);
+    }
+    /* Виділення останнього рядка (Разом) */
+    .table-confirm tfoot tr:last-child td {
+        border-top: 1px solid #333;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+
+    /* 4. КНОПКА ОПЛАТИ */
+    #checkout-payment {
+        padding: 20px;
+        background: #000;
+        border: 1px solid #1a1a1a;
+        position: relative;
+    }
+    #checkout-payment::before {
+        content: "AWAITING_USER_CONFIRMATION";
+        position: absolute;
+        top: -10px;
+        left: 15px;
+        background: #0a0a0a;
+        padding: 0 10px;
+        font-size: 8px;
+        color: #444;
+        letter-spacing: 2px;
+    }
+</style>
+
+<div class="table-responsive">
+  <table class="table-confirm">
+    <thead>
+      <tr>
+        <th>[ FINAL_UNIT_LIST ]</th>
+        <th class="text-end" style="width: 150px;">[ SUBTOTAL ]</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for product in products %}
+        <tr>
+          <td>
+            <span class="confirm-qty">{{ product.quantity }}x</span>
+            <a href="{{ product.href }}" class="confirm-product-link">{{ product.name }}</a>
+
+            <div class="mt-2" style="font-size: 11px; color: #555;">
+                {{ text_model }}: <span style="color: #888;">{{ product.model }}</span>
+                {% for option in product.option %}
+                    <br/>• {{ option.name }}: <span style="color: #ff0000;">{{ option.value }}</span>
+                {% endfor %}
+
+                {% if product.subscription %}
+                    <br/><span style="color: #ffaa00;">• {{ text_subscription }}: {{ product.subscription }}</span>
+                {% endif %}
+
+                {% if product.reward %}
+                    <br/><span style="color: #00ff00;">• {{ text_points }}: {{ product.reward }}</span>
+                {% endif %}
+            </div>
+          </td>
+          <td class="text-end" style="font-weight: 700; font-size: 14px;">{{ product.total }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+    <tfoot>
+      {% for total in totals %}
+        <tr>
+          <td class="text-end"><strong class="total-title">{{ total.title }}</strong></td>
+          <td class="text-end"><span class="total-amount">{{ total.text }}</span></td>
+        </tr>
+      {% endfor %}
+    </tfoot>
+  </table>
+</div>
+
+<div id="checkout-payment">
+  {% if payment %}
+    {{ payment }}
+  {% else %}
+    <div class="text-end">
+        <button type="button" class="btn" style="background: #1a1a1a; color: #444; border: none; padding: 15px 40px; text-transform: uppercase; font-family: 'Orbitron'; font-size: 12px;" disabled>
+            {{ button_confirm }}
+        </button>
+    </div>
+  {% endif %}
+</div>

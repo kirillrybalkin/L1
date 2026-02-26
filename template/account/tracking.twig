@@ -1,0 +1,109 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНИЙ СТИЛЬ ТЕРМІНАЛА */
+    #account-tracking {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 20px;
+    }
+    .tracking-desc { color: #888; font-size: 11px; text-transform: uppercase; line-height: 1.8; margin-bottom: 35px; display: block; }
+
+    /* 3. ОФОРМЛЕННЯ ФОРМИ (LABS STYLE) */
+    .col-form-label { color: #ff0000; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; font-weight: 900; }
+
+    .form-control {
+        background-color: #050505 !important;
+        border: 1px solid #1a1a1a !important;
+        border-radius: 0 !important;
+        color: #00ff00 !important;
+        font-family: 'Consolas', monospace;
+        padding: 15px !important;
+        transition: 0.3s;
+    }
+    .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.1) !important;
+    }
+    .form-control::placeholder { color: #222; font-size: 10px; letter-spacing: 1px; }
+
+    /* 4. АВТОКОМПЛІТ (DROPDOWN) */
+    .dropdown-menu {
+        background: #0a0a0a !important; border: 1px solid #ff0000 !important;
+        border-radius: 0 !important; margin-top: 5px !important; width: 100%;
+    }
+    .dropdown-item {
+        color: #eee !important; font-family: 'Consolas', monospace; font-size: 13px; padding: 10px 20px !important;
+    }
+    .dropdown-item:hover { background: #ff0000 !important; color: #000 !important; }
+
+    /* 5. КНОПКА ПОВЕРНЕННЯ */
+    .btn-garage-hub {
+        background: transparent; border: 1px solid #333; color: #888 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        text-decoration: none; display: inline-block; border-radius: 0;
+    }
+    .btn-garage-hub:hover { border-color: #ff0000; color: #fff !important; }
+
+    .help-text { font-size: 9px; color: #444; text-transform: uppercase; margin-top: 8px; letter-spacing: 1px; }
+</style>
+
+<div id="account-tracking" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-link-slash" style="color:#ff0000; margin-right:15px;"></i> {{ heading_title }}</h1>
+            <span class="tracking-desc">> {{ text_description }}</span>
+
+            <form style="background: #000; border: 1px solid #1a1a1a; padding: 30px; position: relative;">
+                <div style="position: absolute; top: 10px; right: 20px; font-size: 7px; color: #222; letter-spacing: 3px;">
+                    LINK_ENCRYPTION_MODULE_v1.0
+                </div>
+
+                <div class="row mb-4">
+                    <label for="input-code" class="col-md-3 col-form-label">{{ entry_code }}</label>
+                    <div class="col-md-9">
+                        <textarea cols="40" rows="3" placeholder="YOUR_TRACKING_CODE" id="input-code" class="form-control" readonly>{{ code }}</textarea>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <label for="input-generator" class="col-md-3 col-form-label">{{ entry_generator }}</label>
+                    <div class="col-md-9">
+                        <input type="text" name="product" value="" placeholder="SEARCH_PRODUCT_DATABASE..." id="input-generator" data-oc-target="autocomplete-generator" class="form-control" autocomplete="off"/>
+                        <ul id="autocomplete-generator" class="dropdown-menu"></ul>
+                        <div class="help-text">{{ help_generator }}</div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <label for="input-link" class="col-md-3 col-form-label">{{ entry_link }}</label>
+                    <div class="col-md-9">
+                        <textarea name="link" cols="40" rows="4" placeholder="GENERATED_AFFILIATE_LINK" id="input-link" class="form-control"></textarea>
+                    </div>
+                </div>
+            </form>
+
+            <div class="text-end mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ continue }}" class="btn-garage-hub">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span data-lang-en="RETURN_TO_AFFILIATE_HUB" data-lang-ua="ПОВЕРНУТИСЬ В ПАРТНЕРКУ" data-lang-pl="WRÓĆ DO CENTRUM"></span>
+                </a>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

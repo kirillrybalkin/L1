@@ -1,0 +1,211 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНЫЙ СТИЛЬ ОТЧЕТА */
+    #account-order {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК И ТЕХ-БЛОКИ */
+    h1, h2 {
+        font-size: 20px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 15px; margin-bottom: 30px;
+    }
+
+    .tech-cell {
+        background: #000; border: 1px solid #1a1a1a; border-left: 3px solid #ff0000;
+        padding: 15px; margin-bottom: 20px; height: 100%;
+    }
+    .tech-cell strong { color: #ff0000; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 8px; }
+    .tech-cell span, .tech-cell div { color: #eee; font-family: 'Consolas', monospace; font-size: 14px; }
+
+    /* 3. ТАБЛИЦА СЕРВИСНОГО ЛИСТА */
+    .table-responsive { background: #000; border: 1px solid #1a1a1a; padding: 10px; }
+    .table { color: #888 !important; border-color: #1a1a1a !important; margin-bottom: 0; }
+    .table thead th {
+        color: #ff0000; font-size: 10px; text-transform: uppercase;
+        letter-spacing: 2px; border-bottom: 2px solid #ff0000 !important;
+        padding: 15px 10px;
+    }
+    .table tbody td {
+        background: #050505 !important; color: #eee !important;
+        vertical-align: middle; padding: 15px 10px; border-color: #111 !important;
+        font-family: 'Consolas', monospace; font-size: 13px;
+    }
+
+    /* КНОПКИ В ТАБЛИЦЕ */
+    .btn-reorder {
+        background: #ff0000 !important; border: none !important; color: #000 !important;
+        font-family: 'Orbitron'; font-size: 9px; font-weight: 900; padding: 8px !important;
+        border-radius: 0 !important; text-transform: uppercase;
+    }
+    .btn-return {
+        background: transparent !important; border: 1px solid #333 !important; color: #666 !important;
+        font-family: 'Orbitron'; font-size: 9px; padding: 8px !important;
+        border-radius: 0 !important; text-transform: uppercase; margin-top: 5px;
+    }
+    .btn-return:hover { border-color: #ff0000; color: #ff0000 !important; }
+
+    /* 4. ИТОГИ */
+    .total-row td { background: #000 !important; border: none !important; }
+    .total-title { color: #ff0000 !important; font-weight: 900; }
+    .total-amount { color: #00ff00 !important; font-size: 18px !important; font-weight: 900; }
+
+    /* 5. КНОПКА CONTINUE */
+    .btn-garage-continue {
+        background: transparent; border: 1px solid #333; color: #888 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        text-decoration: none; display: inline-block;
+    }
+    .btn-garage-continue:hover { border-color: #ff0000; color: #fff !important; }
+
+    /* ПЕРЕВОДЫ */
+    .btn-reorder::after { content: "RE_INITIALIZE"; }
+    body[data-lang="ua"] .btn-reorder::after { content: "ПОВТОРИТИ"; }
+    body[data-lang="pl"] .btn-reorder::after { content: "POWTÓRZ"; }
+
+    .btn-return::after { content: "ISSUE_REPORT"; }
+    body[data-lang="ua"] .btn-return::after { content: "ПОВІДОМИТИ ПРО ПРОБЛЕМУ"; }
+    body[data-lang="pl"] .btn-return::after { content: "ZGŁOŚ PROBLEM"; }
+</style>
+
+<div id="account-order" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-file-contract" style="color: #ff0000; margin-right: 15px;"></i> {{ heading_title }}</h1>
+
+            <div class="row mb-4">
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_invoice_no }}</strong>
+                        <span>{% if invoice_no %}{{ invoice_no }}{% else %}[ PENDING_GEN ]{% endif %}</span>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_order_id }}</strong>
+                        <span>#{{ order_id }}</span>
+                    </div>
+                </div>
+            </div>
+
+            {% if payment_address or shipping_address %}
+            <div class="row mb-4">
+                {% if payment_address %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_payment_address }}</strong>
+                        <div>{{ payment_address|replace({',': '<br>'})|raw }}</div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if shipping_address %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_shipping_address }}</strong>
+                        <div>{{ shipping_address|replace({',': '<br>'})|raw }}</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="row mb-4">
+                {% if shipping_method %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_shipping_method }}</strong>
+                        <span>{{ shipping_method }}</span>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="col-md-6 mb-3">
+                    <div class="tech-cell">
+                        <strong>{{ text_payment_method }}</strong>
+                        <span>{{ payment_method }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive mb-5">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>[ SERVICE_NAME ]</th>
+                            <th class="text-end" style="width: 100px;">QTY</th>
+                            <th class="text-end" style="width: 150px;">UNIT_VAL</th>
+                            <th class="text-end" style="width: 150px;">TOTAL_VAL</th>
+                            <th class="text-end" style="width: 150px;">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set product_row = 0 %}
+                        {% for product in products %}
+                        <tr>
+                            <td>
+                                <a href="{{ product.view }}" style="color: #fff; text-decoration: none; font-weight: 700;">{{ product.name }}</a>
+                                <div class="small text-muted" style="font-size: 10px;">{{ text_model }}: {{ product.model }}</div>
+                                {% for option in product.option %}
+                                    <div class="small" style="color: #ff0000; font-size: 10px;">• {{ option.name }}: {{ option.value }}</div>
+                                {% endfor %}
+                                <form id="form-product-{{ product_row }}">
+                                    <input type="hidden" name="product_id" value="{{ product.product_id }}"/>
+                                    <input type="hidden" name="quantity" value="{{ product.quantity }}"/>
+                                    {% for option in product.option %}
+                                        <input type="hidden" name="option[{{ option.product_option_id }}]" value="{{ option.product_option_value_id ? option.product_option_value_id : option.value }}"/>
+                                    {% endfor %}
+                                </form>
+                            </td>
+                            <td class="text-end">{{ product.quantity }}</td>
+                            <td class="text-end">{{ product.price }}</td>
+                            <td class="text-end" style="color: #ff0000; font-weight: 700;">{{ product.total }}</td>
+                            <td class="text-end">
+                                <div class="d-grid">
+                                    <button type="submit" form="form-product-{{ product_row }}" class="btn-reorder"></button>
+                                    <a href="{{ product.return }}" class="btn-return"></a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% set product_row = product_row + 1 %}
+                        {% endfor %}
+
+                        {% for total in totals %}
+                        <tr class="total-row">
+                            <td colspan="3" class="text-end total-title">{{ total.title }}:</td>
+                            <td class="text-end total-amount">{{ total.text }}</td>
+                            <td></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if comment %}
+            <div class="tech-cell mb-5" style="border-left-color: #00ff00;">
+                <strong style="color: #00ff00;">{{ text_comment }} / VIN_CODE</strong>
+                <div style="color: #00ff00; font-size: 18px; letter-spacing: 2px;">{{ comment }}</div>
+            </div>
+            {% endif %}
+
+            <h2><i class="fa-solid fa-list-check"></i> {{ text_history }}</h2>
+            <div id="history" class="mb-5">{{ history }}</div>
+
+            <div class="text-end mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ continue }}" class="btn-garage-continue">
+                    <i class="fa-solid fa-chevron-left"></i> <span data-lang-en="RETURN_TO_GARAGE" data-lang-ua="ПОВЕРНУТИСЬ В ГАРАЖ" data-lang-pl="WRÓĆ DO GARAŻU"></span>
+                </a>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}

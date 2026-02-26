@@ -1,0 +1,108 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНИЙ СТИЛЬ */
+    #account-forgotten {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 25px;
+    }
+    p { color: #888; font-size: 11px; text-transform: uppercase; line-height: 1.8; margin-bottom: 30px; }
+
+    /* 3. МОДУЛЬ ВІДНОВЛЕННЯ */
+    fieldset { border: 1px solid #1a1a1a; padding: 25px; background: #000; margin-bottom: 35px; }
+    legend {
+        float: none; width: auto; padding: 0 15px; font-size: 11px;
+        color: #ff0000; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;
+    }
+
+    .col-form-label { color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ІНПУТ */
+    .form-control {
+        background-color: #050505 !important;
+        border: 1px solid #333 !important;
+        border-radius: 0 !important;
+        color: #00ff00 !important;
+        font-family: 'Consolas', monospace;
+        padding: 15px !important;
+        transition: 0.3s;
+        font-size: 16px !important;
+    }
+    .form-control:focus {
+        border-color: #ff0000 !important;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.2) !important;
+        background-color: #080808 !important;
+    }
+    .form-control::placeholder { color: #222; font-size: 10px; letter-spacing: 2px; }
+
+    /* 4. КНОПКИ */
+    .btn-garage-send {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 13px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+        transition: 0.3s; border-radius: 0;
+    }
+    .btn-garage-send:hover { background: #fff; transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,0,0,0.4); }
+
+    .btn-garage-back {
+        background: transparent; border: 1px solid #333; color: #666 !important;
+        padding: 15px 30px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        text-decoration: none; border-radius: 0; display: inline-block;
+    }
+    .btn-garage-back:hover { border-color: #ff0000; color: #fff !important; }
+
+    /* ОШИБКИ */
+    .invalid-feedback { color: #ff0000 !important; font-size: 9px !important; text-transform: uppercase; margin-top: 8px; font-weight: 900; }
+</style>
+
+<div id="account-forgotten" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-key-skeleton" style="color:#ff0000; margin-right:15px;"></i> {{ heading_title }}</h1>
+            <p>> {{ text_email }}</p>
+
+            <form id="form-forgotten" action="{{ confirm }}" method="post" data-oc-toggle="ajax">
+                <fieldset>
+                    <legend>[ SECURITY_EMAIL_VERIFICATION ]</legend>
+
+                    <div class="row align-items-center required">
+                        <label for="input-email" class="col-sm-3 col-form-label">{{ entry_email }}</label>
+                        <div class="col-sm-9">
+                            <input type="text" name="email" value="" placeholder="USER@DATABASE.COM" id="input-email" class="form-control"/>
+                            <div id="error-email" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="row mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                    <div class="col">
+                        <a href="{{ back }}" class="btn-garage-back"><i class="fa-solid fa-xmark"></i> CANCEL_EXIT</a>
+                    </div>
+                    <div class="col text-end">
+                        <button type="submit" class="btn-garage-send">
+                            <i class="fa-solid fa-paper-plane"></i> SEND_RECOVERY_KEY
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div style="margin-top: 40px; text-align: center; opacity: 0.2;">
+                <span style="font-size: 8px; letter-spacing: 5px;">RECOVERY_PROTOCOL_v4.1_ACTIVE</span>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

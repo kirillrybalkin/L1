@@ -1,0 +1,121 @@
+{{ header }}
+<style>
+    /* 1. ГЛОБАЛЬНЫЙ СТИЛЬ ТЕРМИНАЛА */
+    #account-reset {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВОК */
+    h1 {
+        font-size: 24px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 20px; margin-bottom: 40px;
+    }
+
+    /* 3. БЛОК ВВОДА (OVERRIDE MODULE) */
+    fieldset { border: 1px solid #1a1a1a; padding: 25px; background: #000; margin-bottom: 35px; }
+    legend {
+        float: none; width: auto; padding: 0 15px; font-size: 11px;
+        color: #ff0000; text-transform: uppercase; letter-spacing: 2px; font-weight: 900;
+    }
+
+    .col-form-label { color: #666; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+
+    /* ПАРОЛЬ */
+    .form-control {
+        background-color: #050505 !important;
+        border: 1px solid #333 !important;
+        border-radius: 0 !important;
+        color: #ff0000 !important;
+        font-family: 'Consolas', monospace;
+        padding: 15px !important;
+        transition: 0.3s;
+    }
+    .form-control:focus {
+        border-color: #00ff00 !important; /* Зеленый при успешном фокусе */
+        box-shadow: 0 0 15px rgba(0, 255, 0, 0.1) !important;
+    }
+
+    /* 4. КНОПКИ С ПЕРЕВОДОМ */
+    .btn-garage-confirm {
+        background: #ff0000; border: none; color: #000 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 13px;
+        font-weight: 900; text-transform: uppercase; letter-spacing: 2px;
+        transition: 0.3s; border-radius: 0;
+    }
+    .btn-garage-confirm:hover { background: #fff; transform: translateY(-2px); }
+
+    .btn-garage-back {
+        background: transparent; border: 1px solid #333; color: #666 !important;
+        padding: 15px 30px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;
+        text-decoration: none; border-radius: 0; display: inline-block;
+    }
+
+    /* 5. МУЛЬТИЯЗЫЧНЫЕ ТЕХ-НАДПИСИ */
+    .tech-status::after { content: "SYSTEM_READY_FOR_OVERRIDE"; }
+    body[data-lang="ua"] .tech-status::after { content: "СИСТЕМА ГОТОВА ДО ЗМІНИ ПАРОЛЯ"; }
+    body[data-lang="pl"] .tech-status::after { content: "SYSTEM GOTOWY DO ZMIANY HASŁA"; }
+
+    .label-confirm-text::after { content: "CONFIRM_NEW_KEY"; }
+    body[data-lang="ua"] .label-confirm-text::after { content: "ПІДТВЕРДИТИ ПАРОЛЬ"; }
+    body[data-lang="pl"] .label-confirm-text::after { content: "POTWIERDŹ HASŁO"; }
+
+    .invalid-feedback { color: #ff0000 !important; font-size: 9px !important; text-transform: uppercase; margin-top: 8px; font-weight: 900; }
+</style>
+
+<div id="account-reset" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-shield-virus" style="color:#ff0000; margin-right:15px;"></i> {{ heading_title }}</h1>
+            <div class="tech-status" style="font-size: 9px; color: #444; margin-bottom: 25px; letter-spacing: 2px;"></div>
+
+            <form id="form-reset" action="{{ save }}" method="post" data-oc-toggle="ajax">
+                <fieldset>
+                    <legend>[ NEW_ACCESS_CREDENTIALS ]</legend>
+
+                    <div class="row mb-4">
+                        <label for="input-password" class="col-sm-3 col-form-label">{{ entry_password }}</label>
+                        <div class="col-sm-9">
+                            <input type="password" name="password" value="" placeholder="••••••••" id="input-password" class="form-control"/>
+                            <div id="error-password" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-4">
+                        <label for="input-confirm" class="col-sm-3 col-form-label">{{ entry_confirm }}</label>
+                        <div class="col-sm-9">
+                            <input type="password" name="confirm" value="" placeholder="••••••••" id="input-confirm" class="form-control"/>
+                            <div id="error-confirm" class="invalid-feedback"></div>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <div class="row mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                    <div class="col">
+                        <a href="{{ back }}" class="btn-garage-back">
+                            <i class="fa-solid fa-xmark"></i> <span data-lang-en="ABORT" data-lang-ua="СКАСУВАТИ" data-lang-pl="ANULUJ"></span>
+                        </a>
+                    </div>
+                    <div class="col text-end">
+                        <button type="submit" class="btn-garage-confirm">
+                            <i class="fa-solid fa-key"></i> <span class="label-confirm-text"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <div style="margin-top: 40px; text-align: center; opacity: 0.1;">
+                <span style="font-size: 8px; letter-spacing: 5px;">RSA_ENCRYPTION_KEY_REGENERATION</span>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+{{ footer }}

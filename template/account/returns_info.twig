@@ -1,0 +1,153 @@
+{{ header }}
+<style>
+    /* 1. БАЗОВЫЙ СТИЛЬ */
+    #account-return {
+        background: #0a0a0a; color: #fff; padding-top: 40px;
+        font-family: 'Orbitron', sans-serif; min-height: 100vh;
+    }
+    .breadcrumb { display: none !important; }
+
+    /* 2. ЗАГОЛОВКИ И ЯЧЕЙКИ */
+    h1, h2 {
+        font-size: 20px; font-weight: 900; text-transform: uppercase;
+        letter-spacing: 2px; border-left: 5px solid #ff0000; padding-left: 15px; margin-bottom: 30px;
+    }
+
+    .tech-cell {
+        background: #000; border: 1px solid #1a1a1a; border-left: 3px solid #ff0000;
+        padding: 15px; margin-bottom: 20px; height: 100%;
+    }
+    .tech-cell strong { color: #ff0000; font-size: 9px; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 8px; }
+    .tech-cell span { color: #eee; font-family: 'Consolas', monospace; font-size: 14px; }
+
+    /* 3. ТАБЛИЦА ОБЪЕКТА */
+    .table-responsive { background: #000; border: 1px solid #1a1a1a; padding: 10px; margin-bottom: 30px; }
+    .table { color: #888 !important; border-color: #1a1a1a !important; margin-bottom: 0; }
+    .table thead th {
+        color: #ff0000; font-size: 10px; text-transform: uppercase;
+        letter-spacing: 2px; border-bottom: 2px solid #ff0000 !important;
+        padding: 15px 10px;
+    }
+    .table tbody td {
+        background: #050505 !important; color: #eee !important;
+        vertical-align: middle; padding: 15px 10px; border-color: #111 !important;
+        font-family: 'Consolas', monospace; font-size: 13px;
+    }
+
+    /* 4. КНОПКА CONTINUE */
+    .btn-garage-continue {
+        background: transparent; border: 1px solid #333; color: #888 !important;
+        padding: 15px 40px; font-family: 'Orbitron'; font-size: 11px;
+        text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
+        text-decoration: none; display: inline-block;
+    }
+    .btn-garage-continue:hover { border-color: #ff0000; color: #fff !important; }
+
+</style>
+
+<div id="account-return" class="container">
+    <div class="row">
+        {{ column_left }}
+        <div id="content" class="col">
+            {{ content_top }}
+
+            <h1><i class="fa-solid fa-file-invoice" style="color: #ff0000; margin-right: 15px;"></i> {{ heading_title }}</h1>
+
+            {# ПЕРВАЯ СТРОКА ДАННЫХ #}
+            <div class="row mb-2">
+                <div class="col-md-6">
+                    <div class="tech-cell">
+                        <strong>{{ text_return_id }}</strong>
+                        <span>#{{ return_id }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="tech-cell">
+                        <strong>{{ text_date_added }}</strong>
+                        <span>{{ date_added }}</span>
+                    </div>
+                </div>
+            </div>
+
+            {# ВТОРАЯ СТРОКА ДАННЫХ #}
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <div class="tech-cell">
+                        <strong>{{ text_order_id }}</strong>
+                        <span>#{{ order_id }}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="tech-cell">
+                        <strong>{{ text_date_ordered }}</strong>
+                        <span>{{ date_ordered }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>[ PRODUCT_DESCRIPTION ]</th>
+                            <th>[ MODEL_REF ]</th>
+                            <th class="text-end" style="width: 100px;">QTY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="font-weight: 700;">{{ product }}</td>
+                            <td>{{ model }}</td>
+                            <td class="text-end">{{ quantity }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            {# ТРЕТЬЯ СТРОКА (ПРИЧИНЫ) #}
+            <div class="row mb-4">
+                <div class="col-md-4">
+                    <div class="tech-cell">
+                        <strong>{{ text_reason }}</strong>
+                        <span>{{ reason }}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="tech-cell">
+                        <strong>{{ text_opened }}</strong>
+                        <span>{{ opened }}</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="tech-cell">
+                        <strong>{{ text_action }}</strong>
+                        <span style="color: #ff0000; font-weight: 900;">{% if action %}{{ action }}{% else %}[ PENDING_REVIEW ]{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+
+            {% if comment %}
+                <div class="tech-cell mb-4" style="border-left-color: #444;">
+                    <strong>{{ text_comment }} / FAULT_LOG_DETAILS</strong>
+                    <div style="font-family: 'Consolas', monospace; font-size: 13px; color: #ccc;">{{ comment }}</div>
+                </div>
+            {% endif %}
+
+            <h2><i class="fa-solid fa-clock-rotate-left"></i> {{ text_history }}</h2>
+            <div id="history" class="mb-5">{{ history }}</div>
+
+            <div class="text-end mt-5 pt-4" style="border-top: 1px solid #1a1a1a;">
+                <a href="{{ continue }}" class="btn-garage-continue">
+                    <i class="fa-solid fa-chevron-left"></i>
+                    <span data-lang-en="RETURN_TO_REPORTS" data-lang-ua="ДО СПИСКУ ЗАПИТІВ" data-lang-pl="DO LISTY ZGŁOSZEŃ"></span>
+                </a>
+            </div>
+
+            {{ content_bottom }}
+        </div>
+        {{ column_right }}
+    </div>
+</div>
+
+<script type="text/javascript"></script>
+{{ footer }}
